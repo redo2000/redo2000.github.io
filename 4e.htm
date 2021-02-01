@@ -2,7 +2,7 @@
 
 <head>
 <title>* 4e Physique *</title>
-<meta name="generator" content="Namo WebEditor">
+<meta name="generator" content="Namo WebEditor(Trial)">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <script language="JavaScript">
 <!--
@@ -30,8 +30,18 @@ function na_open_window(name, url, left, top, width, height, toolbar, menubar, s
   cookie_val = cookie_str.substring(pos_start + 1, pos_end);
   if (cookie_name == name && cookie_val  == "done")
     return;
+  var left_adj, top_adj;
+  left_adj = left;
+  top_adj = top;  
+  if (left_adj == 0) {
+    left_adj = (screen.width / 2) - (width / 2);
+  }
+  if (top_adj == 0) {
+    top_adj = (screen.height / 2)-(height / 2);
+  }
+  window.open(url, name, 'left='+left_adj+',top='+top_adj+',width='+width+',height='+height+',toolbar='+toolbar_str+',menubar='+menubar_str+',status='+statusbar_str+',scrollbars='+scrollbar_str+',resizable='+resizable_str);
 
-  window.open(url, name, 'left='+left+',top='+top+',width='+width+',height='+height+',toolbar='+toolbar_str+',menubar='+menubar_str+',status='+statusbar_str+',scrollbars='+scrollbar_str+',resizable='+resizable_str);
+//  window.open(url, name, 'left='+left+',top='+top+',width='+width+',height='+height+',toolbar='+toolbar_str+',menubar='+menubar_str+',status='+statusbar_str+',scrollbars='+scrollbar_str+',resizable='+resizable_str);
 }
 
 // -->
@@ -84,7 +94,7 @@ function na_open_window(name, url, left, top, width, height, toolbar, menubar, s
 <p align="center"><a href="4e/How to Calculate a Light Year.pdf"><img src="4e/v4-460px-Calculate-a-Light-Year-Step-1-Version-2.jpg" width="460" height="345" border="0"></a></p>
 <p align="center"><font size="5"><i><b>Un autre Site...</b></i></font></p>
 <p align="center"><a href="javascript:na_open_window('win', 'http://villemin.gerard.free.fr/Science/Lumannee.htm', 0, 0, 300, 200, 0, 0, 0, 0, 0)" target="_self"><img src="4e/UnAutreSite.jpg" width="600" height="588" border="0"></a></p>
-<p align="center"><b><font size="6" color="red"><i>Exercices r&eacute;solu avec les ua&nbsp;et al,</i></font></b></p>
+<p align="center"><b><font size="6" color="red"><i>Exercices r&eacute;solus avec les ua&nbsp;et al,</i></font></b></p>
 <p align="center"><a href="4e/ExoLightYear.pdf"><img src="4e/ExerciceUa&Al.jpg" width="600" height="380" border="0"></a></p>
 <p align="center"><b><u><font size="7" color="#002060"><span style="background-color:aqua;"> </span></font></u></b></p>
 <p align="center"><img src="Deco/deco10.png" width="279" height="52" border="0"></p>
