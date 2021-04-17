@@ -2,7 +2,7 @@
 
 <head>
 <title>- 3AS Physique-</title>
-<meta name="generator" content="Namo WebEditor">
+<meta name="generator" content="Namo WebEditor(Trial)">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <script language="JavaScript">
 <!--
@@ -30,8 +30,18 @@ function na_open_window(name, url, left, top, width, height, toolbar, menubar, s
   cookie_val = cookie_str.substring(pos_start + 1, pos_end);
   if (cookie_name == name && cookie_val  == "done")
     return;
+  var left_adj, top_adj;
+  left_adj = left;
+  top_adj = top;  
+  if (left_adj == 0) {
+    left_adj = (screen.width / 2) - (width / 2);
+  }
+  if (top_adj == 0) {
+    top_adj = (screen.height / 2)-(height / 2);
+  }
+  window.open(url, name, 'left='+left_adj+',top='+top_adj+',width='+width+',height='+height+',toolbar='+toolbar_str+',menubar='+menubar_str+',status='+statusbar_str+',scrollbars='+scrollbar_str+',resizable='+resizable_str);
 
-  window.open(url, name, 'left='+left+',top='+top+',width='+width+',height='+height+',toolbar='+toolbar_str+',menubar='+menubar_str+',status='+statusbar_str+',scrollbars='+scrollbar_str+',resizable='+resizable_str);
+//  window.open(url, name, 'left='+left+',top='+top+',width='+width+',height='+height+',toolbar='+toolbar_str+',menubar='+menubar_str+',status='+statusbar_str+',scrollbars='+scrollbar_str+',resizable='+resizable_str);
 }
 
 // -->
@@ -163,7 +173,7 @@ function na_open_window(name, url, left, top, width, height, toolbar, menubar, s
 <p align="center"><a href="3AS/SUJET 02 Révision 3AS.pdf"><img src="3AS/SérieRév02.png" width="177" height="79" border="0"></a></p>
 <p align="center"><img src="3AS/SérieRév02_Correc.png" width="176" height="68" border="0"></p>
 <p align="center"><img src="Deco/deco11.png" width="279" height="69" border="0"></p>
-<p align="center"><i><font color="#F79646"><span style="background-color:black;">TR Production April &nbsp;2020 -&nbsp;February 2021-&nbsp;&nbsp;&nbsp;redo009@gmail.com</span></font></i></p>
+<p align="center"><i><font color="#F79646"><span style="background-color:black;">TR Production April &nbsp;2020 -&nbsp;April 2021-&nbsp;&nbsp;&nbsp;redo009@gmail.com</span></font></i></p>
 <p align="center">&nbsp;</p>
 </body>
 
