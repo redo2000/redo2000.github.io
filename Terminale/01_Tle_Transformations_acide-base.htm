@@ -122,6 +122,36 @@
         </td>
     </tr>
 </table>
+Pour cr&eacute;er un bouton HTML qui permet de remonter en haut de la page, vous pouvez utiliser un lien ancr&eacute; avec un attribut `href` pointant vers le haut de la page, souvent repr&eacute;sent&eacute; par `#`. Voici un exemple de code que vous pouvez ins&eacute;rer dans votre page HTML :
+
+```html
+<!-- Bouton pour remonter en haut de la page -->
+<a href="#" class="back-to-top"><img src="back-to-top.jpg" width="30" height="30" border="0"></a>
+
+<!-- Vous pouvez également ajouter un peu de CSS pour le styliser -->
+<style>
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    text-decoration: none;
+    color: white;
+    background-color: red;
+    padding: 10px;
+    border-radius: 5px;
+}
+</style>
+
+<!-- Et un peu de JavaScript pour une transition douce -->
+<script>
+document.querySelector('.back-to-top').addEventListener('click', function(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+```
+
+Ce code ajoutera un bouton fixe en bas &agrave; droite de la page. Lorsque vous cliquez dessus, la page d&eacute;filera doucement jusqu'en haut. Vous pouvez personnaliser le style du bouton avec le CSS selon vos pr&eacute;f&eacute;rences.
 <p align="center"><img src="deco05_.png" width="274" height="58" border="0"></p>
 <p align="center"><b><i><a href="https://redo2000.github.io/"><font size="5" color="white">https://redo2000.github.io/</font></a></i></b></p>
 <p align="center"><i><span style="background-color:black;"><font color="aqua">TR Production &nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;redo009@gmail.com</font></span></i></p>
