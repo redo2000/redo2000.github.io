@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitesse du Son et Température</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .formula-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .formula {
+            font-size: 1.8em;
+            text-align: center;
+            color: #333;
+            font-weight: bold;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .explanation {
+            color: #555;
+            line-height: 1.8;
+            margin-top: 15px;
+        }
+        
+        .explanation strong {
+            color: #667eea;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 30px 0;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .controls {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+        
+        .slider-container {
+            margin: 20px 0;
+        }
+        
+        label {
+            display: block;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .result {
+            background: #667eea;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.3em;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        
+        .info-box h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        
+        .info-box ul {
+            margin-left: 20px;
+            color: #555;
+        }
+        
+        .info-box li {
+            margin: 5px 0;
+        }
+    </style>
+<meta name="generator" content="Namo WebEditor(Trial)">
+</head>
+<body>
+<div class="container">
+    <h1>🔊 La Vitesse du Son</h1>
+    <p align="center"><a href="https://redo2000.github.io/"><font size="3" color="red">https://redo2000.github.io/</font></a></p>
+        
+        <div class="formula-section">
+            <h2 style="color: #667eea; margin-bottom: 15px;">📐 Formule Physique</h2>
+            <div class="formula">
+                c ≈ (331,5 + 0,6 × θ) m/s
+            </div>
+            <div class="explanation">
+                <p><strong>où :</strong></p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>c</strong> = vitesse du son dans l'air (en mètres par seconde)</li>
+                    <li><strong>θ (thêta)</strong> = température de l'air (en degrés Celsius)</li>
+                    <li><strong>331,5 m/s</strong> = vitesse du son �&nbsp; 0°C</li>
+                    <li><strong>0,6</strong> = coefficient d'augmentation par degré</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="soundChart"></canvas>
+        </div>
+        
+        <div class="controls">
+            <h3 style="color: #667eea; margin-bottom: 20px;">🎚️ Calculateur Interactif</h3>
+            <div class="slider-container">
+                <label for="tempSlider">Température : <span id="tempValue">20</span>°C</label>
+                <input type="range" id="tempSlider" min="-20" max="50" value="20" step="1">
+            </div>
+            
+            <div class="result" id="result">
+                Vitesse du son : 343.5 m/s
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>💡 Le saviez-vous ?</h3>
+            <ul>
+                <li>Plus l'air est chaud, plus les molécules se déplacent rapidement, facilitant la propagation du son</li>
+                <li>À 0°C, le son voyage �&nbsp; environ 331,5 m/s (soit ~1193 km/h)</li>
+                <li>À 20°C (température ambiante), le son voyage �&nbsp; environ 343 m/s</li>
+                <li>Chaque degré Celsius supplémentaire augmente la vitesse du son d'environ 0,6 m/s</li>
+            </ul>
+        </div>
+</div>
+
+    <script>
+        // Fonction pour calculer la vitesse du son
+        function calculateSpeed(temp) {
+            return 331.5 + 0.6 * temp;
+        }
+        
+        // Générer les données pour le graphique
+        function generateData() {
+            const temps = [];
+            const speeds = [];
+            for (let t = -20; t <= 50; t += 2) {
+                temps.push(t);
+                speeds.push(calculateSpeed(t));
+            }
+            return { temps, speeds };
+        }
+        
+        const data = generateData();
+        
+        // Créer le graphique
+        const ctx = document.getElementById('soundChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.temps,
+                datasets: [{
+                    label: 'Vitesse du son (m/s)',
+                    data: data.speeds,
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.1,
+                    pointRadius: 0,
+                    pointHoverRadius: 6,
+                    pointHoverBackgroundColor: '#667eea'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            font: { size: 14 },
+                            color: '#333'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Vitesse : ' + context.parsed.y.toFixed(1) + ' m/s';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Température (°C)',
+                            font: { size: 14, weight: 'bold' },
+                            color: '#667eea'
+                        },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Vitesse du son (m/s)',
+                            font: { size: 14, weight: 'bold' },
+                            color: '#667eea'
+                        },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    }
+                }
+            }
+        });
+        
+        // Gestion du slider
+        const tempSlider = document.getElementById('tempSlider');
+        const tempValue = document.getElementById('tempValue');
+        const result = document.getElementById('result');
+        
+        let currentPoint = null;
+        
+        tempSlider.addEventListener('input', function() {
+            const temp = parseFloat(this.value);
+            const speed = calculateSpeed(temp);
+            
+            tempValue.textContent = temp;
+            result.textContent = `Vitesse du son : ${speed.toFixed(1)} m/s`;
+            
+            // Mettre à jour le point sur le graphique
+            if (currentPoint) {
+                chart.data.datasets[0].pointRadius = data.temps.map(() => 0);
+            }
+            
+            const index = data.temps.findIndex(t => Math.abs(t - temp) < 1);
+            if (index !== -1) {
+                chart.data.datasets[0].pointRadius[index] = 8;
+                chart.data.datasets[0].pointBackgroundColor = data.temps.map((_, i) => 
+                    i === index ? '#ff6b6b' : '#667eea'
+                );
+            }
+            
+            chart.update('none');
+            currentPoint = temp;
+        });
+        
+        // Initialisation
+        tempSlider.dispatchEvent(new Event('input'));
+    </script>
+</body>
+</html>
