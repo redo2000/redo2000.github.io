@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prof. Tchikou – Physique-Chimie</title>
+<link rel="icon" type="image/png" href="RedoFavIcon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -398,29 +399,6 @@
     line-height: 1.7;
   }
 
-  /* ── COUNTER ── */
-  .counter-block {
-    text-align: center;
-    margin: 1.5rem auto 0.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.6rem;
-  }
-
-  .counter-label {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--text-muted);
-    font-weight: 500;
-  }
-
-  .counter-display img {
-    border-radius: 6px;
-    height: 28px;
-  }
-
   /* ── FOOTER ── */
   footer {
     text-align: center;
@@ -449,6 +427,7 @@
     .level-btn .lvl-name { font-size: 1.3rem; }
   }
 </style>
+<meta name="generator" content="Namo WebEditor(Trial)">
 </head>
 <body>
 
@@ -468,7 +447,7 @@
   </header>
 
   <!-- SECTION ARABE (programme algérien) -->
-  <div class="section-block">
+  <div class="section-block" style="overflow:hidden;">
     <div class="section-header" style="flex-direction: row; flex-wrap: wrap; gap: 0.6rem; align-items: center;">
       <div class="section-social">
         <a class="social-btn youtube" href="https://www.youtube.com/@%D8%A7%D9%84%D8%A3%D8%B3%D8%AA%D8%A7%D8%B0_%D8%AA%D8%B4%D9%8A%D9%83%D9%88_%D9%81%D9%8A%D8%B2%D9%8A%D8%A7%D8%A1/playlists" target="_blank">
@@ -494,7 +473,7 @@
       <span class="lang-badge">عربي</span>
     </div>
 
-    <div class="level-group" style="direction: rtl; text-align: right;">
+    <div class="level-group" style="text-align:right; direction: rtl;">
       <div class="level-label-ar">المتوسط</div>
       <div class="level-grid">
         <a class="level-btn level-btn-ar" href="https://redo2000.github.io/1AM.htm"><span class="lvl-name">1AM</span><span class="lvl-sub">Première</span></a>
@@ -504,7 +483,7 @@
       </div>
     </div>
 
-    <div class="level-group" style="direction: rtl; text-align: right;">
+    <div class="level-group" style="text-align:right; direction: rtl;">
       <div class="level-label-ar">الثانوي</div>
       <div class="level-grid">
         <a class="level-btn level-btn-ar" href="https://redo2000.github.io/1AS.htm"><span class="lvl-name">1AS</span><span class="lvl-sub">Première</span></a>
@@ -515,7 +494,7 @@
   </div>
 
   <!-- SECTION FRANÇAISE -->
-  <div class="section-block">
+  <div class="section-block" style="overflow:hidden;">
     <div class="section-header" style="flex-wrap: wrap; gap: 0.6rem;">
       <span class="lang-badge">Français</span>
       <span class="section-title-fr">
@@ -574,17 +553,9 @@
     </p>
   </div>
 
-  <!-- VISITOR COUNTER -->
-  <div class="counter-block">
-    <div class="counter-label">Visiteurs depuis le 1er Mai 2026</div>
-    <div class="counter-display">
-      <a href="https://www.compteurdevisite.com" title="compteur"><img src="https://counter1.optistats.ovh/private/compteurdevisite.php?c=nsf8ead416hep242q8tm1t1x2blwm97p" border="0" title="compteur" alt="compteur"></a>
-    </div>
-  </div>
-
   <!-- FOOTER -->
   <footer>
-    TR Production · Mis à jour <span id="footer-date"></span>
+    TR Production · Mis �&nbsp; jour <span id="footer-date"></span>
   </footer>
   <script>
     const mois = ["Janvier","Février","Mars","Avril","Mai","Juin",
