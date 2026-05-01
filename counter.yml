@@ -1,0 +1,45 @@
+name: Visitor Counter
+
+on:
+  repository_dispatch:
+    types: [visit]
+
+# Evite les conflits si plusieurs visites simultanées
+concurrency:
+  group: counter-update
+  cancel-in-progress: false
+
+jobs:
+  increment:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Increment counter
+        run: |
+          # Lire la valeur actuelle
+          COUNT=$(jq '.count' counter.json)
+          NEW_COUNT=$((COUNT + 1))
+          DATE=$(date -u +"%Y-%m-%d")
+
+          # Mettre à jour le fichier
+          jq --argjson c "$NEW_COUNT" --arg d "$DATE" \
+            '.count = $c | .last_updated = $d' \
+            counter.json > counter.tmp.json
+          mv counter.tmp.json counter.json
+
+          echo "Nouveau compteur : $NEW_COUNT"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add counter.json
+          git commit -m "chore: increment visitor counter [skip ci]"
+          git push
