@@ -577,66 +577,10 @@
   <!-- VISITOR COUNTER -->
   <div class="counter-block">
     <div class="counter-label">Visiteurs depuis le 1er Mai 2026</div>
-    <div class="counter-display" id="visit-counter">
-      <span style="font-family:'Playfair Display',serif; font-size:1.6rem; color:var(--gold); letter-spacing:0.1em;">…</span>
+    <div class="counter-display">
+      <a href="https://www.compteurdevisite.com" title="compteur"><img src="https://counter1.optistats.ovh/private/compteurdevisite.php?c=nsf8ead416hep242q8tm1t1x2blwm97p" border="0" title="compteur" alt="compteur"></a>
     </div>
   </div>
-
-  <script>
-  (function() {
-    const GITHUB_USER  = 'redo2000';
-    const GITHUB_REPO  = 'redo2000.github.io';
-    const COUNTER_FILE = 'counter.json';
-    // ⚠️ Remplacez par votre PAT (fine-grained, permission "Actions: Write" uniquement)
-    const PAT = 'VOTRE_TOKEN_ICI';
-
-    const el = document.getElementById('visit-counter');
-
-    // 1. Afficher la valeur actuelle
-    const jsonURL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${COUNTER_FILE}`;
-    fetch(jsonURL, { cache: 'no-store' })
-      .then(r => r.json())
-      .then(data => {
-        const count = (data.count || 0) + 1;
-        el.innerHTML = `
-          <span style="
-            font-family:'Playfair Display',serif;
-            font-size:1.8rem;
-            color:var(--gold);
-            letter-spacing:0.12em;
-            text-shadow: 0 0 20px rgba(201,150,58,0.4);
-          ">${count.toLocaleString('fr-FR')}</span>
-          <span style="
-            display:block;
-            font-size:0.7rem;
-            color:var(--text-muted);
-            letter-spacing:0.15em;
-            text-transform:uppercase;
-            margin-top:0.2rem;
-          ">visites</span>`;
-      })
-      .catch(() => {
-        el.innerHTML = '<span style="color:var(--text-muted);font-size:0.85rem;">—</span>';
-      });
-
-    // 2. Incrémenter via GitHub Action (une seule fois par session)
-    if (!sessionStorage.getItem('visited')) {
-      sessionStorage.setItem('visited', '1');
-      if (PAT && PAT !== 'VOTRE_TOKEN_ICI') {
-        fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/dispatches`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${PAT}`,
-            'Accept': 'application/vnd.github+json',
-            'Content-Type': 'application/json',
-            'X-GitHub-Api-Version': '2022-11-28'
-          },
-          body: JSON.stringify({ event_type: 'visit' })
-        });
-      }
-    }
-  })();
-  </script>
 
   <!-- FOOTER -->
   <footer>
