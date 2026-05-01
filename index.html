@@ -578,14 +578,21 @@
   <div class="counter-block">
     <div class="counter-label">Visiteurs depuis le 1er Mai 2026</div>
     <div class="counter-display">
-      <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fredo2000.github.io&count_bg=%23C9963A&title_bg=%231A1A1A&icon=eye.svg&icon_color=%23E8C47A&title=vues&edge_flat=false" alt="compteur de visites"/>
+      <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fredo2000.github.io%2Findex.html&count_bg=%23C9963A&title_bg=%231A1A1A&icon=eye.svg&icon_color=%23E8C47A&title=vues&edge_flat=false" alt="compteur de visites" loading="eager" referrerpolicy="no-referrer-when-downgrade"/>
     </div>
   </div>
 
   <!-- FOOTER -->
   <footer>
-    TR Production · Mis à jour Avril 2026
+    TR Production · Mis à jour <span id="footer-date"></span>
   </footer>
+  <script>
+    const mois = ["Janvier","Février","Mars","Avril","Mai","Juin",
+                  "Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+    const now = new Date();
+    document.getElementById("footer-date").textContent =
+      mois[now.getMonth()] + " " + now.getFullYear();
+  </script>
 
 </div>
 </body>
