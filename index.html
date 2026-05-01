@@ -1,139 +1,592 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
 <head>
-<title>Prof. Tchikou </title>
-<link rel="icon" type="image/png" sizes="16x16" href="RedoFavIcon.png">
-<meta name="generator" content="Namo WebEditor(Trial)">
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prof. Tchikou – Physique-Chimie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9963a;
+    --gold-light: #e8c47a;
+    --gold-pale: #f5e9cc;
+    --dark: #0e0e0e;
+    --dark2: #1a1a1a;
+    --dark3: #242424;
+    --text: #e8e2d9;
+    --text-muted: #9a9080;
+    --accent: #4a7c6f;
+    --accent2: #6ba399;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--dark);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(201,150,58,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(74,124,111,0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 3rem 1.5rem 2rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .header-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .header-line::before,
+  .header-line::after {
+    content: '';
+    flex: 1;
+    max-width: 120px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+  .header-line::after {
+    background: linear-gradient(to left, transparent, var(--gold));
+  }
+
+  .gold-dot {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .name-ar {
+    font-family: 'Amiri', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    color: var(--gold-light);
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+    direction: rtl;
+  }
+
+  .name-fr {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  .subtitle {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .contact-bar {
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+  .contact-bar a {
+    color: var(--gold);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .contact-bar a:hover { color: var(--gold-light); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 2.5rem auto;
+    max-width: 500px;
+  }
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold-pale), transparent);
+    opacity: 0.3;
+  }
+  .divider-icon {
+    color: var(--gold);
+    font-size: 1rem;
+    opacity: 0.7;
+  }
+
+  /* ── SECTION BLOCKS ── */
+  .section-block {
+    margin-bottom: 2rem;
+    background: var(--dark2);
+    border: 1px solid rgba(201,150,58,0.15);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .section-block:hover {
+    border-color: rgba(201,150,58,0.35);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: var(--dark3);
+    border-bottom: 1px solid rgba(201,150,58,0.1);
+  }
+
+  .lang-badge {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.7rem;
+    border-radius: 20px;
+    background: rgba(201,150,58,0.15);
+    color: var(--gold);
+    border: 1px solid rgba(201,150,58,0.3);
+  }
+
+  .flag {
+    width: 36px;
+    height: 24px;
+    border-radius: 3px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    flex-shrink: 0;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+  }
+
+  .section-title-ar .flag {
+    margin-right: 0;
+    margin-left: 0.5rem;
+  }
+
+  .section-title-fr {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: var(--text);
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .section-title-ar {
+    font-family: 'Amiri', serif;
+    font-size: 1.2rem;
+    color: var(--text);
+    direction: rtl;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  /* ── LEVEL GRID ── */
+  .level-group {
+    padding: 1.2rem 1.5rem;
+  }
+  .level-group + .level-group {
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .level-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+  }
+  .level-label-ar {
+    font-family: 'Amiri', serif;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-align: center;
+    direction: rtl;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0;
+  }
+
+  .level-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .level-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem 0.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(201,150,58,0.25);
+    background: rgba(201,150,58,0.07);
+    color: var(--gold-light);
+    font-family: 'DM Sans', sans-serif;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    gap: 0.3rem;
+  }
+
+  .level-btn .lvl-name {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    color: var(--gold-light);
+    position: relative;
+    z-index: 1;
+  }
+
+  .level-btn .lvl-sub {
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    position: relative;
+    z-index: 1;
+  }
+
+  .level-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .level-btn:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(201,150,58,0.25);
+  }
+  .level-btn:hover::before { opacity: 1; }
+  .level-btn:hover .lvl-name,
+  .level-btn:hover .lvl-sub { color: var(--dark); }
+
+  .level-btn-ar .lvl-name {
+    font-family: 'Amiri', serif;
+    font-size: 1.6rem;
+  }
+
+  .section-social {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  /* ── SOCIAL ── */
+  .social-bar {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1.2rem 0 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 30px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+
+  .social-btn.youtube {
+    background: rgba(255,0,0,0.08);
+    border-color: rgba(255,0,0,0.3);
+    color: #ff6b6b;
+  }
+  .social-btn.youtube:hover {
+    background: rgba(255,0,0,0.2);
+    border-color: #ff4444;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(255,0,0,0.2);
+  }
+
+  .social-btn.tiktok {
+    background: rgba(105,201,208,0.08);
+    border-color: rgba(105,201,208,0.3);
+    color: #69c9d0;
+  }
+  .social-btn.tiktok:hover {
+    background: rgba(105,201,208,0.2);
+    border-color: #69c9d0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(105,201,208,0.2);
+  }
+
+  .social-btn svg {
+    width: 14px; height: 14px;
+    flex-shrink: 0;
+  }
+
+  /* ── QUOTE ── */
+  .quote-block {
+    margin: 2.5rem auto;
+    max-width: 520px;
+    text-align: center;
+    padding: 1.5rem 2rem;
+    border-left: 2px solid var(--gold);
+    border-right: 2px solid var(--gold);
+    position: relative;
+  }
+  .quote-block::before,
+  .quote-block::after {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--gold);
+    opacity: 0.3;
+    position: absolute;
+    line-height: 1;
+  }
+  .quote-block::before { top: 0; left: 1rem; }
+  .quote-block::after { bottom: -0.5rem; right: 1rem; content: '"'; }
+
+  .quote-text {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ── COUNTER ── */
+  .counter-block {
+    text-align: center;
+    margin: 1.5rem auto 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .counter-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .counter-display img {
+    border-radius: 6px;
+    height: 28px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem 1.5rem 3rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    opacity: 0.6;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  header          { animation: fadeUp 0.7s ease both; }
+  .section-block  { animation: fadeUp 0.7s ease both; }
+  .section-block:nth-child(1) { animation-delay: 0.1s; }
+  .section-block:nth-child(2) { animation-delay: 0.2s; }
+  .quote-block    { animation: fadeUp 0.7s 0.3s ease both; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 500px) {
+    .contact-bar { flex-direction: column; gap: 0.5rem; align-items: center; }
+    .level-btn .lvl-name { font-size: 1.3rem; }
+  }
+</style>
 </head>
+<body>
 
-<body bgcolor="black" text="black" link="blue" vlink="purple" alink="red">
-<h1 align="center">&nbsp;</h1>
-<h1 align="center"><img src="PgAcc/WaKoulRabiZidniIlmaa.png" width="350" height="278" border="0"></h1>
-<p align="center"><img src="PgAcc/vecteezy_gold-frame.png" width="350" height="116" border="0"></p>
-<p align="center"><b><font size="6" color="yellow">تشيكو رضوان</font></b><font size="4"></font></p>
-<p align="center"><b><font size="5" color="white">أستاذ العلوم الفيزيائية</font></b><font size="4"></font></p>
-<p align="center"><img src="PgAcc/vecteezy_gold-frame.png" width="350" height="116" border="0"></p>
-<p align="center"><i><b><font size="5" color="yellow">TCHIKOU Redhouane</font></b></i><font size="4"></font></p>
-<p align="center"><i><b><font size="4" color="white">Professeur &nbsp;de Physique-Chimie</font></b></i></p>
-<p align="center"><i><a href="mailto:redo009@gmail.com"><font size="3" color="yellow">redo009@gmail.com</font></a></i><font size="4"></font></p>
-<p align="center"><b><i><a href="https://redo2000.github.io/"><font size="4" color="#00B0F0">https://redo2000.github.io/</font></a></i></b></p>
-<p align="center"><font size="4" color="white">+213.</font><font size="4" color="#00B0F0">0</font><font size="4" color="white">7.79.07.72.24</font></p>
-<p align="center"><img src="PgAcc/vecteezy_gold-frame.png" width="350" height="116" border="0"></p>
-<p align="center"><img src="PgAcc/AR2.jpg" width="200" height="128" border="0"></p>
-<p align="center"><b><font size="7" color="lime">المتوسط</font></b></p>
-<table border="1" width="750" align="center">
-    <tr>
-        <td width="248">
-            <p align="center"><b><a href="1AM.htm"><font size="7" color="yellow">1</font><font size="7" color="white">AM</font></a></b></p>
-        </td>
-        <td width="248">
-            <p align="center"><b><a href="2AM.htm"><font size="7" color="yellow">2</font><font size="7" color="white">AM</font></a></b></p>
-        </td>
-        <td width="248">
-            <p align="center"><b><a href="3AM.htm"><font size="7" color="yellow">3</font><font size="7" color="white">AM</font></a></b></p>
-        </td>
-        <td width="248">
-            <p align="center"><b><a href="4AM.htm"><font size="7" color="yellow">4</font><font size="7" color="white">AM</font></a></b></p>
-        </td>
-    </tr>
-</table>
-<p align="center"><font size="7" color="white">*</font></p>
-<p align="center"><b><font size="7" color="aqua">الثانوي</font></b></p>
-<table border="1" width="750" align="center">
-    <tr>
-        <td width="333">
-            <p align="center"><b><a href="1AS.htm"><font size="7" color="yellow">1</font><font size="7" color="white">AS</font></a></b></p>
-        </td>
-        <td width="333">
-            <p align="center"><b><a href="2AS.htm"><font size="7" color="yellow">2</font><font size="7" color="white">AS</font></a></b></p>
-        </td>
-        <td width="333">
-            <p align="center"><b><a href="3AS.htm"><font size="7" color="yellow">3</font><font size="7" color="white">AS</font></a></b></p>
-        </td>
-    </tr>
-</table>
-<p align="center">&nbsp;</p>
-<table width="500" align="center" cellspacing="0" style="border-collapse:collapse;">
-    <tr>
-        <td width="240" bordercolorlight="black" bordercolordark="black" style="border-width:1; border-color:black; border-style:solid;">
-            <p align="center"><a href="https://www.tiktok.com/@prof.tchikou.phys?_t=8pX0PB51svt&_r=1"><img src="TikTok.png" width="100" height="100" border="0"></a></p>
-        </td>
-        <td width="240" bordercolorlight="black" bordercolordark="black" style="border-width:1; border-color:black; border-style:solid;">
-            <p align="center"><a href="https://www.youtube.com/@%D8%A7%D9%84%D8%A3%D8%B3%D8%AA%D8%A7%D8%B0_%D8%AA%D8%B4%D9%8A%D9%83%D9%88_%D9%81%D9%8A%D8%B2%D9%8A%D8%A7%D8%A1/playlists"><img src="Youtube.png" width="200" height="83" border="0"></a></p>
-        </td>
-    </tr>
-</table>
-<p align="center"><img src="PgAcc/CorrigeMoi.png" width="718" height="71" border="0"></p>
-<p align="center">&nbsp;</p>
-<p align="center"><img src="Deco/deco04_.png" width="274" height="58" border="0"></p>
-<p align="center"><img src="PgAcc/FrFr.jpg" width="200" height="200" border="0"></p>
-<p align="center"><b><font size="7" color="lime">Coll&egrave;ge</font></b></p>
-<table border="1" width="750" align="center">
-    <tr>
-        <td width="248">
-            <p align="center"><b><a href="6e.htm"><font size="7" color="yellow">6</font><font size="7" color="white">e</font></a></b></p>
-        </td>
-        <td width="248">
-            <p align="center"><b><a href="5e.htm"><font size="7" color="yellow">5</font><font size="7" color="white">e</font></a></b></p>
-        </td>
-        <td width="248">
-            <p align="center"><b><a href="4e.htm"><font size="7" color="yellow">4</font><font size="7" color="white">e</font></a></b></p>
-        </td>
-        <td width="248">
-            <p align="center"><b><a href="3e.htm"><font size="7" color="yellow">3</font><font size="7" color="white">e</font></a></b></p>
-        </td>
-    </tr>
-</table>
-<p align="center"><font size="7" color="white">*</font></p>
-<p align="center"><b><font size="7" color="aqua">Lyc&eacute;e</font></b></p>
-<p align="center"><i><b><font size="5" color="yellow">P</font></b><font size="5" color="white"><b>hysique - </b></font><b><font size="5" color="yellow">C</font></b><font size="5" color="white"><b>himie</b></font></i></p>
-<table border="1" width="750" align="center">
-    <tr>
-        <td width="333">
-            <p align="center"><b><a href="2nde.htm"><font size="7" face="Arial" color="yellow">2</font><font size="7" face="Arial" color="white">de</font></a></b></p>
-        </td>
-        <td width="333">
-            <p align="center"><a href="Premiere.htm"><b><font size="7" face="Arial" color="yellow">1</font><font size="7" face="Arial" color="white">re</font></b></a></p>
-        </td>
-        <td width="333">
-            <p align="center"><a href="Terminale.htm"><b><font size="7" face="Arial" color="yellow">T</font><font size="7" face="Arial" color="white">le</font></b></a></p>
-        </td>
-    </tr>
-</table>
-<p>&nbsp;</p>
-<p align="center"><i><font size="5" color="white">et</font></i></p>
-<p align="center"><b><i><font size="5" color="lime">E</font></i></b><font size="5" color="white"><b><i>nseignement </i></b></font><b><i><font size="5" color="lime">S</font></i></b><font size="5" color="white"><b><i>cientifique</i></b></font></p>
-<table border="1" width="490" align="center">
-    <tr>
-        <td width="503">
-            <p align="center"><a href="PremiereES.htm"><b><font size="7" face="Arial" color="lime">1</font><font size="7" face="Arial" color="white">re</font></b></a></p>
-        </td>
-        <td width="503">
-            <p align="center"><a href="TerminaleES.htm"><b><font size="7" face="Arial" color="lime">T</font><font size="7" face="Arial" color="white">le</font></b></a></p>
-        </td>
-    </tr>
-</table>
-<p>&nbsp;</p>
-<p align="center"></p>
-<table width="500" align="center" cellspacing="0" style="border-collapse:collapse;">
-    <tr>
-        <td width="240" bordercolorlight="black" bordercolordark="black" style="border-width:1; border-color:black; border-style:solid;">
-            <p align="center"><a href="https://www.tiktok.com/@redo2000?_t=8oNTsvc8h5Z&_r=1"><img src="TikTok.png" width="100" height="100" border="0"></a></p>
-        </td>
-        <td width="240" bordercolorlight="black" bordercolordark="black" style="border-width:1; border-color:black; border-style:solid;">
-            <p align="center"><a href="http://www.youtube.com/@redo_2000"><img src="Youtube.png" width="200" height="83" border="0"></a></p>
-        </td>
-    </tr>
-</table>
-<p align="center"><font size="5" color="red">&quot;</font><font size="5" color="white"> </font><font size="5" color="yellow"><i>Si vous voyez une erreur, corrigez-la...</i></font></p>
-<p align="center"><font size="5" color="yellow"><i> car rares sont ceux qui ne se trompent pas.</i></font><font size="5" color="white"> </font><font size="5" color="red">&quot;</font></p>
-<p align="center">&nbsp;<b><font size="6"></font></b><font color="white"></font></p>
-<p class=MsoNormal align=center style='text-align:center'><img src="Deco/deco06_.png" width="274" height="58" border="0"></p>
-<p align="center"></p>
-<p align="center"><i><font size="2" color="white">TR Production April 2020 -</font></i></p>
-<p align="center"><i><font size="2" color="white">Updated &nbsp;</font><font size="2" color="#66FF33">0<b>4</b> - 202<b>6</b></font></i></p>
-<p align="center">&nbsp;</p>
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-line"><span class="gold-dot"></span></div>
+    <div class="name-ar">تشيكو رضوان</div>
+    <div class="name-fr">TCHIKOU Redhouane</div>
+    <div class="subtitle">Professeur de Physique-Chimie &nbsp;|&nbsp; أستاذ العلوم الفيزيائية</div>
+    <div class="contact-bar">
+      <span>📧 <a href="mailto:redo009@gmail.com">redo009@gmail.com</a></span>
+      <span>📞 +213 07 79 07 72 24</span>
+      <span>🌐 <a href="https://redo2000.github.io/">redo2000.github.io</a></span>
+    </div>
+  </header>
+
+  <!-- SECTION ARABE (programme algérien) -->
+  <div class="section-block">
+    <div class="section-header" style="flex-direction: row; flex-wrap: wrap; gap: 0.6rem; align-items: center;">
+      <div class="section-social">
+        <a class="social-btn youtube" href="https://www.youtube.com/@%D8%A7%D9%84%D8%A3%D8%B3%D8%AA%D8%A7%D8%B0_%D8%AA%D8%B4%D9%8A%D9%83%D9%88_%D9%81%D9%8A%D8%B2%D9%8A%D8%A7%D8%A1/playlists" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/></svg>
+          YouTube
+        </a>
+        <a class="social-btn tiktok" href="https://www.tiktok.com/@prof.tchikou.phys?_t=8pX0PB51svt&_r=1" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 3a5.4 5.4 0 0 1-5.3-5H10.5v13.7a2.6 2.6 0 1 1-2.6-2.5 2.7 2.7 0 0 1 .8.1V5.5a6.5 6.5 0 0 0-.8-.05A6.4 6.4 0 0 0 1.5 11.9a6.4 6.4 0 0 0 6.4 6.4 6.4 6.4 0 0 0 6.4-6.4V8.2A9.2 9.2 0 0 0 19.6 9V5.2A5.4 5.4 0 0 1 19.6 3z"/></svg>
+          TikTok
+        </a>
+      </div>
+      <span style="flex:1"></span>
+      <span class="section-title-ar" style="flex:unset; margin-right: 1rem;">
+        الموارد البيداغوجية &nbsp;
+        <svg class="flag" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg">
+          <rect width="15" height="20" fill="#006233"/>
+          <rect x="15" width="15" height="20" fill="#fff"/>
+          <circle cx="16" cy="10" r="4.5" fill="#d21034"/>
+          <circle cx="17.2" cy="10" r="3.5" fill="#fff"/>
+          <polygon points="17.5,6.2 18.2,8.5 20.5,8.5 18.6,9.9 19.3,12.2 17.5,10.8 15.6,12.2 16.3,9.9 14.5,8.5 16.8,8.5" fill="#d21034"/>
+        </svg>
+      </span>
+      <span class="lang-badge">عربي</span>
+    </div>
+
+    <div class="level-group" style="direction: rtl; text-align: right;">
+      <div class="level-label-ar">المتوسط</div>
+      <div class="level-grid">
+        <a class="level-btn level-btn-ar" href="https://redo2000.github.io/1AM.htm"><span class="lvl-name">1AM</span><span class="lvl-sub">Première</span></a>
+        <a class="level-btn level-btn-ar" href="https://redo2000.github.io/2AM.htm"><span class="lvl-name">2AM</span><span class="lvl-sub">Deuxième</span></a>
+        <a class="level-btn level-btn-ar" href="https://redo2000.github.io/3AM.htm"><span class="lvl-name">3AM</span><span class="lvl-sub">Troisième</span></a>
+        <a class="level-btn level-btn-ar" href="https://redo2000.github.io/4AM.htm"><span class="lvl-name">4AM</span><span class="lvl-sub">Quatrième</span></a>
+      </div>
+    </div>
+
+    <div class="level-group" style="direction: rtl; text-align: right;">
+      <div class="level-label-ar">الثانوي</div>
+      <div class="level-grid">
+        <a class="level-btn level-btn-ar" href="https://redo2000.github.io/1AS.htm"><span class="lvl-name">1AS</span><span class="lvl-sub">Première</span></a>
+        <a class="level-btn level-btn-ar" href="https://redo2000.github.io/2AS.htm"><span class="lvl-name">2AS</span><span class="lvl-sub">Deuxième</span></a>
+        <a class="level-btn level-btn-ar" href="https://redo2000.github.io/3AS.htm" style="grid-column: 1 / -1;"><span class="lvl-name">3AS</span><span class="lvl-sub">Troisième</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION FRANÇAISE -->
+  <div class="section-block">
+    <div class="section-header" style="flex-wrap: wrap; gap: 0.6rem;">
+      <span class="lang-badge">Français</span>
+      <span class="section-title-fr">
+        <svg class="flag" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg">
+          <rect width="10" height="20" fill="#002395"/>
+          <rect x="10" width="10" height="20" fill="#fff"/>
+          <rect x="20" width="10" height="20" fill="#ED2939"/>
+        </svg>
+        Ressources pédagogiques
+      </span>
+      <div class="section-social">
+        <a class="social-btn youtube" href="http://www.youtube.com/@redo_2000" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/></svg>
+          YouTube
+        </a>
+        <a class="social-btn tiktok" href="https://www.tiktok.com/@redo2000?_t=8oNTsvc8h5Z&_r=1" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 3a5.4 5.4 0 0 1-5.3-5H10.5v13.7a2.6 2.6 0 1 1-2.6-2.5 2.7 2.7 0 0 1 .8.1V5.5a6.5 6.5 0 0 0-.8-.05A6.4 6.4 0 0 0 1.5 11.9a6.4 6.4 0 0 0 6.4 6.4 6.4 6.4 0 0 0 6.4-6.4V8.2A9.2 9.2 0 0 0 19.6 9V5.2A5.4 5.4 0 0 1 19.6 3z"/></svg>
+          TikTok
+        </a>
+      </div>
+    </div>
+
+    <div class="level-group">
+      <div class="level-label">Collège</div>
+      <div class="level-grid">
+        <a class="level-btn" href="https://redo2000.github.io/6e.htm"><span class="lvl-name">6e</span><span class="lvl-sub">Sixième</span></a>
+        <a class="level-btn" href="https://redo2000.github.io/5e.htm"><span class="lvl-name">5e</span><span class="lvl-sub">Cinquième</span></a>
+        <a class="level-btn" href="https://redo2000.github.io/4e.htm"><span class="lvl-name">4e</span><span class="lvl-sub">Quatrième</span></a>
+        <a class="level-btn" href="https://redo2000.github.io/3e.htm"><span class="lvl-name">3e</span><span class="lvl-sub">Troisième</span></a>
+      </div>
+    </div>
+
+    <div class="level-group">
+      <div class="level-label">Lycée — Physique-Chimie</div>
+      <div class="level-grid">
+        <a class="level-btn" href="https://redo2000.github.io/2nde.htm"><span class="lvl-name">2de</span><span class="lvl-sub">Seconde</span></a>
+        <a class="level-btn" href="https://redo2000.github.io/Premiere.htm"><span class="lvl-name">1re</span><span class="lvl-sub">Première</span></a>
+        <a class="level-btn" href="https://redo2000.github.io/Terminale.htm" style="grid-column: 1 / -1;"><span class="lvl-name">Tle</span><span class="lvl-sub">Terminale</span></a>
+      </div>
+    </div>
+
+    <div class="level-group">
+      <div class="level-label">Lycée — Enseignement Scientifique</div>
+      <div class="level-grid">
+        <a class="level-btn" href="https://redo2000.github.io/PremiereES.htm"><span class="lvl-name">1re ES</span><span class="lvl-sub">Première ES</span></a>
+        <a class="level-btn" href="https://redo2000.github.io/TerminaleES.htm"><span class="lvl-name">Tle ES</span><span class="lvl-sub">Terminale ES</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="quote-block">
+    <p class="quote-text">
+      Si vous voyez une erreur, corrigez-la…<br>
+      car rares sont ceux qui ne se trompent pas.
+    </p>
+  </div>
+
+  <!-- VISITOR COUNTER -->
+  <div class="counter-block">
+    <div class="counter-label">Visiteurs depuis le 1er Mai 2026</div>
+    <div class="counter-display">
+      <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fredo2000.github.io&count_bg=%23C9963A&title_bg=%231A1A1A&icon=eye.svg&icon_color=%23E8C47A&title=vues&edge_flat=false" alt="compteur de visites"/>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    TR Production · Mis à jour Avril 2026
+  </footer>
+
+</div>
 </body>
-
 </html>
