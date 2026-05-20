@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Gamme Tempérée — Enseignement Scientifique 1re</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0c0a;
+    --surface: #161310;
+    --gold: #c9a84c;
+    --gold-light: #e8c97e;
+    --gold-dim: #7a6430;
+    --cream: #f0e8d8;
+    --warm-white: #faf6ef;
+    --text: #d4c9b5;
+    --muted: #7a7060;
+    --accent: #8b3a2a;
+    --do: #e85d4a;
+    --re: #e88a3a;
+    --mi: #d4b840;
+    --fa: #5ab04e;
+    --sol: #3a8fd4;
+    --la: #7a5ac9;
+    --si: #b84ea0;
+    --border: rgba(201,168,76,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* --- NOISE TEXTURE OVERLAY --- */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  /* --- HEADER --- */
+  header {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.08) 0%, transparent 65%),
+                radial-gradient(ellipse at 80% 80%, rgba(139,58,42,0.1) 0%, transparent 50%);
+  }
+
+  /* Piano keys decoration */
+  .piano-deco {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 2px;
+    opacity: 0.15;
+  }
+
+  .wkey {
+    width: 28px;
+    height: 120px;
+    background: linear-gradient(to bottom, #e8dcc8, #c8bca8);
+    border-radius: 0 0 4px 4px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .bkey {
+    width: 18px;
+    height: 75px;
+    background: #1a1510;
+    margin-left: -10px;
+    margin-right: -10px;
+    position: relative;
+    z-index: 1;
+    border-radius: 0 0 3px 3px;
+  }
+
+  .header-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 700;
+    color: var(--warm-white);
+    text-align: center;
+    line-height: 1.1;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+
+  header h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .header-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin-top: 1.5rem;
+    font-weight: 300;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+
+  .header-line {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 2.5rem auto;
+    animation: expandX 0.8s ease 0.3s both;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--gold-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    animation: fadeUp 0.8s ease 0.5s both;
+  }
+
+  .scroll-arrow {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold-dim), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  /* --- NAV --- */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(14,12,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    height: 56px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  nav a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+
+  nav a:hover { color: var(--gold-light); }
+
+  /* --- SECTIONS --- */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: var(--warm-white);
+    line-height: 1.2;
+    margin-bottom: 2rem;
+  }
+
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gold-light);
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+  }
+
+  p { margin-bottom: 1.2rem; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* --- CONCEPT BOX --- */
+  .concept-box {
+    background: linear-gradient(135deg, rgba(201,168,76,0.07), rgba(201,168,76,0.02));
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    padding: 1.8rem 2rem;
+    margin: 2.5rem 0;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .concept-box .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+
+  /* --- OCTAVE VISUAL --- */
+  .octave-visual {
+    margin: 3rem 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem;
+    overflow-x: auto;
+  }
+
+  .octave-visual h3 {
+    margin-top: 0;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  /* Piano keyboard */
+  .keyboard-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .keyboard {
+    position: relative;
+    display: flex;
+    gap: 3px;
+  }
+
+  .key-white {
+    position: relative;
+    width: 48px;
+    height: 160px;
+    border-radius: 0 0 8px 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 12px;
+    cursor: pointer;
+    transition: filter 0.15s;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .key-white:hover { filter: brightness(1.15); }
+
+  .key-white .note-name {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .key-white .freq {
+    font-size: 9px;
+    opacity: 0.7;
+    letter-spacing: 0.05em;
+  }
+
+  .key-white.do  { background: linear-gradient(to bottom, #e85d4a22, #e85d4a44); color: #e85d4a; border-color: #e85d4a44; }
+  .key-white.re  { background: linear-gradient(to bottom, #e88a3a22, #e88a3a44); color: #e88a3a; border-color: #e88a3a44; }
+  .key-white.mi  { background: linear-gradient(to bottom, #d4b84022, #d4b84044); color: #d4b840; border-color: #d4b84044; }
+  .key-white.fa  { background: linear-gradient(to bottom, #5ab04e22, #5ab04e44); color: #5ab04e; border-color: #5ab04e44; }
+  .key-white.sol { background: linear-gradient(to bottom, #3a8fd422, #3a8fd444); color: #3a8fd4; border-color: #3a8fd444; }
+  .key-white.la  { background: linear-gradient(to bottom, #7a5ac922, #7a5ac944); color: #7a5ac9; border-color: #7a5ac944; }
+  .key-white.si  { background: linear-gradient(to bottom, #b84ea022, #b84ea044); color: #b84ea0; border-color: #b84ea044; }
+  .key-white.do2 { background: linear-gradient(to bottom, #e85d4a33, #e85d4a55); color: #e85d4a; border-color: #e85d4a44; }
+
+  /* --- RATIO TABLE --- */
+  .ratio-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 0.95rem;
+  }
+
+  .ratio-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    border-bottom: 1px solid var(--border);
+    padding: 0.8rem 1rem;
+    text-align: left;
+  }
+
+  .ratio-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    vertical-align: middle;
+  }
+
+  .ratio-table tr:hover td { background: rgba(201,168,76,0.04); }
+
+  .note-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+  }
+
+  .note-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .freq-bar-wrap {
+    width: 180px;
+    height: 6px;
+    background: rgba(201,168,76,0.12);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .freq-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s ease;
+  }
+
+  /* --- FORMULA BOX --- */
+  .formula {
+    background: #0a0806;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  .formula .eq {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: var(--gold-light);
+    letter-spacing: 0.05em;
+  }
+
+  .formula .eq sup { font-size: 0.65em; vertical-align: super; }
+  .formula .eq sub { font-size: 0.65em; vertical-align: sub; }
+
+  .formula .caption {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  /* --- INTERVAL GRID --- */
+  .interval-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .interval-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.4rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .interval-card:hover {
+    border-color: var(--gold-dim);
+    transform: translateY(-2px);
+  }
+
+  .interval-card .int-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 0.5rem;
+  }
+
+  .interval-card .int-notes {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--warm-white);
+    margin-bottom: 0.4rem;
+  }
+
+  .interval-card .int-semitones {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  /* --- TIMELINE / HISTOIRE --- */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 2.5rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 2.5rem;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -2.38rem;
+    top: 0.5rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--bg);
+  }
+
+  .tl-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+
+  .tl-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--warm-white);
+    margin-bottom: 0.5rem;
+  }
+
+  /* --- QUIZ --- */
+  .quiz-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem;
+    margin: 3rem 0;
+  }
+
+  .quiz-q {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--warm-white);
+    margin-bottom: 1.5rem;
+  }
+
+  .quiz-choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .quiz-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.9rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Crimson Pro', serif;
+    font-size: 1rem;
+    text-align: left;
+    transition: all 0.2s;
+  }
+
+  .quiz-btn:hover { border-color: var(--gold-dim); color: var(--warm-white); }
+  .quiz-btn.correct { border-color: #5ab04e; background: rgba(90,176,78,0.12); color: #5ab04e; }
+  .quiz-btn.wrong { border-color: var(--accent); background: rgba(139,58,42,0.12); color: #e85d4a; }
+
+  .quiz-feedback {
+    min-height: 2rem;
+    font-size: 0.95rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .quiz-nav {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.7rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .btn-gold {
+    background: var(--gold);
+    color: #0e0c0a;
+  }
+
+  .btn-gold:hover { background: var(--gold-light); }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .btn-outline:hover { border-color: var(--gold-dim); color: var(--text); }
+
+  /* --- EXERCICE --- */
+  .exercice {
+    background: linear-gradient(135deg, rgba(139,58,42,0.06), rgba(139,58,42,0.02));
+    border: 1px solid rgba(139,58,42,0.3);
+    border-left: 3px solid var(--accent);
+    padding: 1.8rem 2rem;
+    margin: 2.5rem 0;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .exercice .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #e85d4a;
+    margin-bottom: 0.8rem;
+  }
+
+  /* --- FOOTER --- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+
+  /* --- ANIMATIONS --- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes expandX {
+    from { width: 0; opacity: 0; }
+    to   { width: 60px; opacity: 1; }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 640px) {
+    .quiz-choices { grid-template-columns: 1fr; }
+    .key-white { width: 36px; height: 120px; font-size: 11px; }
+    .freq-bar-wrap { width: 100px; }
+    .interval-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-bg"></div>
+  <div class="header-eyebrow">Enseignement Scientifique · Première · Musique & Mathématiques</div>
+  <h1>La <em>Gamme</em><br>Tempérée</h1>
+  <p class="header-sub">Physique, mathématiques et musique en harmonie</p>
+  <div class="header-line"></div>
+  <div class="scroll-hint">
+    <span>DÉFILER</span>
+    <div class="scroll-arrow"></div>
+  </div>
+  <div class="piano-deco">
+    <div class="wkey"></div><div class="bkey"></div>
+    <div class="wkey"></div><div class="bkey"></div>
+    <div class="wkey"></div>
+    <div class="wkey"></div><div class="bkey"></div>
+    <div class="wkey"></div><div class="bkey"></div>
+    <div class="wkey"></div><div class="bkey"></div>
+    <div class="wkey"></div>
+    <div class="wkey"></div><div class="bkey"></div>
+    <div class="wkey"></div><div class="bkey"></div>
+    <div class="wkey"></div>
+    <div class="wkey"></div><div class="bkey"></div>
+    <div class="wkey"></div><div class="bkey"></div>
+    <div class="wkey"></div><div class="bkey"></div>
+    <div class="wkey"></div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#intro">Introduction</a>
+    <a href="#octave">L'octave</a>
+    <a href="#formule">Formule</a>
+    <a href="#notes">Les notes</a>
+    <a href="#intervalles">Intervalles</a>
+    <a href="#histoire">Histoire</a>
+    <a href="#exercices">Exercices</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<!-- INTRO -->
+<section id="intro" class="fade-in">
+  <div class="section-label">01 — Introduction</div>
+  <h2>Qu'est-ce que la gamme tempérée ?</h2>
+  <p>
+    La <strong style="color:var(--gold-light)">gamme tempérée</strong> est un système d'accord musical qui divise l'octave en <strong>12 demi-tons égaux</strong>. C'est le système utilisé dans la quasi-totalité de la musique occidentale moderne — pianos, guitares, orchestres, musique électronique.
+  </p>
+  <p>
+    Avant ce système, les musiciens utilisaient des accords dits <em>naturels</em> (ou pythagoriciens), fondés sur des rapports de fréquences entiers. Ces systèmes, bien que très purs pour certains intervalles, rendaient impossible de jouer dans toutes les tonalités sur un même instrument.
+  </p>
+
+  <div class="concept-box">
+    <div class="label">🎯 Notion clé</div>
+    <p style="margin:0">
+      La gamme tempérée est un <strong style="color:var(--cream)">compromis mathématique</strong> : elle sacrifie la pureté acoustique parfaite de chaque intervalle au profit d'une égalité qui permet de jouer dans n'importe quelle tonalité avec le même instrument accordé.
+    </p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- OCTAVE -->
+<section id="octave" class="fade-in">
+  <div class="section-label">02 — L'octave</div>
+  <h2>Le doublement de fréquence</h2>
+  <p>
+    Deux notes séparées d'une <strong style="color:var(--gold-light)">octave</strong> ont des fréquences dans un rapport de <strong>2 : 1</strong>. C'est un phénomène physique fondamental : quand une corde vibre deux fois plus vite, on perçoit la même note "plus haute".
+  </p>
+
+  <div class="formula">
+    <div class="eq">f<sub>octave</sub> = 2 × f<sub>0</sub></div>
+    <div class="caption">Le La₄ est à 440 Hz → le La₅ est à 880 Hz → le La₃ est à 220 Hz</div>
+  </div>
+
+  <div class="octave-visual">
+    <h3>Clavier d'un octave — Do₄ à Do₅</h3>
+    <div class="keyboard-wrap">
+      <div class="keyboard">
+        <div class="key-white do"><span class="note-name">Do</span><span class="freq">261 Hz</span></div>
+        <div class="key-white re"><span class="note-name">Ré</span><span class="freq">293 Hz</span></div>
+        <div class="key-white mi"><span class="note-name">Mi</span><span class="freq">330 Hz</span></div>
+        <div class="key-white fa"><span class="note-name">Fa</span><span class="freq">349 Hz</span></div>
+        <div class="key-white sol"><span class="note-name">Sol</span><span class="freq">392 Hz</span></div>
+        <div class="key-white la"><span class="note-name">La</span><span class="freq">440 Hz</span></div>
+        <div class="key-white si"><span class="note-name">Si</span><span class="freq">494 Hz</span></div>
+        <div class="key-white do2"><span class="note-name">Do</span><span class="freq">523 Hz</span></div>
+      </div>
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:0.85rem;font-family:'DM Mono',monospace;letter-spacing:0.1em">
+      Fréquences arrondies — La₄ = 440 Hz (diapason international)
+    </p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- FORMULE -->
+<section id="formule" class="fade-in">
+  <div class="section-label">03 — La formule mathématique</div>
+  <h2>La raison de la progression géométrique</h2>
+  <p>
+    La gamme tempérée divise l'octave en <strong>12 demi-tons égaux</strong>. Le passage d'un demi-ton au suivant correspond à une multiplication par un facteur constant <strong style="color:var(--gold-light)">r</strong>.
+  </p>
+  <p>
+    Puisque 12 demi-tons constituent une octave, et qu'une octave double la fréquence, on a :
+  </p>
+
+  <div class="formula">
+    <div class="eq">r<sup>12</sup> = 2</div>
+    <div class="caption">12 multiplications par r redoublent la fréquence</div>
+  </div>
+
+  <div class="formula">
+    <div class="eq">r = 2<sup>1/12</sup> ≈ 1,05946…</div>
+    <div class="caption">La raison de la gamme tempérée — racine douzième de 2</div>
+  </div>
+
+  <div class="concept-box">
+    <div class="label">📐 Suite géométrique</div>
+    <p style="margin:0 0 0.5rem">
+      Les fréquences des 13 notes (Do à Do) forment une <strong style="color:var(--cream)">suite géométrique</strong> de raison <em>r = 2<sup>1/12</sup></em> :
+    </p>
+    <p style="margin:0;font-family:'DM Mono',monospace;color:var(--gold-light);font-size:0.9rem">
+      f<sub>n</sub> = f<sub>0</sub> × 2<sup>n/12</sup>
+    </p>
+    <p style="margin:0.5rem 0 0;font-size:0.9rem;color:var(--muted)">
+      où <em>n</em> est le numéro du demi-ton (0 à 12), et <em>f<sub>0</sub></em> la fréquence de la note de référence.
+    </p>
+  </div>
+
+  <h3>Application numérique</h3>
+  <p>En partant du <strong>La₄ = 440 Hz</strong> (référence internationale adoptée en 1939) :</p>
+
+  <table class="ratio-table">
+    <thead>
+      <tr>
+        <th>Note</th>
+        <th>Rang (n)</th>
+        <th>Calcul</th>
+        <th>Fréquence (Hz)</th>
+        <th>Visualisation</th>
+      </tr>
+    </thead>
+    <tbody id="freq-table"></tbody>
+  </table>
+</section>
+
+<hr class="divider">
+
+<!-- NOTES -->
+<section id="notes" class="fade-in">
+  <div class="section-label">04 — La gamme en détail</div>
+  <h2>Tons et demi-tons</h2>
+  <p>
+    La gamme de Do comprend 7 notes naturelles (Do Ré Mi Fa Sol La Si) séparées par des <strong style="color:var(--gold-light)">tons</strong> (2 demi-tons) et des <strong style="color:var(--gold-light)">demi-tons</strong> (1 demi-ton). Cette répartition irrégulière est ce qui donne à chaque gamme son caractère.
+  </p>
+
+  <div class="octave-visual">
+    <h3>Structure de la gamme de Do majeur</h3>
+    <div style="display:flex;justify-content:center;align-items:center;gap:0;flex-wrap:wrap;padding:1rem 0" id="gamme-schema"></div>
+    <div style="display:flex;justify-content:center;gap:2rem;margin-top:1.5rem;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted)">
+      <span>■ <span style="color:var(--gold-light)">TON</span> = 2 demi-tons</span>
+      <span>■ <span style="color:var(--accent)">½ TON</span> = 1 demi-ton</span>
+    </div>
+  </div>
+
+  <div class="concept-box">
+    <div class="label">🎵 À retenir</div>
+    <p style="margin:0">
+      Dans la gamme majeure, les demi-tons naturels se trouvent entre <strong style="color:var(--cream)">Mi–Fa</strong> et <strong style="color:var(--cream)">Si–Do</strong>. Tous les autres intervalles consécutifs sont des tons entiers.
+    </p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- INTERVALLES -->
+<section id="intervalles" class="fade-in">
+  <div class="section-label">05 — Les intervalles</div>
+  <h2>Consonances et dissonances</h2>
+  <p>
+    Un <strong style="color:var(--gold-light)">intervalle</strong> est la distance entre deux notes, mesurée en demi-tons. Plus le rapport de fréquences se rapproche d'un rapport de petits entiers, plus l'intervalle est perçu comme <em>consonant</em> (agréable, stable).
+  </p>
+
+  <div class="interval-grid" id="intervals-grid"></div>
+
+  <div class="concept-box">
+    <div class="label">🔬 Lien avec la physique</div>
+    <p style="margin:0">
+      La consonance est liée aux <strong style="color:var(--cream)">harmoniques</strong> des sons. Quand deux notes jouées ensemble ont des harmoniques qui coïncident, leur superposition produit moins de <em>battements</em> — phénomènes de variation d'amplitude perçus comme des fluctuations sonores désagréables.
+    </p>
+  </div>
+
+  <h3>Les battements</h3>
+  <p>
+    Quand deux sons de fréquences proches f₁ et f₂ sont superposés, on entend un son qui semble "palpiter" à la fréquence <strong style="color:var(--gold-light)">|f₁ − f₂|</strong>. Les accordeurs utilisent ce phénomène pour accorder les instruments.
+  </p>
+</section>
+
+<hr class="divider">
+
+<!-- HISTOIRE -->
+<section id="histoire" class="fade-in">
+  <div class="section-label">06 — Histoire</div>
+  <h2>De Pythagore au clavier moderne</h2>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">~500 av. J.-C.</div>
+      <div class="tl-title">Pythagore et les rapports entiers</div>
+      <p>Les grecs définissent les intervalles musicaux par des rapports de fréquences simples : l'octave (2:1), la quinte (3:2), la quarte (4:3). Ce système, pur pour ces intervalles, est difficile à étendre à toutes les tonalités.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">XVIe siècle</div>
+      <div class="tl-title">Les premiers tempéraments</div>
+      <p>Les facteurs d'orgues et de clavecins expérimentent différents <em>tempéraments</em> (répartitions des imperfections) pour permettre de jouer dans plusieurs tonalités sur un même instrument.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">1722</div>
+      <div class="tl-title">Bach et le Clavier bien tempéré</div>
+      <p>J.-S. Bach compose son <em>Clavier bien tempéré</em>, 48 préludes et fugues dans toutes les tonalités, démontrant les avantages du tempérament égal. L'œuvre est une plaidoirie musicale pour ce système.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">XVIIIe–XIXe s.</div>
+      <div class="tl-title">Adoption progressive</div>
+      <p>Le tempérament égal s'impose progressivement avec l'industrialisation de la facture instrumentale, notamment pour le piano. L'harmonisation des orchestres impose une référence commune.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">1939</div>
+      <div class="tl-title">La₄ = 440 Hz — Standard international</div>
+      <p>Une conférence internationale établit le La du diapason à 440 Hz comme référence universelle, unifiant l'accord des instruments à travers le monde.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- EXERCICES -->
+<section id="exercices" class="fade-in">
+  <div class="section-label">07 — Exercices</div>
+  <h2>Applications numériques</h2>
+
+  <div class="exercice">
+    <div class="label">✏ Exercice 1 — Calcul de fréquence</div>
+    <p>Le La₄ est à 440 Hz. Calculer la fréquence du Do#₄, qui se trouve 3 demi-tons en dessous du La₄.</p>
+    <p><em>Indication :</em> utiliser f<sub>n</sub> = f<sub>0</sub> × 2<sup>n/12</sup> avec n = −3.</p>
+    <details style="margin-top:1rem">
+      <summary style="cursor:pointer;color:var(--gold);font-family:'DM Mono',monospace;font-size:0.85rem;letter-spacing:0.1em">VOIR LA CORRECTION</summary>
+      <div style="margin-top:1rem;padding:1rem;background:rgba(0,0,0,0.3);border-radius:6px">
+        <p>f = 440 × 2<sup>−3/12</sup> = 440 × 2<sup>−0,25</sup> = 440 × 0,8409 ≈ <strong style="color:var(--gold-light)">370 Hz</strong></p>
+      </div>
+    </details>
+  </div>
+
+  <div class="exercice">
+    <div class="label">✏ Exercice 2 — Rapport d'octave</div>
+    <p>Vérifier que la fréquence du La₅ vaut bien le double du La₄ en appliquant la formule avec n = 12.</p>
+    <details style="margin-top:1rem">
+      <summary style="cursor:pointer;color:var(--gold);font-family:'DM Mono',monospace;font-size:0.85rem;letter-spacing:0.1em">VOIR LA CORRECTION</summary>
+      <div style="margin-top:1rem;padding:1rem;background:rgba(0,0,0,0.3);border-radius:6px">
+        <p>f = 440 × 2<sup>12/12</sup> = 440 × 2<sup>1</sup> = 440 × 2 = <strong style="color:var(--gold-light)">880 Hz</strong> ✓</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="exercice">
+    <div class="label">✏ Exercice 3 — Suite géométrique</div>
+    <p>Les fréquences de la gamme tempérée forment-elles une suite arithmétique ou géométrique ? Justifier, et identifier la raison.</p>
+    <details style="margin-top:1rem">
+      <summary style="cursor:pointer;color:var(--gold);font-family:'DM Mono',monospace;font-size:0.85rem;letter-spacing:0.1em">VOIR LA CORRECTION</summary>
+      <div style="margin-top:1rem;padding:1rem;background:rgba(0,0,0,0.3);border-radius:6px">
+        <p>C'est une <strong style="color:var(--gold-light)">suite géométrique</strong> : on passe d'un demi-ton au suivant en multipliant toujours par le même facteur r = 2<sup>1/12</sup> ≈ 1,0595. Ce n'est pas une suite arithmétique (on n'ajoute pas la même valeur à chaque fois).</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="exercice">
+    <div class="label">✏ Exercice 4 — Battements</div>
+    <p>Un violoniste joue un La à 440 Hz. Un second instrument joue un La à 442 Hz. Quelle est la fréquence des battements entendus ? Exprimer le résultat en Hz.</p>
+    <details style="margin-top:1rem">
+      <summary style="cursor:pointer;color:var(--gold);font-family:'DM Mono',monospace;font-size:0.85rem;letter-spacing:0.1em">VOIR LA CORRECTION</summary>
+      <div style="margin-top:1rem;padding:1rem;background:rgba(0,0,0,0.3);border-radius:6px">
+        <p>f<sub>battements</sub> = |f₁ − f₂| = |440 − 442| = <strong style="color:var(--gold-light)">2 Hz</strong></p>
+        <p>On entend 2 "pulsations" sonores par seconde.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- QUIZ -->
+<section id="quiz" class="fade-in">
+  <div class="section-label">08 — Auto-évaluation</div>
+  <h2>Quiz interactif</h2>
+
+  <div class="quiz-wrap">
+    <div id="quiz-container"></div>
+    <div class="quiz-nav">
+      <button class="btn btn-gold" id="quiz-next" onclick="quizNext()">Question suivante →</button>
+      <button class="btn btn-outline" onclick="quizReset()">Recommencer</button>
+    </div>
+    <div style="margin-top:1rem;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)" id="quiz-score"></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- FOOTER -->
+<footer>
+  <p>Enseignement Scientifique — Première — Thème : Son et musique</p>
+  <p style="margin-top:0.5rem;color:#4a4438">Gamme tempérée · Physique des ondes · Mathématiques</p>
+</footer>
+
+<script>
+// ===================== DATA =====================
+const notes = [
+  { name: 'La₄',  n: 0,  color: '#7a5ac9', freq: 440.00 },
+  { name: 'La#₄', n: 1,  color: '#9a6ab9', freq: 466.16 },
+  { name: 'Si₄',  n: 2,  color: '#b84ea0', freq: 493.88 },
+  { name: 'Do₅',  n: 3,  color: '#e85d4a', freq: 523.25 },
+  { name: 'Do#₅', n: 4,  color: '#e87060', freq: 554.37 },
+  { name: 'Ré₅',  n: 5,  color: '#e88a3a', freq: 587.33 },
+  { name: 'Ré#₅', n: 6,  color: '#d4a830', freq: 622.25 },
+  { name: 'Mi₅',  n: 7,  color: '#d4b840', freq: 659.26 },
+  { name: 'Fa₅',  n: 8,  color: '#5ab04e', freq: 698.46 },
+  { name: 'Fa#₅', n: 9,  color: '#4a9a5a', freq: 739.99 },
+  { name: 'Sol₅', n: 10, color: '#3a8fd4', freq: 783.99 },
+  { name: 'Sol#₅',n: 11, color: '#3a70d4', freq: 830.61 },
+  { name: 'La₅',  n: 12, color: '#7a5ac9', freq: 880.00 },
+];
+
+const intervals = [
+  { name: 'Unisson',    notes: 'Do–Do',  semitones: 0,  ratio: '1:1',    consonance: 'Parfaite' },
+  { name: 'Seconde min.',notes: 'Do–Ré♭', semitones: 1,  ratio: '≈16:15', consonance: 'Dissonante' },
+  { name: 'Seconde maj.',notes: 'Do–Ré',  semitones: 2,  ratio: '≈9:8',   consonance: 'Dissonante' },
+  { name: 'Tierce min.', notes: 'Do–Mi♭', semitones: 3,  ratio: '≈6:5',   consonance: 'Imparfaite' },
+  { name: 'Tierce maj.', notes: 'Do–Mi',  semitones: 4,  ratio: '≈5:4',   consonance: 'Imparfaite' },
+  { name: 'Quarte',      notes: 'Do–Fa',  semitones: 5,  ratio: '≈4:3',   consonance: 'Parfaite' },
+  { name: 'Triton',      notes: 'Do–Fa#', semitones: 6,  ratio: '≈√2:1',  consonance: 'Dissonante' },
+  { name: 'Quinte',      notes: 'Do–Sol', semitones: 7,  ratio: '≈3:2',   consonance: 'Parfaite' },
+  { name: 'Sixte min.',  notes: 'Do–La♭', semitones: 8,  ratio: '≈8:5',   consonance: 'Imparfaite' },
+  { name: 'Sixte maj.',  notes: 'Do–La',  semitones: 9,  ratio: '≈5:3',   consonance: 'Imparfaite' },
+  { name: 'Septième',    notes: 'Do–Si♭', semitones: 10, ratio: '≈16:9',  consonance: 'Dissonante' },
+  { name: 'Septième maj.',notes:'Do–Si',  semitones: 11, ratio: '≈15:8',  consonance: 'Dissonante' },
+  { name: 'Octave',      notes: 'Do–Do',  semitones: 12, ratio: '2:1',    consonance: 'Parfaite' },
+];
+
+const quizData = [
+  {
+    q: "Quelle est la raison de la gamme tempérée (facteur entre deux demi-tons consécutifs) ?",
+    choices: ["2", "2^(1/12) ≈ 1,059", "√2 ≈ 1,414", "3/2 = 1,5"],
+    correct: 1,
+    feedback: "La raison est 2^(1/12) ≈ 1,0595. Après 12 multiplications, on obtient 2 — soit une octave."
+  },
+  {
+    q: "Le La₄ est à 440 Hz. Quelle est la fréquence du La₅ (une octave au-dessus) ?",
+    choices: ["452 Hz", "880 Hz", "220 Hz", "528 Hz"],
+    correct: 1,
+    feedback: "Une octave correspond à un doublement de fréquence : 440 × 2 = 880 Hz."
+  },
+  {
+    q: "Combien de demi-tons séparent deux notes à l'intervalle d'une quinte juste ?",
+    choices: ["5", "6", "7", "8"],
+    correct: 2,
+    feedback: "La quinte correspond à 7 demi-tons. Son rapport de fréquences est ≈ 3:2 (très proche en tempérament égal)."
+  },
+  {
+    q: "Quel phénomène physique permet d'accorder un instrument par comparaison avec une référence ?",
+    choices: ["L'écho", "Les battements", "La résonance", "La diffraction"],
+    correct: 1,
+    feedback: "Les battements sont des variations périodiques d'amplitude entendues quand deux sons de fréquences proches se superposent. Leur fréquence vaut |f₁ − f₂|."
+  },
+  {
+    q: "En quelle année le La₄ = 440 Hz a-t-il été adopté comme standard international ?",
+    choices: ["1722", "1850", "1939", "1970"],
+    correct: 2,
+    feedback: "C'est en 1939 qu'une conférence internationale adopta La₄ = 440 Hz comme référence universelle."
+  },
+  {
+    q: "Les fréquences de la gamme tempérée forment quel type de suite ?",
+    choices: ["Suite arithmétique", "Suite géométrique", "Suite harmonique", "Suite de Fibonacci"],
+    correct: 1,
+    feedback: "C'est une suite géométrique : chaque terme se déduit du précédent en le multipliant par r = 2^(1/12)."
+  },
+];
+
+// ===================== FREQ TABLE =====================
+const tbody = document.getElementById('freq-table');
+const maxFreq = notes[notes.length-1].freq;
+notes.forEach(note => {
+  const pct = Math.round((note.freq / maxFreq) * 100);
+  const calc = note.n === 0 ? '440 × 2⁰' : `440 × 2<sup>${note.n}/12</sup>`;
+  tbody.innerHTML += `
+    <tr>
+      <td><span class="note-chip">
+        <span class="note-dot" style="background:${note.color}"></span>
+        <strong style="color:var(--cream)">${note.name}</strong>
+      </span></td>
+      <td style="font-family:'DM Mono',monospace;color:var(--muted)">${note.n}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:0.85rem;color:var(--muted)">${calc}</td>
+      <td style="font-family:'DM Mono',monospace;color:var(--gold-light);font-weight:500">${note.freq.toFixed(2)}</td>
+      <td><div class="freq-bar-wrap"><div class="freq-bar" style="width:${pct}%;background:${note.color}"></div></div></td>
+    </tr>`;
+});
+
+// ===================== GAMME SCHEMA =====================
+const gammeNotes = ['Do','Ré','Mi','Fa','Sol','La','Si','Do'];
+const gammeColors = ['#e85d4a','#e88a3a','#d4b840','#5ab04e','#3a8fd4','#7a5ac9','#b84ea0','#e85d4a'];
+const intervals_type = ['T','T','½','T','T','T','½'];
+const schema = document.getElementById('gamme-schema');
+gammeNotes.forEach((n, i) => {
+  const noteEl = document.createElement('div');
+  noteEl.style.cssText = `display:flex;flex-direction:column;align-items:center;gap:6px`;
+  noteEl.innerHTML = `
+    <div style="width:54px;height:54px;border-radius:50%;background:${gammeColors[i]}22;border:2px solid ${gammeColors[i]};display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.1rem;color:${gammeColors[i]};font-weight:700">${n}</div>
+  `;
+  schema.appendChild(noteEl);
+  if (i < intervals_type.length) {
+    const arrEl = document.createElement('div');
+    const isHalf = intervals_type[i] === '½';
+    arrEl.style.cssText = `display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 4px;align-self:center;margin-bottom:20px`;
+    arrEl.innerHTML = `
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:${isHalf ? '#e85d4a' : 'var(--gold-light)'};letter-spacing:0.1em">${intervals_type[i]}</div>
+      <div style="font-size:1.2rem;color:${isHalf ? '#e85d4a' : 'var(--gold-dim)'}">→</div>
+    `;
+    schema.appendChild(arrEl);
+  }
+});
+
+// ===================== INTERVALS GRID =====================
+const grid = document.getElementById('intervals-grid');
+const cColors = { 'Parfaite': '#5ab04e', 'Imparfaite': '#d4b840', 'Dissonante': '#e85d4a' };
+intervals.forEach(iv => {
+  grid.innerHTML += `
+    <div class="interval-card">
+      <div class="int-name">${iv.name}</div>
+      <div class="int-notes">${iv.notes}</div>
+      <div class="int-semitones">${iv.semitones} demi-ton${iv.semitones>1?'s':''} · ${iv.ratio}</div>
+      <div style="margin-top:0.6rem;font-family:'DM Mono',monospace;font-size:10px;color:${cColors[iv.consonance]};letter-spacing:0.1em">${iv.consonance}</div>
+    </div>`;
+});
+
+// ===================== QUIZ =====================
+let qIndex = 0, answered = false, score = 0;
+
+function renderQuiz() {
+  const q = quizData[qIndex];
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = `
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;color:var(--gold-dim);margin-bottom:1rem">
+      QUESTION ${qIndex + 1} / ${quizData.length}
+    </div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-choices" id="choices">
+      ${q.choices.map((c, i) => `<button class="quiz-btn" onclick="quizAnswer(${i})">${c}</button>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="feedback"></div>
+  `;
+  answered = false;
+  document.getElementById('quiz-next').style.display = 'none';
+  document.getElementById('quiz-score').textContent = `Score : ${score} / ${qIndex}`;
+}
+
+function quizAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = quizData[qIndex];
+  const btns = document.querySelectorAll('.quiz-btn');
+  btns.forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.correct) b.classList.add('correct');
+    else if (i === idx && idx !== q.correct) b.classList.add('wrong');
+  });
+  if (idx === q.correct) score++;
+  document.getElementById('feedback').textContent = q.feedback;
+  document.getElementById('quiz-score').textContent = `Score : ${score} / ${qIndex + 1}`;
+  document.getElementById('quiz-next').style.display = qIndex < quizData.length - 1 ? '' : 'none';
+  if (qIndex === quizData.length - 1) {
+    const pct = Math.round(score / quizData.length * 100);
+    document.getElementById('quiz-score').innerHTML = `Score final : <strong style="color:var(--gold-light)">${score} / ${quizData.length}</strong> (${pct}%)`;
+  }
+}
+
+function quizNext() {
+  if (qIndex < quizData.length - 1) {
+    qIndex++;
+    renderQuiz();
+  }
+}
+
+function quizReset() {
+  qIndex = 0; score = 0;
+  renderQuiz();
+}
+
+renderQuiz();
+
+// ===================== SCROLL ANIMATIONS =====================
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
