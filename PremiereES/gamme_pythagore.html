@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Gamme de Pythagore — Enseignement Scientifique 1ère</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Code+Pro:wght@400;600&family=Libre+Baskerville:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1209;
+    --parchment: #f5edd6;
+    --gold: #c8922a;
+    --gold-light: #e8b84b;
+    --rust: #8b3a1a;
+    --deep: #2c1a05;
+    --muted: #7a6545;
+    --accent: #4a7c59;
+    --line: rgba(200,146,42,0.25);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    background-color: var(--parchment);
+    color: var(--ink);
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 27px,
+        rgba(200,146,42,0.08) 27px,
+        rgba(200,146,42,0.08) 28px
+      );
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--deep);
+    color: var(--parchment);
+    padding: 48px 40px 36px;
+    border-bottom: 4px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '𝄞';
+    position: absolute;
+    right: -20px; top: -30px;
+    font-size: 220px;
+    opacity: 0.06;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+  .tag {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    display: block;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 58px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1px;
+  }
+  h1 em {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+  header p.subtitle {
+    margin-top: 12px;
+    font-size: 15px;
+    color: rgba(245,237,214,0.65);
+    font-style: italic;
+    max-width: 560px;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    margin-top: 52px;
+    padding: 36px 40px;
+    background: rgba(255,255,255,0.55);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    box-shadow: 4px 4px 24px rgba(44,26,5,0.07);
+    animation: fadeUp 0.6s ease both;
+  }
+  section:nth-child(2) { animation-delay: 0.1s; }
+  section:nth-child(3) { animation-delay: 0.2s; }
+  section:nth-child(4) { animation-delay: 0.3s; }
+  section:nth-child(5) { animation-delay: 0.4s; }
+  section:nth-child(6) { animation-delay: 0.5s; }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(18px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--rust);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 13px;
+    background: var(--gold);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--deep);
+    margin: 22px 0 8px;
+  }
+
+  p { line-height: 1.8; font-size: 15px; color: #2e1f08; margin-bottom: 12px; }
+
+  /* ── FORMULA BOX ── */
+  .formula {
+    background: var(--deep);
+    color: var(--gold-light);
+    font-family: 'Source Code Pro', monospace;
+    font-size: 18px;
+    text-align: center;
+    padding: 18px 24px;
+    border-radius: 6px;
+    margin: 20px 0;
+    letter-spacing: 1px;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .formula span { color: #fff; }
+
+  /* ── NOTE TABLE ── */
+  .scale-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 14px;
+  }
+  .scale-table th {
+    background: var(--rust);
+    color: var(--parchment);
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'Source Code Pro', monospace;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  .scale-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  .scale-table tr:nth-child(even) td { background: rgba(200,146,42,0.06); }
+  .scale-table tr:hover td { background: rgba(200,146,42,0.12); }
+  .note-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--rust);
+  }
+  .fraction {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .freq-val {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* ── PIANO ── */
+  .piano-wrap {
+    margin: 28px 0 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .piano {
+    display: flex;
+    position: relative;
+    height: 120px;
+    width: fit-content;
+    gap: 3px;
+  }
+  .key {
+    width: 54px;
+    height: 120px;
+    background: linear-gradient(to bottom, #fefefe, #e8dfc8);
+    border: 1.5px solid #b8a88a;
+    border-radius: 0 0 6px 6px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+    cursor: pointer;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--rust);
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.15);
+    transition: all 0.1s ease;
+    position: relative;
+    user-select: none;
+  }
+  .key:hover, .key.active {
+    background: linear-gradient(to bottom, #fffae8, #f0d87a);
+    transform: translateY(3px);
+    box-shadow: 1px 2px 4px rgba(0,0,0,0.2);
+    color: var(--deep);
+  }
+  .key .hz {
+    position: absolute;
+    top: 8px;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    font-weight: 400;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    background: linear-gradient(135deg, rgba(74,124,89,0.1), rgba(200,146,42,0.08));
+    border: 1px solid rgba(74,124,89,0.3);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .highlight strong { color: var(--accent); }
+
+  /* ── QUOTE ── */
+  blockquote {
+    border-left: 3px solid var(--gold);
+    margin: 20px 0;
+    padding: 12px 20px;
+    font-style: italic;
+    color: var(--muted);
+    font-size: 15px;
+    background: rgba(200,146,42,0.05);
+    border-radius: 0 4px 4px 0;
+  }
+  blockquote cite {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    font-style: normal;
+    font-family: 'Source Code Pro', monospace;
+    letter-spacing: 1px;
+    color: var(--gold);
+  }
+
+  /* ── INTERVAL VISUAL ── */
+  .intervals {
+    display: flex;
+    gap: 8px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+  .interval-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .interval-bar {
+    width: 48px;
+    background: linear-gradient(to top, var(--rust), var(--gold-light));
+    border-radius: 3px 3px 0 0;
+    min-height: 20px;
+    transition: height 0.4s ease;
+  }
+  .interval-label {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.3;
+  }
+  .interval-note {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--rust);
+  }
+
+  /* ── COMPARISON BOXES ── */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  @media (max-width: 600px) { .compare { grid-template-columns: 1fr; } }
+  .compare-box {
+    padding: 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .compare-box.pythagore { background: rgba(139,58,26,0.08); border: 1px solid rgba(139,58,26,0.25); }
+  .compare-box.tempere  { background: rgba(74,124,89,0.08); border: 1px solid rgba(74,124,89,0.25); }
+  .compare-box h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: var(--deep);
+  }
+
+  /* ── KEY POINTS ── */
+  .retenir {
+    background: var(--deep);
+    color: var(--parchment);
+    border-radius: 8px;
+    padding: 28px 36px;
+    margin-top: 52px;
+  }
+  .retenir h2 {
+    color: var(--gold-light);
+    border-color: rgba(232,184,75,0.3);
+    font-size: 20px;
+  }
+  .retenir ul {
+    list-style: none;
+    margin-top: 12px;
+  }
+  .retenir li {
+    padding: 8px 0 8px 28px;
+    position: relative;
+    font-size: 14px;
+    color: rgba(245,237,214,0.85);
+    border-bottom: 1px solid rgba(200,146,42,0.15);
+    line-height: 1.7;
+  }
+  .retenir li::before {
+    content: '♩';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+  }
+  .retenir li strong { color: var(--gold-light); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    margin-top: 48px;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── SOUND INDICATOR ── */
+  #sound-info {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    margin-top: 8px;
+    height: 18px;
+    transition: opacity 0.3s;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="tag">Enseignement Scientifique · Terminale 1ère · Musique & Science</span>
+  <h1>La Gamme de <em>Pythagore</em></h1>
+  <p class="subtitle">Construction mathématique d'une gamme musicale à partir des rapports de fréquences — environ 570 av. J.-C.</p>
+</header>
+
+<main>
+
+  <!-- 1. CONTEXTE -->
+  <section>
+    <h2><span class="num">01</span> Contexte historique</h2>
+    <p>
+      Pythagore de Samos (v. 580 – 495 av. J.-C.) et son école ont découvert que les sons musicaux harmonieux correspondent à des rapports simples de nombres entiers. En tendant des cordes de longueurs différentes, ils ont établi les premières bases mathématiques de la musique.
+    </p>
+    <blockquote>
+      « Le nombre est la règle de toutes choses. »
+      <cite>— Pythagore</cite>
+    </blockquote>
+    <p>
+      L'observation fondatrice : une corde de longueur moitié produit un son à la fréquence double — c'est l'<strong>octave</strong>. La relation entre longueur de corde et fréquence : <em>fréquence ∝ 1/longueur</em>.
+    </p>
+  </section>
+
+  <!-- 2. PRINCIPE -->
+  <section>
+    <h2><span class="num">02</span> Principe de construction</h2>
+    <p>
+      La gamme pythagoricienne repose sur un seul intervalle générateur : la <strong>quinte pure</strong>, dont le rapport de fréquences est <strong>3/2</strong>. En enchaînant des quintes successives, on génère toutes les notes de la gamme.
+    </p>
+
+    <h3>Les deux intervalles de base</h3>
+    <div class="formula">
+      Octave : <span>f₂/f₁ = 2/1</span> &nbsp;|&nbsp; Quinte pure : <span>f₂/f₁ = 3/2</span>
+    </div>
+
+    <div class="highlight">
+      <strong>Méthode :</strong> On part d'une note de référence (Do, de fréquence f₀). On monte d'une quinte en multipliant par 3/2, puis on ramène dans l'octave en divisant par 2 si nécessaire. On répète 12 fois pour obtenir les 12 demi-tons de la gamme chromatique.
+    </div>
+
+    <h3>Le cycle des quintes</h3>
+    <p>
+      En enchaînant 12 quintes, on devrait revenir exactement à l'octave de départ. Mais (3/2)¹² ≠ 2⁷ :
+    </p>
+    <div class="formula">
+      (3/2)¹² = <span>531441 / 4096</span> ≈ <span>129,746</span> &nbsp;≠&nbsp; 2⁷ = <span>128</span>
+    </div>
+    <p>
+      Cet écart s'appelle le <strong>comma pythagoricien</strong>. Il est d'environ <strong>23,5 cents</strong> (un cent = 1/100 de demi-ton tempéré). C'est le « défaut » fondamental de la gamme pythagoricienne.
+    </p>
+  </section>
+
+  <!-- 3. LA GAMME -->
+  <section>
+    <h2><span class="num">03</span> Les 8 notes de la gamme diatonique</h2>
+    <p>
+      En partant du Do (f₀), voici les fréquences des 7 notes (+ l'octave) calculées par rapport de quintes, ramenées dans le même octave :
+    </p>
+
+    <table class="scale-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Note</th>
+          <th>Nom solfège</th>
+          <th>Rapport f/f₀</th>
+          <th>Valeur décimale</th>
+          <th>Fréquence (Hz) si f₀ = 261,6 Hz</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td class="note-name">Do</td><td>Ut</td><td class="fraction">1/1</td><td class="freq-val">1,000</td><td class="freq-val">261,6 Hz</td></tr>
+        <tr><td>2</td><td class="note-name">Ré</td><td>Re</td><td class="fraction">9/8</td><td class="freq-val">1,125</td><td class="freq-val">294,3 Hz</td></tr>
+        <tr><td>3</td><td class="note-name">Mi</td><td>Mi</td><td class="fraction">81/64</td><td class="freq-val">1,266</td><td class="freq-val">330,6 Hz</td></tr>
+        <tr><td>4</td><td class="note-name">Fa</td><td>Fa</td><td class="fraction">4/3</td><td class="freq-val">1,333</td><td class="freq-val">349,2 Hz</td></tr>
+        <tr><td>5</td><td class="note-name">Sol</td><td>Sol</td><td class="fraction">3/2</td><td class="freq-val">1,500</td><td class="freq-val">392,4 Hz</td></tr>
+        <tr><td>6</td><td class="note-name">La</td><td>La</td><td class="fraction">27/16</td><td class="freq-val">1,688</td><td class="freq-val">441,6 Hz</td></tr>
+        <tr><td>7</td><td class="note-name">Si</td><td>Si</td><td class="fraction">243/128</td><td class="freq-val">1,898</td><td class="freq-val">496,6 Hz</td></tr>
+        <tr><td>8</td><td class="note-name">Do'</td><td>Ut (octave)</td><td class="fraction">2/1</td><td class="freq-val">2,000</td><td class="freq-val">523,2 Hz</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Visualisation des intervalles</h3>
+    <div class="intervals" id="intervals-viz">
+      <!-- JS fills this -->
+    </div>
+
+    <h3>Piano interactif — cliquez sur une touche</h3>
+    <div class="piano-wrap">
+      <div class="piano" id="piano"></div>
+    </div>
+    <div id="sound-info"></div>
+  </section>
+
+  <!-- 4. INTERVALLES -->
+  <section>
+    <h2><span class="num">04</span> Les deux types de tons</h2>
+    <p>
+      Dans la gamme pythagoricienne, les intervalles entre notes consécutives ne sont pas tous identiques. On distingue :
+    </p>
+    <div class="compare">
+      <div class="compare-box pythagore">
+        <h4>🎵 Ton majeur (grand ton)</h4>
+        Rapport : <strong>9/8 ≈ 1,125</strong><br>
+        Intervalles : Do→Ré, Ré→Mi, Fa→Sol, Sol→La, La→Si<br>
+        <em>5 tons majeurs dans la gamme</em>
+      </div>
+      <div class="compare-box tempere">
+        <h4>🎵 Demi-ton (limma)</h4>
+        Rapport : <strong>256/243 ≈ 1,053</strong><br>
+        Intervalles : Mi→Fa et Si→Do'<br>
+        <em>2 demi-tons pythagoriciens</em>
+      </div>
+    </div>
+    <div class="formula">
+      Structure : <span>T T S T T T S</span> &nbsp;(T = ton majeur, S = demi-ton)
+    </div>
+  </section>
+
+  <!-- 5. COMPARAISON -->
+  <section>
+    <h2><span class="num">05</span> Comparaison avec la gamme tempérée</h2>
+    <p>
+      La gamme égale tempérée (utilisée aujourd'hui dans la quasi-totalité des instruments) divise l'octave en <strong>12 demi-tons égaux</strong>, chacun de rapport 2^(1/12) ≈ 1,0595.
+    </p>
+
+    <table class="scale-table">
+      <thead>
+        <tr>
+          <th>Note</th>
+          <th>Rapport pythagoricien</th>
+          <th>Rapport tempéré</th>
+          <th>Écart (cents)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="note-name">Do</td><td class="fraction">1,000</td><td class="freq-val">1,000</td><td class="freq-val">0</td></tr>
+        <tr><td class="note-name">Ré</td><td class="fraction">1,125</td><td class="freq-val">1,122</td><td class="freq-val">+3,9</td></tr>
+        <tr><td class="note-name">Mi</td><td class="fraction">1,266</td><td class="freq-val">1,260</td><td class="freq-val">+7,8</td></tr>
+        <tr><td class="note-name">Fa</td><td class="fraction">1,333</td><td class="freq-val">1,335</td><td class="freq-val">−2,0</td></tr>
+        <tr><td class="note-name">Sol</td><td class="fraction">1,500</td><td class="freq-val">1,498</td><td class="freq-val">+2,0</td></tr>
+        <tr><td class="note-name">La</td><td class="fraction">1,688</td><td class="freq-val">1,682</td><td class="freq-val">+5,9</td></tr>
+        <tr><td class="note-name">Si</td><td class="fraction">1,898</td><td class="freq-val">1,888</td><td class="freq-val">+9,8</td></tr>
+        <tr><td class="note-name">Do'</td><td class="fraction">2,000</td><td class="freq-val">2,000</td><td class="freq-val">0</td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight">
+      <strong>Conclusion :</strong> Les écarts sont faibles (moins de 10 cents, soit moins de 1/10 de demi-ton), mais perceptibles pour les musiciens entraînés. La gamme pythagoricienne favorise des quintes très pures (rapport 3/2 exact), au détriment de certaines tierces.
+    </div>
+  </section>
+
+  <!-- 6. BILAN -->
+  <div class="retenir">
+    <h2><span class="num">À retenir</span></h2>
+    <ul>
+      <li><strong>Principe fondateur :</strong> rapport de fréquences 3/2 pour la quinte pure, base de toute la construction.</li>
+      <li><strong>Construction :</strong> enchaînement de 12 quintes, ramenées dans le même octave par division par 2.</li>
+      <li><strong>Gamme diatonique :</strong> 7 notes + octave, avec structure T-T-S-T-T-T-S (ton/demi-ton).</li>
+      <li><strong>Deux tons :</strong> ton majeur (9/8) et limma (256/243), qui ne sont pas égaux.</li>
+      <li><strong>Comma pythagoricien :</strong> (3/2)¹² ≠ 2⁷, écart d'environ 23,5 cents — la limite du système.</li>
+      <li><strong>Avantage :</strong> quintes parfaitement consonantes. <strong>Inconvénient :</strong> certaines tierces sont fausses, et on ne peut pas transposer librement.</li>
+      <li><strong>Solution moderne :</strong> la gamme tempérée (Bach, XVIII<sup>e</sup> s.) sacrifie la pureté des quintes pour obtenir 12 demi-tons égaux et permettre toutes les tonalités.</li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  <p>Enseignement Scientifique · Classe de Première · Chapitre Musique &amp; Ondes · © Cours illustratif</p>
+</footer>
+
+<script>
+// ── Data ──
+const notes = [
+  { name: 'Do',  ratio: [1,1],     freq: 261.6 },
+  { name: 'Ré',  ratio: [9,8],     freq: 294.3 },
+  { name: 'Mi',  ratio: [81,64],   freq: 330.6 },
+  { name: 'Fa',  ratio: [4,3],     freq: 349.2 },
+  { name: 'Sol', ratio: [3,2],     freq: 392.4 },
+  { name: 'La',  ratio: [27,16],   freq: 441.6 },
+  { name: 'Si',  ratio: [243,128], freq: 496.6 },
+  { name: "Do'", ratio: [2,1],     freq: 523.2 },
+];
+
+// ── Interval bars ──
+const viz = document.getElementById('intervals-viz');
+notes.forEach(n => {
+  const val = n.ratio[0] / n.ratio[1];
+  const h = Math.round(20 + (val - 1) * 160);
+  viz.innerHTML += `
+    <div class="interval-block">
+      <div class="interval-bar" style="height:${h}px"></div>
+      <div class="interval-note">${n.name}</div>
+      <div class="interval-label">${n.ratio[0]}/${n.ratio[1]}<br>${n.freq} Hz</div>
+    </div>`;
+});
+
+// ── Piano ──
+const piano = document.getElementById('piano');
+const info  = document.getElementById('sound-info');
+let ctx;
+
+function getCtx() {
+  if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+  return ctx;
+}
+
+function playTone(freq, keyEl) {
+  const ac   = getCtx();
+  const osc  = ac.createOscillator();
+  const gain = ac.createGain();
+  osc.connect(gain);
+  gain.connect(ac.destination);
+  osc.type = 'triangle';
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0.35, ac.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 1.4);
+  osc.start();
+  osc.stop(ac.currentTime + 1.4);
+  keyEl.classList.add('active');
+  setTimeout(() => keyEl.classList.remove('active'), 300);
+  info.textContent = `♪ ${keyEl.dataset.name} — ${freq} Hz — rapport ${keyEl.dataset.ratio}`;
+}
+
+notes.forEach(n => {
+  const key = document.createElement('div');
+  key.className = 'key';
+  key.dataset.name  = n.name;
+  key.dataset.ratio = n.ratio.join('/');
+  key.innerHTML = `<span class="hz">${n.freq} Hz</span>${n.name}`;
+  key.addEventListener('click', () => playTone(n.freq, key));
+  piano.appendChild(key);
+});
+</script>
+</body>
+</html>
