@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les Éléments Chimiques — Enseignement Scientifique 1re</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --or: #c8a84b;
+    --or-clair: #f5e9c8;
+    --bleu: #1a3a6b;
+    --bleu-clair: #dce8f5;
+    --vert: #2a6b4a;
+    --rouge: #8b2020;
+    --fond: #faf8f3;
+    --fond2: #f2ede0;
+    --texte: #1c1a14;
+    --texte2: #4a4535;
+    --bordure: #d4c99a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--fond);
+    color: var(--texte);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--bleu);
+    color: #fff;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3.5rem 2rem 3rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,255,255,0.03) 40px,
+      rgba(255,255,255,0.03) 41px
+    );
+  }
+
+  .matiere-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .matiere-label::before, .matiere-label::after {
+    content: '';
+    display: inline-block;
+    height: 1px;
+    width: 32px;
+    background: var(--or);
+    opacity: 0.7;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 0.8rem;
+  }
+
+  header h1 em {
+    color: var(--or);
+    font-style: italic;
+  }
+
+  .header-subtitle {
+    color: rgba(255,255,255,0.7);
+    font-size: 1rem;
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+
+  .header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .badge {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.9);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: #fff;
+    border-bottom: 2px solid var(--bordure);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+
+  nav ul {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    list-style: none;
+    overflow-x: auto;
+    padding: 0 1rem;
+    gap: 0;
+  }
+
+  nav a {
+    display: block;
+    padding: 14px 18px;
+    color: var(--texte2);
+    text-decoration: none;
+    font-family: 'Source Serif 4', serif;
+    font-size: 14px;
+    font-weight: 400;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  nav a:hover {
+    color: var(--bleu);
+    border-bottom-color: var(--or);
+  }
+
+  /* ── CONTENU ── */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+
+  section {
+    margin-bottom: 4rem;
+    scroll-margin-top: 60px;
+  }
+
+  /* ── TITRES ── */
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--or);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--bleu);
+    border-bottom: 2px solid var(--or);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--texte);
+    margin: 2rem 0 0.75rem;
+  }
+
+  h4 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bleu);
+    margin: 1.5rem 0 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  p { margin-bottom: 1rem; }
+
+  /* ── ENCADRÉS ── */
+  .encadre {
+    border-left: 4px solid var(--or);
+    background: var(--or-clair);
+    border-radius: 0 8px 8px 0;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .encadre-titre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #7a5c10;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .encadre p { margin-bottom: 0.5rem; color: #3d2e08; }
+  .encadre p:last-child { margin-bottom: 0; }
+
+  .encadre-bleu {
+    border-left-color: var(--bleu);
+    background: var(--bleu-clair);
+  }
+
+  .encadre-bleu .encadre-titre { color: #1a3a6b; }
+  .encadre-bleu p { color: #0d2040; }
+
+  .encadre-vert {
+    border-left-color: var(--vert);
+    background: #e0f0e8;
+  }
+
+  .encadre-vert .encadre-titre { color: var(--vert); }
+  .encadre-vert p { color: #15402b; }
+
+  .encadre-rouge {
+    border-left-color: var(--rouge);
+    background: #f5e0e0;
+  }
+
+  .encadre-rouge .encadre-titre { color: var(--rouge); }
+  .encadre-rouge p { color: #3d0f0f; }
+
+  /* ── FORMULE ── */
+  .formule {
+    background: #fff;
+    border: 1.5px solid var(--bordure);
+    border-radius: 10px;
+    padding: 1.25rem 1.75rem;
+    margin: 1.5rem auto;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    color: var(--bleu);
+    max-width: 480px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .formule-label {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: var(--or);
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 10px;
+    border-radius: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── TABLEAU PERIODIQUE MINI ── */
+  .tableau-container {
+    background: #fff;
+    border: 1.5px solid var(--bordure);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    overflow-x: auto;
+  }
+
+  .tableau-titre {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--bleu);
+    text-align: center;
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+
+  .tp-grid {
+    display: grid;
+    grid-template-columns: repeat(18, 1fr);
+    gap: 2px;
+    min-width: 700px;
+  }
+
+  .el {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    font-size: 8px;
+    cursor: default;
+    transition: transform 0.15s;
+    padding: 1px;
+  }
+
+  .el:hover { transform: scale(1.4); z-index: 10; position: relative; }
+
+  .el .sym {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .el .num { font-family: 'JetBrains Mono', monospace; font-size: 7px; }
+
+  .non-metal    { background: #c8f7c5; color: #1a5e18; }
+  .metal-alc    { background: #ffcccc; color: #7a0000; }
+  .metal-alc-t  { background: #ffdcb8; color: #7a3000; }
+  .metal-trans  { background: #c5d8f7; color: #0d2d6b; }
+  .metalloid    { background: #e8e0f7; color: #3a1a7a; }
+  .halogene     { background: #fffab8; color: #7a7000; }
+  .gaz-noble    { background: #ffd6f7; color: #7a0070; }
+  .lanthanide   { background: #d6f0ff; color: #004a80; }
+  .actinide     { background: #ffd6d6; color: #800000; }
+  .vide         { background: transparent; }
+
+  .el-highlight {
+    box-shadow: 0 0 0 2px var(--or);
+    background: #fff8df !important;
+    color: #7a5c10 !important;
+    font-weight: 700;
+  }
+
+  /* ── ATOME SVG ── */
+  .atome-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 2rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--bordure);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -1.75rem;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--or);
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px var(--or);
+  }
+
+  .tl-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--or);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .tl-item h4 {
+    margin: 0 0 0.3rem;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.95rem;
+  }
+
+  .tl-item p { font-size: 0.9rem; color: var(--texte2); margin-bottom: 0; }
+
+  /* ── LISTE STYLISÉE ── */
+  ul.liste-cours {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+
+  ul.liste-cours li {
+    padding: 0.4rem 0 0.4rem 1.6rem;
+    position: relative;
+    color: var(--texte);
+    border-bottom: 1px solid var(--fond2);
+  }
+
+  ul.liste-cours li::before {
+    content: '⟶';
+    position: absolute;
+    left: 0;
+    color: var(--or);
+    font-size: 0.9rem;
+  }
+
+  /* ── GRILLE PROPRIÉTÉS ── */
+  .prop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 1.5rem 0;
+  }
+
+  .prop-card {
+    background: #fff;
+    border: 1px solid var(--bordure);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    border-top: 3px solid var(--or);
+  }
+
+  .prop-card .val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--bleu);
+    display: block;
+    line-height: 1.2;
+  }
+
+  .prop-card .lbl {
+    font-size: 12px;
+    color: var(--texte2);
+    margin-top: 2px;
+  }
+
+  /* ── TABLEAU ── */
+  table.tab-cours {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--bordure);
+  }
+
+  table.tab-cours th {
+    background: var(--bleu);
+    color: #fff;
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 0.85rem;
+  }
+
+  table.tab-cours td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--fond2);
+    color: var(--texte);
+  }
+
+  table.tab-cours tr:last-child td { border-bottom: none; }
+
+  table.tab-cours tr:nth-child(even) td { background: var(--fond2); }
+
+  table.tab-cours td:first-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--bleu);
+    font-weight: 500;
+  }
+
+  /* ── RÉSUMÉ ── */
+  .resume-box {
+    background: var(--bleu);
+    color: #fff;
+    border-radius: 14px;
+    padding: 2rem 2.5rem;
+    margin: 3rem 0;
+  }
+
+  .resume-box h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--or);
+    margin-bottom: 1.2rem;
+    margin-top: 0;
+  }
+
+  .resume-box ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .resume-box li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.9);
+    display: flex;
+    gap: 10px;
+  }
+
+  .resume-box li:last-child { border-bottom: none; }
+
+  .resume-box li::before {
+    content: '✓';
+    color: var(--or);
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+
+  /* ── QUIZ ── */
+  .quiz-section {
+    background: var(--fond2);
+    border: 1.5px solid var(--bordure);
+    border-radius: 14px;
+    padding: 2rem;
+    margin: 3rem 0;
+  }
+
+  .quiz-section h3 {
+    color: var(--bleu);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .quiz-q {
+    margin-bottom: 1.5rem;
+  }
+
+  .quiz-q p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--texte);
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .quiz-btn {
+    background: #fff;
+    border: 1.5px solid var(--bordure);
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-family: 'Source Serif 4', serif;
+    font-size: 14px;
+    color: var(--texte);
+    transition: all 0.2s;
+  }
+
+  .quiz-btn:hover { border-color: var(--or); background: var(--or-clair); }
+  .quiz-btn.correct { background: #d6f0d6; border-color: #2a6b2a; color: #1a4a1a; }
+  .quiz-btn.wrong { background: #f5d6d6; border-color: var(--rouge); color: var(--rouge); }
+
+  .quiz-feedback {
+    margin-top: 0.5rem;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--texte2);
+    min-height: 20px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bleu);
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 2rem;
+    font-size: 13px;
+  }
+
+  footer span { color: var(--or); }
+
+  /* ── UTIL ── */
+  .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+  .or { color: var(--or); }
+  .bleu { color: var(--bleu); }
+  sub, sup { font-size: 0.7em; }
+
+  @media (max-width: 600px) {
+    main { padding: 2rem 1rem 4rem; }
+    h2 { font-size: 1.5rem; }
+    header h1 { font-size: 1.8rem; }
+    .formule { font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
+<header>
+  <div class="header-inner">
+    <div class="matiere-label">Physique-Chimie</div>
+    <h1>Une longue histoire<br>de la matière<br><em>Les éléments chimiques</em></h1>
+    <p class="header-subtitle">Enseignement scientifique — Classe de Première</p>
+    <div class="header-meta">
+      <span class="badge">Thème 1 — La matière</span>
+      <span class="badge">Cours complet</span>
+      <span class="badge">Tableau périodique</span>
+      <span class="badge">Structure atomique</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════ NAV ═══════════════════════════ -->
+<nav>
+  <ul>
+    <li><a href="#histoire">I. Histoire</a></li>
+    <li><a href="#atome">II. L'atome</a></li>
+    <li><a href="#element">III. L'élément</a></li>
+    <li><a href="#tableau">IV. Tableau périodique</a></li>
+    <li><a href="#universalite">V. Universalité</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════ MAIN ═══════════════════════════ -->
+<main>
+
+  <!-- ──────── INTRODUCTION ──────── -->
+  <div class="encadre encadre-bleu" style="margin-bottom:2.5rem;">
+    <div class="encadre-titre">🎯 Objectifs du chapitre</div>
+    <p>À la fin de ce chapitre, vous serez capable de :</p>
+    <ul class="liste-cours" style="margin-top:0.5rem;">
+      <li>Retracer les grandes étapes de la découverte des éléments chimiques</li>
+      <li>Décrire la structure d'un atome (noyau, électrons, nucléons)</li>
+      <li>Définir un élément chimique et le distinguer d'un atome ou d'un ion</li>
+      <li>Lire et utiliser le tableau périodique de Mendeleïev</li>
+      <li>Comprendre l'universalité des éléments à l'échelle cosmique</li>
+    </ul>
+  </div>
+
+  <!-- ──────── I. HISTOIRE ──────── -->
+  <section id="histoire">
+    <span class="section-number">Partie I</span>
+    <h2>Une histoire de la découverte des éléments</h2>
+
+    <p>
+      La question de la composition fondamentale de la matière fascine les penseurs depuis l'Antiquité. 
+      Pendant des millénaires, philosophes et savants ont cherché à identifier les « briques élémentaires » 
+      dont tout est constitué. Cette quête a traversé les siècles, du monde grec à la chimie moderne.
+    </p>
+
+    <h3>1. Les théories antiques</h3>
+
+    <p>
+      Dans la Grèce antique, les philosophes proposent que toute matière est composée d'éléments 
+      fondamentaux. Empédocle (v. 490–430 av. J.-C.) développe la théorie des <strong>quatre éléments</strong> : 
+      le <em>feu</em>, l'<em>eau</em>, la <em>terre</em> et l'<em>air</em>. Aristote y ajoute un cinquième 
+      élément céleste : l'<em>éther</em>.
+    </p>
+
+    <div class="encadre">
+      <div class="encadre-titre">Philosophie antique</div>
+      <p>
+        Démocrite (v. 460–370 av. J.-C.) propose une vision radicalement différente : 
+        la matière serait composée de petites particules indivisibles qu'il nomme <strong>atomes</strong> 
+        (du grec <em>atomos</em>, « indivisible »). Cette intuition, longtemps ignorée, se révèle 
+        remarquablement prémonitoire.
+      </p>
+    </div>
+
+    <h3>2. La révolution chimique (XVIII<sup>e</sup> siècle)</h3>
+
+    <p>
+      C'est Antoine Lavoisier (1743–1794) qui pose les fondements de la chimie moderne. 
+      Il définit un <strong>élément chimique</strong> comme toute substance qui n'a pas encore pu être 
+      décomposée par l'analyse chimique. Il dresse la première liste d'éléments véritablement 
+      expérimentale, distinguant corps simples et corps composés.
+    </p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-date">v. 440 av. J.-C.</span>
+        <h4>Empédocle — Les quatre éléments</h4>
+        <p>Feu, eau, terre, air comme constituants fondamentaux de la matière.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">v. 400 av. J.-C.</span>
+        <h4>Démocrite — Théorie atomiste</h4>
+        <p>La matière est composée d'atomes, particules indivisibles dans le vide.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">1789</span>
+        <h4>Lavoisier — Traité élémentaire de chimie</h4>
+        <p>Première liste expérimentale de 33 éléments. Loi de conservation de la masse.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">1808</span>
+        <h4>Dalton — Théorie atomique moderne</h4>
+        <p>Les éléments sont constitués d'atomes de masse caractéristique. Premiers symboles atomiques.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">1869</span>
+        <h4>Mendeleïev — Tableau périodique</h4>
+        <p>Classification des 63 éléments connus selon leur masse atomique. Prédiction d'éléments manquants.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">1913</span>
+        <h4>Bohr — Modèle de l'atome</h4>
+        <p>Les électrons occupent des niveaux d'énergie discrets autour du noyau.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">1932</span>
+        <h4>Chadwick — Découverte du neutron</h4>
+        <p>Le noyau atomique contient des protons et des neutrons (nucléons).</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">2016</span>
+        <h4>Oganesson (Z=118) — Élément le plus lourd</h4>
+        <p>Synthèse du 118<sup>e</sup> élément, complétant la 7<sup>e</sup> période du tableau.</p>
+      </div>
+    </div>
+
+    <p>
+      Aujourd'hui, <strong>118 éléments</strong> sont officiellement reconnus, dont 94 présents 
+      naturellement sur Terre et 24 produits artificiellement par réactions nucléaires.
+    </p>
+  </section>
+
+  <!-- ──────── II. L'ATOME ──────── -->
+  <section id="atome">
+    <span class="section-number">Partie II</span>
+    <h2>Structure de l'atome</h2>
+
+    <h3>1. Un atome, qu'est-ce que c'est ?</h3>
+
+    <p>
+      L'atome est la plus petite unité de matière qui conserve les propriétés d'un élément chimique. 
+      D'une taille de l'ordre de <span class="mono">10<sup>−10</sup> m</span> (soit 0,1 nm = 1 Å), 
+      il est constitué d'un <strong>noyau</strong> entouré d'un <strong>nuage électronique</strong>.
+    </p>
+
+    <!-- Schéma SVG atome -->
+    <div class="atome-wrapper">
+      <svg width="360" height="280" viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schéma d'un atome de carbone avec noyau et électrons">
+        <defs>
+          <radialGradient id="noyauGrad" cx="50%" cy="40%" r="50%">
+            <stop offset="0%" stop-color="#3a6dbf"/>
+            <stop offset="100%" stop-color="#1a3a6b"/>
+          </radialGradient>
+          <radialGradient id="elecGrad" cx="40%" cy="35%" r="50%">
+            <stop offset="0%" stop-color="#f5c842"/>
+            <stop offset="100%" stop-color="#c8a84b"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Fond -->
+        <rect width="360" height="280" fill="#f2ede0" rx="12"/>
+
+        <!-- Titre -->
+        <text x="180" y="22" text-anchor="middle" font-family="'Playfair Display',serif" 
+              font-size="13" fill="#1a3a6b" font-style="italic">Modèle simplifié — Atome de carbone (C)</text>
+
+        <!-- Orbites -->
+        <ellipse cx="180" cy="148" rx="60" ry="22" fill="none" stroke="#c8a84b" stroke-width="1" stroke-dasharray="4 3" transform="rotate(-30 180 148)"/>
+        <ellipse cx="180" cy="148" rx="90" ry="30" fill="none" stroke="#c8a84b" stroke-width="1" stroke-dasharray="4 3" transform="rotate(20 180 148)"/>
+        <ellipse cx="180" cy="148" rx="110" ry="35" fill="none" stroke="#c8a84b" stroke-width="1" stroke-dasharray="4 3" transform="rotate(-60 180 148)"/>
+
+        <!-- Noyau -->
+        <circle cx="180" cy="148" r="28" fill="url(#noyauGrad)"/>
+        <text x="180" y="144" text-anchor="middle" font-family="'JetBrains Mono',monospace" 
+              font-size="11" fill="white" font-weight="500">6p</text>
+        <text x="180" y="158" text-anchor="middle" font-family="'JetBrains Mono',monospace" 
+              font-size="11" fill="rgba(255,255,255,0.75)">6n</text>
+
+        <!-- Électrons couche 1 (2e⁻) -->
+        <circle cx="145" cy="130" r="7" fill="url(#elecGrad)"/>
+        <text x="145" y="133" text-anchor="middle" font-size="8" fill="#7a5c10" font-weight="600">e⁻</text>
+
+        <circle cx="215" cy="166" r="7" fill="url(#elecGrad)"/>
+        <text x="215" y="169" text-anchor="middle" font-size="8" fill="#7a5c10" font-weight="600">e⁻</text>
+
+        <!-- Électrons couche 2 (4e⁻) -->
+        <circle cx="108" cy="118" r="7" fill="url(#elecGrad)"/>
+        <text x="108" y="121" text-anchor="middle" font-size="8" fill="#7a5c10" font-weight="600">e⁻</text>
+
+        <circle cx="252" cy="118" r="7" fill="url(#elecGrad)"/>
+        <text x="252" y="121" text-anchor="middle" font-size="8" fill="#7a5c10" font-weight="600">e⁻</text>
+
+        <circle cx="130" cy="190" r="7" fill="url(#elecGrad)"/>
+        <text x="130" y="193" text-anchor="middle" font-size="8" fill="#7a5c10" font-weight="600">e⁻</text>
+
+        <circle cx="230" cy="190" r="7" fill="url(#elecGrad)"/>
+        <text x="230" y="193" text-anchor="middle" font-size="8" fill="#7a5c10" font-weight="600">e⁻</text>
+
+        <!-- Légende -->
+        <rect x="20" y="225" width="14" height="14" fill="#1a3a6b" rx="2"/>
+        <text x="40" y="236" font-size="11" fill="#1c1a14" font-family="'Source Serif 4',serif">Noyau (protons + neutrons)</text>
+
+        <circle cx="27" cy="255" r="7" fill="url(#elecGrad)"/>
+        <text x="40" y="260" font-size="11" fill="#1c1a14" font-family="'Source Serif 4',serif">Électron (e⁻)</text>
+
+        <!-- Flèche nuage -->
+        <line x1="285" y1="115" x2="265" y2="130" stroke="#888" stroke-width="1" marker-end="url(#arr)"/>
+        <text x="288" y="112" font-size="10" fill="#4a4535" font-family="'Source Serif 4',serif">Nuage électronique</text>
+      </svg>
+    </div>
+
+    <h3>2. Le noyau atomique</h3>
+
+    <p>
+      Au centre de l'atome se trouve le <strong>noyau</strong>, de taille de l'ordre de 
+      <span class="mono">10<sup>−15</sup> m</span> (soit 10 000 fois plus petit que l'atome). 
+      Il contient deux types de particules appelées <strong>nucléons</strong> :
+    </p>
+
+    <table class="tab-cours">
+      <thead>
+        <tr>
+          <th>Particule</th>
+          <th>Localisation</th>
+          <th>Charge</th>
+          <th>Masse</th>
+          <th>Notation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Proton</td>
+          <td>Noyau</td>
+          <td>+e (positive)</td>
+          <td>1,673 × 10<sup>−27</sup> kg</td>
+          <td><span class="mono">p</span></td>
+        </tr>
+        <tr>
+          <td>Neutron</td>
+          <td>Noyau</td>
+          <td>0 (nulle)</td>
+          <td>1,675 × 10<sup>−27</sup> kg</td>
+          <td><span class="mono">n</span></td>
+        </tr>
+        <tr>
+          <td>Électron</td>
+          <td>Nuage électronique</td>
+          <td>−e (négative)</td>
+          <td>9,109 × 10<sup>−31</sup> kg</td>
+          <td><span class="mono">e⁻</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="encadre encadre-rouge">
+      <div class="encadre-titre">⚠ Point essentiel</div>
+      <p>
+        La masse d'un électron est environ <strong>1 836 fois plus faible</strong> que celle d'un proton. 
+        Ainsi, la quasi-totalité de la masse d'un atome est concentrée dans son noyau, 
+        bien que l'atome soit essentiellement constitué de vide !
+      </p>
+    </div>
+
+    <h3>3. Notation symbolique d'un atome</h3>
+
+    <p>
+      Chaque atome est représenté par son <strong>symbole chimique</strong>, accompagné de son 
+      <strong>numéro atomique Z</strong> (nombre de protons) et de son <strong>nombre de masse A</strong> 
+      (nombre de nucléons = protons + neutrons).
+    </p>
+
+    <div class="formule">
+      <span class="formule-label">NOTATION</span>
+      <sup>A</sup><sub>Z</sub>X
+      &nbsp;&nbsp;&nbsp;
+      <span style="font-size:0.8rem; color:#4a4535;">avec A = Z + N</span>
+    </div>
+
+    <div class="prop-grid">
+      <div class="prop-card">
+        <span class="val" style="color:#8b2020;">Z</span>
+        <span class="lbl">Numéro atomique = nombre de protons<br>Définit l'élément chimique</span>
+      </div>
+      <div class="prop-card">
+        <span class="val">A</span>
+        <span class="lbl">Nombre de masse = Z + N<br>Nombre total de nucléons</span>
+      </div>
+      <div class="prop-card">
+        <span class="val" style="color:#2a6b4a;">N</span>
+        <span class="lbl">Nombre de neutrons = A − Z<br>Variable pour un même élément</span>
+      </div>
+    </div>
+
+    <div class="encadre">
+      <div class="encadre-titre">📌 Exemple — Le carbone 12</div>
+      <p>
+        L'atome de carbone 12 est noté <span class="mono"><sup>12</sup><sub>6</sub>C</span>.
+        Il possède : Z = 6 protons, A = 12 nucléons, N = A − Z = 6 neutrons et 6 électrons 
+        (atome électriquement neutre).
+      </p>
+    </div>
+
+    <h3>4. Atome électriquement neutre</h3>
+
+    <p>
+      Un atome est <strong>électriquement neutre</strong> : il possède autant d'électrons que de protons.
+      Ainsi, pour un atome de numéro atomique Z :
+    </p>
+
+    <div class="formule">
+      <span class="formule-label">NEUTRALITÉ</span>
+      Nombre d'électrons = Z
+    </div>
+
+    <h3>5. Les isotopes</h3>
+
+    <p>
+      Des atomes sont dits <strong>isotopes</strong> lorsqu'ils possèdent le même numéro atomique Z 
+      (donc le même nombre de protons) mais un nombre de neutrons N différent, et donc un nombre 
+      de masse A différent.
+    </p>
+
+    <div class="encadre encadre-vert">
+      <div class="encadre-titre">Exemple — Isotopes du carbone</div>
+      <p>
+        <span class="mono"><sup>12</sup><sub>6</sub>C</span> : carbone 12 (6p, 6n) — le plus abondant (98,9 %)
+      </p>
+      <p>
+        <span class="mono"><sup>13</sup><sub>6</sub>C</span> : carbone 13 (6p, 7n) — stable (1,1 %)
+      </p>
+      <p>
+        <span class="mono"><sup>14</sup><sub>6</sub>C</span> : carbone 14 (6p, 8n) — radioactif, utilisé en datation
+      </p>
+    </div>
+
+    <p>
+      Les isotopes d'un même élément ont des <strong>propriétés chimiques identiques</strong> 
+      (même configuration électronique) mais des <strong>propriétés nucléaires différentes</strong> 
+      (stabilité, radioactivité).
+    </p>
+  </section>
+
+  <!-- ──────── III. ÉLÉMENT CHIMIQUE ──────── -->
+  <section id="element">
+    <span class="section-number">Partie III</span>
+    <h2>La notion d'élément chimique</h2>
+
+    <h3>1. Définition</h3>
+
+    <p>
+      Un <strong>élément chimique</strong> désigne l'ensemble des atomes et ions ayant le même 
+      numéro atomique Z (le même nombre de protons). C'est une notion <em>abstraite</em> qui 
+      transcende les différentes formes sous lesquelles peut se présenter la matière.
+    </p>
+
+    <div class="encadre encadre-bleu">
+      <div class="encadre-titre">🔑 Définition fondamentale</div>
+      <p>
+        Un élément chimique est caractérisé par son <strong>numéro atomique Z</strong>, 
+        c'est-à-dire le nombre de protons dans le noyau de ses atomes. Deux atomes du même 
+        élément peuvent différer par leur nombre de neutrons (isotopes) ou leur charge 
+        (ions), mais partagent toujours le même Z.
+      </p>
+    </div>
+
+    <h3>2. Atome, ion ou molécule : même élément !</h3>
+
+    <p>
+      L'élément chimique « oxygène » (Z = 8) est présent dans des entités très différentes :
+    </p>
+
+    <table class="tab-cours">
+      <thead>
+        <tr>
+          <th>Entité</th>
+          <th>Formule</th>
+          <th>Description</th>
+          <th>Élément</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Atome d'oxygène</td>
+          <td><span class="mono">O</span></td>
+          <td>8 protons, 8 neutrons, 8 électrons</td>
+          <td>Oxygène (Z=8)</td>
+        </tr>
+        <tr>
+          <td>Ion oxyde</td>
+          <td><span class="mono">O<sup>2−</sup></span></td>
+          <td>8 protons, 10 électrons</td>
+          <td>Oxygène (Z=8)</td>
+        </tr>
+        <tr>
+          <td>Dioxygène</td>
+          <td><span class="mono">O<sub>2</sub></span></td>
+          <td>Molécule de 2 atomes d'oxygène</td>
+          <td>Oxygène (Z=8)</td>
+        </tr>
+        <tr>
+          <td>Eau</td>
+          <td><span class="mono">H<sub>2</sub>O</span></td>
+          <td>Contient 1 atome d'oxygène</td>
+          <td>Oxygène (Z=8)</td>
+        </tr>
+        <tr>
+          <td>Dioxyde de carbone</td>
+          <td><span class="mono">CO<sub>2</sub></span></td>
+          <td>Contient 2 atomes d'oxygène</td>
+          <td>Oxygène (Z=8)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>3. Conservation des éléments lors des réactions chimiques</h3>
+
+    <p>
+      Lors d'une réaction chimique, les <strong>éléments chimiques se conservent</strong> : 
+      les atomes ne sont ni créés ni détruits, ils se réarrangent pour former de nouvelles molécules. 
+      C'est la traduction microscopique de la loi de conservation de la masse de Lavoisier.
+    </p>
+
+    <div class="formule">
+      <span class="formule-label">LOI DE LAVOISIER</span>
+      Rien ne se perd, rien ne se crée, tout se transforme
+    </div>
+
+    <div class="encadre encadre-vert">
+      <div class="encadre-titre">Exemple — Combustion du méthane</div>
+      <p style="font-family:'JetBrains Mono',monospace; font-size:0.95rem;">
+        CH<sub>4</sub> + 2 O<sub>2</sub> → CO<sub>2</sub> + 2 H<sub>2</sub>O
+      </p>
+      <p>
+        Les éléments C, H, O sont <strong>conservés</strong> : avant → 1C, 4H, 4O ; 
+        après → 1C, 4H, 4O. Seuls les liaisons chimiques changent.
+      </p>
+    </div>
+
+    <h3>4. Ions et charges</h3>
+
+    <p>
+      Un <strong>ion</strong> est un atome (ou groupe d'atomes) ayant perdu ou gagné des électrons.
+      Le noyau ne change pas : l'élément chimique est le même.
+    </p>
+
+    <div class="prop-grid">
+      <div class="prop-card" style="border-top-color:#8b2020;">
+        <span class="val" style="color:#8b2020;">Cation</span>
+        <span class="lbl">Ion de charge positive<br>Ex : Na<sup>+</sup>, Ca<sup>2+</sup>, Fe<sup>3+</sup><br>A perdu des électrons</span>
+      </div>
+      <div class="prop-card" style="border-top-color:#1a3a6b;">
+        <span class="val" style="color:#1a3a6b;">Anion</span>
+        <span class="lbl">Ion de charge négative<br>Ex : Cl<sup>−</sup>, O<sup>2−</sup>, SO<sub>4</sub><sup>2−</sup><br>A gagné des électrons</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────── IV. TABLEAU PÉRIODIQUE ──────── -->
+  <section id="tableau">
+    <span class="section-number">Partie IV</span>
+    <h2>Le tableau périodique de Mendeleïev</h2>
+
+    <h3>1. Histoire et construction</h3>
+
+    <p>
+      En 1869, le chimiste russe <strong>Dmitri Mendeleïev</strong> (1834–1907) classe les 63 éléments 
+      alors connus par ordre croissant de masse atomique et observe une périodicité de leurs propriétés 
+      chimiques. Il ose <em>laisser des cases vides</em>, prédisant l'existence d'éléments encore inconnus.
+    </p>
+
+    <div class="encadre">
+      <div class="encadre-titre">Les prédictions de Mendeleïev</div>
+      <p>
+        Il prédit les propriétés de trois éléments manquants : l'<em>eka-bore</em>, l'<em>eka-aluminium</em> 
+        et l'<em>eka-silicium</em>. Ces éléments seront découverts dans les années suivantes et nommés 
+        scandium, gallium et germanium — confirmant brillamment le tableau. Cette réussite prédictive 
+        assura le triomphe de la classification périodique.
+      </p>
+    </div>
+
+    <h3>2. Organisation du tableau moderne</h3>
+
+    <p>
+      Le tableau périodique actuel classe les 118 éléments par <strong>numéro atomique Z croissant</strong>. 
+      Il est organisé en :
+    </p>
+
+    <ul class="liste-cours">
+      <li><strong>Périodes</strong> (lignes horizontales) : les éléments ont le même nombre de couches électroniques. Il y a 7 périodes.</li>
+      <li><strong>Groupes</strong> (colonnes verticales) : les éléments ont les mêmes propriétés chimiques car leur couche externe est identique. Il y a 18 groupes.</li>
+      <li><strong>Familles</strong> : regroupements d'éléments de propriétés similaires (métaux alcalins, halogènes, gaz nobles…)</li>
+    </ul>
+
+    <!-- Tableau périodique simplifié -->
+    <div class="tableau-container">
+      <div class="tableau-titre">Tableau périodique simplifié — 4 premières périodes</div>
+      <div style="display:flex; flex-wrap:wrap; gap:4px; justify-content:center; margin-bottom:12px; font-size:11px;">
+        <span style="background:#c8f7c5;padding:2px 8px;border-radius:4px;color:#1a5e18;">Non-métaux</span>
+        <span style="background:#ffcccc;padding:2px 8px;border-radius:4px;color:#7a0000;">Métaux alcalins</span>
+        <span style="background:#ffdcb8;padding:2px 8px;border-radius:4px;color:#7a3000;">Métaux alc.-terreux</span>
+        <span style="background:#c5d8f7;padding:2px 8px;border-radius:4px;color:#0d2d6b;">Métaux de transition</span>
+        <span style="background:#e8e0f7;padding:2px 8px;border-radius:4px;color:#3a1a7a;">Métalloïdes</span>
+        <span style="background:#fffab8;padding:2px 8px;border-radius:4px;color:#7a7000;">Halogènes</span>
+        <span style="background:#ffd6f7;padding:2px 8px;border-radius:4px;color:#7a0070;">Gaz nobles</span>
+      </div>
+
+      <div class="tp-grid" style="min-width:640px;">
+        <!-- Période 1 -->
+        <div class="el non-metal el-highlight" title="Hydrogène Z=1"><div class="num">1</div><div class="sym">H</div></div>
+        <div class="el vide"></div><div class="el vide"></div><div class="el vide"></div>
+        <div class="el vide"></div><div class="el vide"></div><div class="el vide"></div>
+        <div class="el vide"></div><div class="el vide"></div><div class="el vide"></div>
+        <div class="el vide"></div><div class="el vide"></div><div class="el vide"></div>
+        <div class="el vide"></div><div class="el vide"></div><div class="el vide"></div>
+        <div class="el vide"></div>
+        <div class="el gaz-noble" title="Hélium Z=2"><div class="num">2</div><div class="sym">He</div></div>
+
+        <!-- Période 2 -->
+        <div class="el metal-alc" title="Lithium Z=3"><div class="num">3</div><div class="sym">Li</div></div>
+        <div class="el metal-alc-t" title="Béryllium Z=4"><div class="num">4</div><div class="sym">Be</div></div>
+        <div class="el vide"></div><div class="el vide"></div><div class="el vide"></div>
+        <div class="el vide"></div><div class="el vide"></div><div class="el vide"></div>
+        <div class="el vide"></div><div class="el vide"></div><div class="el vide"></div>
+        <div class="el vide"></div>
+        <div class="el metalloid" title="Bore Z=5"><div class="num">5</div><div class="sym">B</div></div>
+        <div class="el non-metal el-highlight" title="Carbone Z=6"><div class="num">6</div><div class="sym">C</div></div>
+        <div class="el non-metal" title="Azote Z=7"><div class="num">7</div><div class="sym">N</div></div>
+        <div class="el non-metal" title="Oxygène Z=8"><div class="num">8</div><div class="sym">O</div></div>
+        <div class="el halogene" title="Fluor Z=9"><div class="num">9</div><div class="sym">F</div></div>
+        <div class="el gaz-noble" title="Néon Z=10"><div class="num">10</div><div class="sym">Ne</div></div>
+
+        <!-- Période 3 -->
+        <div class="el metal-alc" title="Sodium Z=11"><div class="num">11</div><div class="sym">Na</div></div>
+        <div class="el metal-alc-t" title="Magnésium Z=12"><div class="num">12</div><div class="sym">Mg</div></div>
+        <div class="el vide"></div><div class="el vide"></div><div class="el vide"></div>
+        <div class="el vide"></div><div class="el vide"></div><div class="el vide"></div>
+        <div class="el vide"></div><div class="el vide"></div><div class="el vide"></div>
+        <div class="el vide"></div>
+        <div class="el metalloid" title="Aluminium Z=13"><div class="num">13</div><div class="sym">Al</div></div>
+        <div class="el metalloid" title="Silicium Z=14"><div class="num">14</div><div class="sym">Si</div></div>
+        <div class="el non-metal" title="Phosphore Z=15"><div class="num">15</div><div class="sym">P</div></div>
+        <div class="el non-metal" title="Soufre Z=16"><div class="num">16</div><div class="sym">S</div></div>
+        <div class="el halogene" title="Chlore Z=17"><div class="num">17</div><div class="sym">Cl</div></div>
+        <div class="el gaz-noble" title="Argon Z=18"><div class="num">18</div><div class="sym">Ar</div></div>
+
+        <!-- Période 4 (partielle) -->
+        <div class="el metal-alc" title="Potassium Z=19"><div class="num">19</div><div class="sym">K</div></div>
+        <div class="el metal-alc-t" title="Calcium Z=20"><div class="num">20</div><div class="sym">Ca</div></div>
+        <div class="el metal-trans" title="Scandium Z=21"><div class="num">21</div><div class="sym">Sc</div></div>
+        <div class="el metal-trans" title="Titane Z=22"><div class="num">22</div><div class="sym">Ti</div></div>
+        <div class="el metal-trans" title="Vanadium Z=23"><div class="num">23</div><div class="sym">V</div></div>
+        <div class="el metal-trans" title="Chrome Z=24"><div class="num">24</div><div class="sym">Cr</div></div>
+        <div class="el metal-trans" title="Manganèse Z=25"><div class="num">25</div><div class="sym">Mn</div></div>
+        <div class="el metal-trans" title="Fer Z=26"><div class="num">26</div><div class="sym">Fe</div></div>
+        <div class="el metal-trans" title="Cobalt Z=27"><div class="num">27</div><div class="sym">Co</div></div>
+        <div class="el metal-trans" title="Nickel Z=28"><div class="num">28</div><div class="sym">Ni</div></div>
+        <div class="el metal-trans" title="Cuivre Z=29"><div class="num">29</div><div class="sym">Cu</div></div>
+        <div class="el metal-trans" title="Zinc Z=30"><div class="num">30</div><div class="sym">Zn</div></div>
+        <div class="el metalloid" title="Gallium Z=31"><div class="num">31</div><div class="sym">Ga</div></div>
+        <div class="el metalloid" title="Germanium Z=32"><div class="num">32</div><div class="sym">Ge</div></div>
+        <div class="el non-metal" title="Arsenic Z=33"><div class="num">33</div><div class="sym">As</div></div>
+        <div class="el non-metal" title="Sélénium Z=34"><div class="num">34</div><div class="sym">Se</div></div>
+        <div class="el halogene" title="Brome Z=35"><div class="num">35</div><div class="sym">Br</div></div>
+        <div class="el gaz-noble" title="Krypton Z=36"><div class="num">36</div><div class="sym">Kr</div></div>
+      </div>
+
+      <p style="text-align:center;font-size:12px;color:#888;margin-top:8px;font-style:italic;">
+        Survolez les cases pour voir le nom complet. Cases dorées = éléments étudiés en cours.
+      </p>
+    </div>
+
+    <h3>3. Les grandes familles d'éléments</h3>
+
+    <table class="tab-cours">
+      <thead>
+        <tr>
+          <th>Famille</th>
+          <th>Groupe</th>
+          <th>Propriétés</th>
+          <th>Exemples</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Métaux alcalins</td>
+          <td>1</td>
+          <td>Très réactifs, forment des cations +1</td>
+          <td>Li, Na, K</td>
+        </tr>
+        <tr>
+          <td>Métaux alcalino-terreux</td>
+          <td>2</td>
+          <td>Réactifs, forment des cations +2</td>
+          <td>Mg, Ca, Ba</td>
+        </tr>
+        <tr>
+          <td>Halogènes</td>
+          <td>17</td>
+          <td>Très réactifs, forment des anions −1</td>
+          <td>F, Cl, Br, I</td>
+        </tr>
+        <tr>
+          <td>Gaz nobles</td>
+          <td>18</td>
+          <td>Inertes, stables, monoatomiques</td>
+          <td>He, Ne, Ar, Kr</td>
+        </tr>
+        <tr>
+          <td>Métaux de transition</td>
+          <td>3 à 12</td>
+          <td>Bons conducteurs, ions variés</td>
+          <td>Fe, Cu, Zn, Au</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>4. La règle de l'octet et la stabilité</h3>
+
+    <p>
+      La stabilité chimique est liée à la configuration électronique des couches. Les gaz nobles 
+      (groupe 18) possèdent une couche externe saturée avec <strong>8 électrons</strong> (ou 2 pour 
+      l'hélium). Cette configuration est particulièrement stable : c'est la <strong>règle de l'octet</strong>.
+    </p>
+
+    <p>
+      Les autres éléments réagissent chimiquement pour <em>atteindre cette configuration</em> en 
+      gagnant, perdant ou partageant des électrons, ce qui explique la formation des ions et des 
+      liaisons chimiques.
+    </p>
+
+    <div class="encadre encadre-vert">
+      <div class="encadre-titre">Exemple — Stabilité du chlore</div>
+      <p>
+        Le chlore (Z=17) possède 7 électrons sur sa couche externe. Il lui manque 1 électron 
+        pour atteindre la configuration de l'argon (gaz noble). Il gagne donc 1 électron 
+        et forme l'ion chlorure <span class="mono">Cl<sup>−</sup></span>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ──────── V. UNIVERSALITÉ ──────── -->
+  <section id="universalite">
+    <span class="section-number">Partie V</span>
+    <h2>L'universalité des éléments chimiques</h2>
+
+    <h3>1. Des éléments présents partout dans l'Univers</h3>
+
+    <p>
+      Une des découvertes les plus profondes du XX<sup>e</sup> siècle est que les éléments chimiques 
+      sont <strong>universels</strong> : les mêmes atomes se retrouvent sur Terre, dans les météorites, 
+      dans les étoiles et dans les nébuleuses les plus lointaines.
+    </p>
+
+    <p>
+      La spectroscopie — analyse de la lumière émise ou absorbée par la matière — permet d'identifier 
+      à distance les éléments présents dans les astres. Chaque élément possède un <strong>spectre 
+      unique</strong>, comme une empreinte digitale lumineuse.
+    </p>
+
+    <div class="encadre">
+      <div class="encadre-titre">🔭 Anecdote historique</div>
+      <p>
+        L'hélium (du grec <em>Helios</em>, Soleil) a été détecté dans le Soleil en 1868 par 
+        spectroscopie, <strong>27 ans avant</strong> sa découverte sur Terre ! C'est le seul 
+        élément à avoir été nommé d'après un corps céleste.
+      </p>
+    </div>
+
+    <h3>2. Abondance des éléments dans l'Univers</h3>
+
+    <p>
+      L'Univers est composé à environ 75 % d'hydrogène et 23 % d'hélium en masse — héritage du 
+      <em>Big Bang</em>. Les éléments plus lourds, synthétisés dans les étoiles, représentent 
+      seulement 2 % de la masse de l'Univers.
+    </p>
+
+    <table class="tab-cours">
+      <thead>
+        <tr>
+          <th>Élément</th>
+          <th>Symbole</th>
+          <th>Abondance dans l'Univers</th>
+          <th>Abondance sur Terre (croûte)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Hydrogène</td>
+          <td><span class="mono">H</span></td>
+          <td>~75 % (en masse)</td>
+          <td>0,14 %</td>
+        </tr>
+        <tr>
+          <td>Hélium</td>
+          <td><span class="mono">He</span></td>
+          <td>~23 %</td>
+          <td>traces</td>
+        </tr>
+        <tr>
+          <td>Oxygène</td>
+          <td><span class="mono">O</span></td>
+          <td>~0,1 %</td>
+          <td>~46 %</td>
+        </tr>
+        <tr>
+          <td>Carbone</td>
+          <td><span class="mono">C</span></td>
+          <td>~0,05 %</td>
+          <td>0,02 %</td>
+        </tr>
+        <tr>
+          <td>Azote</td>
+          <td><span class="mono">N</span></td>
+          <td>~0,06 %</td>
+          <td>traces</td>
+        </tr>
+        <tr>
+          <td>Silicium</td>
+          <td><span class="mono">Si</span></td>
+          <td>~0,003 %</td>
+          <td>~27 %</td>
+        </tr>
+        <tr>
+          <td>Fer</td>
+          <td><span class="mono">Fe</span></td>
+          <td>~0,11 %</td>
+          <td>~5 %</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>3. La nucléosynthèse : comment les éléments sont-ils formés ?</h3>
+
+    <p>
+      Les éléments chimiques n'ont pas tous été créés en même temps. Leur formation s'est étalée 
+      sur des milliards d'années selon différents processus :
+    </p>
+
+    <ul class="liste-cours">
+      <li>
+        <strong>Big Bang (−13,8 milliards d'années)</strong> : formation de l'hydrogène (H), 
+        de l'hélium (He) et de traces de lithium (Li) et béryllium (Be).
+      </li>
+      <li>
+        <strong>Cœur des étoiles</strong> : la fusion nucléaire produit les éléments jusqu'au 
+        fer (Z=26). Le Soleil fusionne 600 millions de tonnes d'H en He chaque seconde.
+      </li>
+      <li>
+        <strong>Supernovæ</strong> : explosions d'étoiles massives qui synthétisent et dispersent 
+        les éléments lourds (Z > 26) dans le milieu interstellaire.
+      </li>
+      <li>
+        <strong>Fusion d'étoiles à neutrons</strong> : produit les éléments très lourds comme 
+        l'or (Au) et le platine (Pt). Confirmé en 2017 (GW170817).
+      </li>
+    </ul>
+
+    <div class="encadre encadre-rouge">
+      <div class="encadre-titre">🌟 Poussières d'étoiles</div>
+      <p>
+        Tous les atomes présents dans notre corps — le calcium de nos os, le fer de notre sang, 
+        l'oxygène que nous respirons — ont été fabriqués dans des étoiles mortes, parfois il y a 
+        plus de 10 milliards d'années. Comme l'a dit l'astrophysicien Carl Sagan : 
+        « <em>Nous sommes faits de poussières d'étoiles.</em> »
+      </p>
+    </div>
+
+    <h3>4. La spectroscopie : lire les éléments dans la lumière</h3>
+
+    <p>
+      Chaque élément absorbe et émet de la lumière à des longueurs d'onde précises, formant un 
+      spectre caractéristique. On distingue :
+    </p>
+
+    <div class="prop-grid">
+      <div class="prop-card">
+        <span class="val" style="font-size:1rem;color:#2a6b4a;">Spectre d'émission</span>
+        <span class="lbl">Raies lumineuses colorées sur fond noir. L'élément émet de la lumière à des λ précises lorsqu'il est chauffé ou excité.</span>
+      </div>
+      <div class="prop-card">
+        <span class="val" style="font-size:1rem;color:#8b2020;">Spectre d'absorption</span>
+        <span class="lbl">Raies sombres sur fond arc-en-ciel. L'élément absorbe certaines λ quand la lumière blanche le traverse.</span>
+      </div>
+    </div>
+
+    <p>
+      C'est grâce aux raies d'absorption dans le spectre solaire (raies de Fraunhofer) que 
+      l'on peut déterminer la composition chimique du Soleil et de toutes les étoiles.
+    </p>
+  </section>
+
+  <!-- ──────── RÉSUMÉ ──────── -->
+  <div class="resume-box">
+    <h3>📋 Résumé du chapitre</h3>
+    <ul>
+      <li>Un <strong>élément chimique</strong> est défini par son numéro atomique Z (nombre de protons).</li>
+      <li>L'<strong>atome</strong> est constitué d'un noyau (protons + neutrons) entouré d'un nuage électronique.</li>
+      <li>La notation symbolique est <strong><sup>A</sup><sub>Z</sub>X</strong> avec A = Z + N.</li>
+      <li>Des <strong>isotopes</strong> ont le même Z mais des N (et A) différents.</li>
+      <li>Le <strong>tableau périodique</strong> classe les 118 éléments par Z croissant en périodes et groupes.</li>
+      <li>Les éléments chimiques sont <strong>universels</strong> : on les retrouve dans toute la matière connue.</li>
+      <li>Les éléments ont été synthétisés par <strong>nucléosynthèse</strong> : Big Bang, cœurs d'étoiles, supernovæ.</li>
+      <li>La <strong>spectroscopie</strong> permet d'identifier les éléments à distance grâce à leurs raies spectrales.</li>
+    </ul>
+  </div>
+
+  <!-- ──────── QUIZ ──────── -->
+  <section id="quiz">
+    <div class="quiz-section">
+      <h3>🧪 Quiz d'auto-évaluation</h3>
+
+      <div class="quiz-q" id="q1">
+        <p>1. Quel est le numéro atomique Z de l'oxygène ?</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="repondre('q1',this,false)">6</button>
+          <button class="quiz-btn" onclick="repondre('q1',this,true)">8</button>
+          <button class="quiz-btn" onclick="repondre('q1',this,false)">16</button>
+          <button class="quiz-btn" onclick="repondre('q1',this,false)">18</button>
+        </div>
+        <div class="quiz-feedback" id="f1"></div>
+      </div>
+
+      <div class="quiz-q" id="q2">
+        <p>2. L'atome <span class="mono"><sup>14</sup><sub>6</sub>C</span> possède combien de neutrons ?</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="repondre('q2',this,false)">6</button>
+          <button class="quiz-btn" onclick="repondre('q2',this,false)">12</button>
+          <button class="quiz-btn" onclick="repondre('q2',this,true)">8</button>
+          <button class="quiz-btn" onclick="repondre('q2',this,false)">14</button>
+        </div>
+        <div class="quiz-feedback" id="f2"></div>
+      </div>
+
+      <div class="quiz-q" id="q3">
+        <p>3. Qu'est-ce que des isotopes ?</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="repondre('q3',this,false)">Atomes de même A mais Z différents</button>
+          <button class="quiz-btn" onclick="repondre('q3',this,true)">Atomes de même Z mais A différents</button>
+          <button class="quiz-btn" onclick="repondre('q3',this,false)">Ions de même charge</button>
+          <button class="quiz-btn" onclick="repondre('q3',this,false)">Molécules de même formule</button>
+        </div>
+        <div class="quiz-feedback" id="f3"></div>
+      </div>
+
+      <div class="quiz-q" id="q4">
+        <p>4. Quel est l'élément le plus abondant dans l'Univers ?</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="repondre('q4',this,false)">Oxygène</button>
+          <button class="quiz-btn" onclick="repondre('q4',this,false)">Hélium</button>
+          <button class="quiz-btn" onclick="repondre('q4',this,true)">Hydrogène</button>
+          <button class="quiz-btn" onclick="repondre('q4',this,false)">Carbone</button>
+        </div>
+        <div class="quiz-feedback" id="f4"></div>
+      </div>
+
+      <div class="quiz-q" id="q5">
+        <p>5. Où se trouve la quasi-totalité de la masse d'un atome ?</p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="repondre('q5',this,false)">Dans les électrons</button>
+          <button class="quiz-btn" onclick="repondre('q5',this,true)">Dans le noyau</button>
+          <button class="quiz-btn" onclick="repondre('q5',this,false)">Uniformément répartie</button>
+          <button class="quiz-btn" onclick="repondre('q5',this,false)">Dans la couche externe</button>
+        </div>
+        <div class="quiz-feedback" id="f5"></div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    Enseignement scientifique — Classe de Première &nbsp;|&nbsp;
+    Thème 1 : <span>La matière et l'Univers</span>
+  </p>
+  <p style="margin-top:6px; font-size:11px; opacity:0.5;">
+    D'après le programme officiel de physique-chimie de l'Enseignement Scientifique (Terminale/1re)
+  </p>
+</footer>
+
+<script>
+  const feedbacks = {
+    f1: {ok: "✅ Exact ! L'oxygène a Z = 8 protons, ce qui lui vaut sa 8e place dans le tableau.", ko: "❌ Non. L'oxygène est au groupe 16, période 2, avec Z = 8 protons."},
+    f2: {ok: "✅ Bravo ! N = A − Z = 14 − 6 = 8 neutrons.", ko: "❌ Rappel : N = A − Z = 14 − 6 = 8 neutrons."},
+    f3: {ok: "✅ Correct ! Les isotopes ont le même Z (même élément) mais un A différent (nombre de neutrons différent).", ko: "❌ Les isotopes partagent le même Z (mêmes protons) mais ont un nombre de neutrons N différent."},
+    f4: {ok: "✅ Exact ! L'hydrogène représente ~75 % de la masse de l'Univers, formé lors du Big Bang.", ko: "❌ C'est l'hydrogène qui est le plus abondant (~75 %), suivi de l'hélium (~23 %)."},
+    f5: {ok: "✅ Parfait ! Le noyau concentre >99,97 % de la masse de l'atome, malgré sa très petite taille.", ko: "❌ Le noyau, bien que 10 000 fois plus petit que l'atome, en contient la quasi-totalité de la masse."},
+  };
+
+  function repondre(qId, btn, correct) {
+    const q = document.getElementById(qId);
+    if (q.dataset.done) return;
+    q.dataset.done = '1';
+
+    const allBtns = q.querySelectorAll('.quiz-btn');
+    allBtns.forEach(b => b.style.pointerEvents = 'none');
+
+    const fId = 'f' + qId.slice(1);
+    btn.classList.add(correct ? 'correct' : 'wrong');
+    document.getElementById(fId).textContent = feedbacks[fId][correct ? 'ok' : 'ko'];
+
+    if (!correct) {
+      allBtns.forEach(b => {
+        b.onclick && b.setAttribute('data-was-correct', '');
+      });
+    }
+  }
+</script>
+</body>
+</html>
