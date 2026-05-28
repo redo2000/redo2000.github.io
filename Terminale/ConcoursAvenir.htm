@@ -411,6 +411,76 @@
     max-width: 160px;
     border-radius: 4px;
   }
+
+  /* ── ANNALES TABLE — RESPONSIVE MOBILE ── */
+  @media (max-width: 600px) {
+    .annales-wrap {
+      overflow: visible;
+    }
+
+    /* Masquer le tableau classique sur mobile */
+    .annales-table {
+      display: none;
+    }
+
+    /* Afficher les blocs mobiles */
+    .annales-mobile {
+      display: block;
+    }
+
+    .annales-mobile-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 14px;
+      backdrop-filter: blur(6px);
+    }
+
+    .annales-mobile-section-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .annales-mobile-section-title.cyan { color: var(--cyan); }
+    .annales-mobile-section-title.gold { color: var(--gold); }
+
+    .annales-mobile-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(0,229,255,0.07);
+      gap: 8px;
+    }
+    .annales-mobile-row:last-child { border-bottom: none; }
+
+    .annales-mobile-year {
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: #fff;
+      min-width: 40px;
+    }
+
+    .annales-mobile-btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+  }
+
+  /* Masquer les blocs mobiles sur desktop */
+  .annales-mobile {
+    display: none;
+  }
 </style>
 <meta name="generator" content="Namo WebEditor(Trial)">
 </head>
@@ -527,7 +597,118 @@
     </table>
   </div>
 
-  <!-- REVISION LINK -->
+  <!-- ANNALES MOBILE (portrait smartphone) -->
+  <div class="annales-mobile">
+
+    <!-- Sciences A -->
+    <div class="annales-mobile-section">
+      <div class="annales-mobile-section-title cyan">Sciences A</div>
+      <div class="annales-mobile-row">
+        <span class="annales-mobile-year">2020</span>
+        <div class="annales-mobile-btns">
+          <a class="doc-link sujet" href="ConcoursAvenir/sciences2020.pdf">Sujet</a>
+          <a class="doc-link corrige" href="ConcoursAvenir/corrige_sciences_2020.pdf">Corrig&eacute;</a>
+        </div>
+      </div>
+      <div class="annales-mobile-row">
+        <span class="annales-mobile-year">2021</span>
+        <div class="annales-mobile-btns">
+          <a class="doc-link sujet" href="ConcoursAvenir/sciences2021.pdf">Sujet</a>
+          <a class="doc-link corrige" href="ConcoursAvenir/corrige_sciences_2021.pdf">Corrig&eacute;</a>
+        </div>
+      </div>
+      <div class="annales-mobile-row">
+        <span class="annales-mobile-year">2022</span>
+        <div class="annales-mobile-btns">
+          <a class="doc-link sujet" href="ConcoursAvenir/sciences_A_sujet_2022.pdf">Sujet</a>
+          <a class="doc-link corrige" href="ConcoursAvenir/corrige_sciences_2022.pdf">Corrig&eacute;</a>
+        </div>
+      </div>
+      <div class="annales-mobile-row">
+        <span class="annales-mobile-year">2023</span>
+        <div class="annales-mobile-btns">
+          <a class="doc-link sujet" href="ConcoursAvenir/sujet_sciences_A_principal_2023.pdf">Sujet</a>
+          <a class="doc-link corrige" href="ConcoursAvenir/reponses_sciences_A_principal_2023.pdf">Corrig&eacute;</a>
+        </div>
+      </div>
+      <div class="annales-mobile-row">
+        <span class="annales-mobile-year">2024</span>
+        <div class="annales-mobile-btns">
+          <a class="doc-link sujet" href="ConcoursAvenir/CA_annales_sciences_A_sujet_officiel_2324-P.pdf">Sujet</a>
+          <a class="doc-link corrige" href="ConcoursAvenir/CA_annales_sciences_reponses_sujets_officiels_2324-P.pdf">Corrig&eacute;</a>
+        </div>
+      </div>
+      <div class="annales-mobile-row">
+        <span class="annales-mobile-year">2025</span>
+        <div class="annales-mobile-btns">
+          <a class="doc-link sujet" href="ConcoursAvenir/CA_annales_sciences_A_sujet_officiel_2025.pdf">Sujet</a>
+          <a class="doc-link corrige" href="ConcoursAvenir/CA_annales_sciences_reponses_sujets_officiels_2025.pdf">Corrig&eacute;</a>
+        </div>
+      </div>
+      <div class="annales-mobile-row">
+        <span class="annales-mobile-year">2026</span>
+        <div class="annales-mobile-btns">
+          <span class="doc-link soon">&Agrave; venir</span>
+          <span class="doc-link soon">&Agrave; venir</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Physique B -->
+    <div class="annales-mobile-section">
+      <div class="annales-mobile-section-title gold">Physique B</div>
+      <div class="annales-mobile-row">
+        <span class="annales-mobile-year">2020</span>
+        <div class="annales-mobile-btns">
+          <span class="doc-link soon">—</span>
+          <span class="doc-link soon">—</span>
+        </div>
+      </div>
+      <div class="annales-mobile-row">
+        <span class="annales-mobile-year">2021</span>
+        <div class="annales-mobile-btns">
+          <span class="doc-link soon">—</span>
+          <span class="doc-link soon">—</span>
+        </div>
+      </div>
+      <div class="annales-mobile-row">
+        <span class="annales-mobile-year">2022</span>
+        <div class="annales-mobile-btns">
+          <span class="doc-link soon">—</span>
+          <span class="doc-link soon">—</span>
+        </div>
+      </div>
+      <div class="annales-mobile-row">
+        <span class="annales-mobile-year">2023</span>
+        <div class="annales-mobile-btns">
+          <a class="doc-link sujet" href="ConcoursAvenir/sujet_physique_B_principal_2023.pdf">Sujet</a>
+          <a class="doc-link corrige" href="ConcoursAvenir/reponses_physique_B_principal_2023.pdf">Corrig&eacute;</a>
+        </div>
+      </div>
+      <div class="annales-mobile-row">
+        <span class="annales-mobile-year">2024</span>
+        <div class="annales-mobile-btns">
+          <a class="doc-link sujet" href="ConcoursAvenir/CA_annales_physique_B_sujet_officiel_2324-P.pdf">Sujet</a>
+          <a class="doc-link corrige" href="ConcoursAvenir/CA_annales_sciences_reponses_sujets_officiels_2324-P.pdf">Corrig&eacute;</a>
+        </div>
+      </div>
+      <div class="annales-mobile-row">
+        <span class="annales-mobile-year">2025</span>
+        <div class="annales-mobile-btns">
+          <a class="doc-link sujet" href="ConcoursAvenir/CA_annales_physique_B_sujet_officiel_2025.pdf">Sujet</a>
+          <a class="doc-link corrige" href="ConcoursAvenir/CA_annales_sciences_reponses_sujets_officiels_2025.pdf">Corrig&eacute;</a>
+        </div>
+      </div>
+      <div class="annales-mobile-row">
+        <span class="annales-mobile-year">2026</span>
+        <div class="annales-mobile-btns">
+          <span class="doc-link soon">&Agrave; venir</span>
+          <span class="doc-link soon">&Agrave; venir</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
   <div style="text-align:center; margin-top:20px; margin-right:0; margin-bottom:20px; margin-left:0;">
     <a href="../ConcoursAvenir2023-Revision2026.pdf" style="display:inline-block;">
       </a>
