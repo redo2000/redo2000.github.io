@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<title>BAC Physique-Chimie | Annales & Sujets</title>
+<link rel="icon" type="image/png" sizes="16x16" href="RedoFavIcon.png">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan: #00e5ff;
+    --gold: #ffd54f;
+    --violet: #b388ff;
+    --green: #69ff47;
+    --bg: #040a14;
+    --bg2: #080f1e;
+    --card: rgba(0,229,255,0.04);
+    --border: rgba(0,229,255,0.18);
+    --text: #e8f4f8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated starfield background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(0,229,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 40%, rgba(255,213,79,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 8%, rgba(179,136,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 25%, rgba(0,229,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 85% 60%, rgba(255,213,79,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 75%, rgba(179,136,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 92% 85%, rgba(0,229,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 38% 90%, rgba(255,213,79,0.3) 0%, transparent 100%),
+      radial-gradient(2px 2px at 60% 70%, rgba(0,229,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 78% 45%, rgba(179,136,255,0.4) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glowing grid lines */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+
+  /* ── HEADER ── */
+  .hero {
+    text-align: center;
+    padding: 50px 0 40px;
+    position: relative;
+  }
+
+  .hero-sub {
+    font-size: 0.85rem;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+
+  .hero-name {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 20px rgba(0,229,255,0.6), 0 0 40px rgba(0,229,255,0.3);
+    margin-bottom: 6px;
+  }
+
+  .hero-email a {
+    color: rgba(0,229,255,0.6);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    transition: color 0.3s;
+  }
+  .hero-email a:hover { color: var(--cyan); }
+
+  .social-row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 30px 0 20px;
+  }
+
+  .social-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 22px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--card);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    transition: all 0.3s;
+    backdrop-filter: blur(8px);
+  }
+  .social-btn:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 20px rgba(0,229,255,0.25);
+    color: var(--cyan);
+  }
+  .social-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  .hero-link {
+    display: inline-block;
+    margin: 10px 0 30px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    color: var(--green);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    border-bottom: 1px solid rgba(105,255,71,0.3);
+    padding-bottom: 2px;
+    transition: all 0.3s;
+  }
+  .hero-link:hover { color: #fff; border-bottom-color: #fff; }
+
+  /* ── SPECIALTY BADGE ── */
+  .specialty-block {
+    text-align: center;
+    margin: 20px 0 30px;
+  }
+  .specialty-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,213,79,0.7);
+    margin-bottom: 10px;
+  }
+  .specialty-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    line-height: 1;
+  }
+  .specialty-title .b { color: var(--gold); text-shadow: 0 0 30px rgba(255,213,79,0.8); }
+  .specialty-title .a { color: var(--cyan); text-shadow: 0 0 30px rgba(0,229,255,0.8); }
+  .specialty-title .c { color: var(--green); text-shadow: 0 0 30px rgba(105,255,71,0.8); }
+  .specialty-title .dash { color: rgba(255,255,255,0.3); margin: 0 6px; }
+
+  .terminale-tag {
+    display: inline-block;
+    margin: 14px 0 0;
+    padding: 5px 22px;
+    border: 1px solid rgba(255,213,79,0.4);
+    border-radius: 2px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .terminale-tag:hover {
+    background: rgba(255,213,79,0.1);
+    border-color: rgba(255,213,79,0.7);
+    box-shadow: 0 0 14px rgba(255,213,79,0.25);
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 50px 0 20px;
+  }
+  .section-title::before, .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border));
+  }
+  .section-title::after { background: linear-gradient(90deg, var(--border), transparent); }
+  .section-title span {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    white-space: nowrap;
+  }
+
+  /* ── ANNALES TABLES ── */
+  .annales-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow-x: auto;
+    backdrop-filter: blur(6px);
+    margin-bottom: 25px;
+  }
+
+  .annales-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+  }
+
+  .annales-table thead th {
+    padding: 14px 12px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .annales-table thead th.col-cyan { color: var(--cyan); }
+  .annales-table thead th.col-gold { color: var(--gold); }
+  .annales-table thead th.col-green { color: var(--green); }
+
+  .annales-table tbody tr {
+    border-bottom: 1px solid rgba(0,229,255,0.07);
+    transition: background 0.2s;
+  }
+  .annales-table tbody tr:last-child { border-bottom: none; }
+  .annales-table tbody tr:hover { background: rgba(0,229,255,0.05); }
+
+  .annales-table td {
+    padding: 12px 10px;
+    text-align: center;
+    font-size: 0.82rem;
+  }
+
+  .year-cell {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+  }
+
+  .doc-link {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .doc-link.sujet {
+    border: 1px solid rgba(0,229,255,0.35);
+    color: var(--cyan);
+    background: rgba(0,229,255,0.06);
+  }
+  .doc-link.sujet:hover {
+    background: rgba(0,229,255,0.15);
+    box-shadow: 0 0 12px rgba(0,229,255,0.3);
+  }
+  .doc-link.corrige {
+    border: 1px solid rgba(255,213,79,0.35);
+    color: var(--gold);
+    background: rgba(255,213,79,0.06);
+  }
+  .doc-link.corrige:hover {
+    background: rgba(255,213,79,0.15);
+    box-shadow: 0 0 12px rgba(255,213,79,0.3);
+  }
+  .doc-link.soon {
+    color: rgba(255,255,255,0.2);
+    font-style: italic;
+    cursor: default;
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 5px 14px;
+  }
+
+  .region-badge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+
+  /* Mobile cards for annales (replaces complex table on small screens) */
+  .annales-mobile {
+    display: none;
+  }
+
+  @media (max-width: 750px) {
+    .annales-table {
+      display: none;
+    }
+    .annales-mobile {
+      display: block;
+    }
+    .region-cards {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(6px);
+      overflow: hidden;
+    }
+    .region-header {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .region-header.amerique { color: var(--cyan); }
+    .region-header.asie { color: var(--gold); }
+    .region-header.etrangers { color: var(--green); }
+    .region-header.metropole { color: var(--violet); }
+
+    .year-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(0,229,255,0.07);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .year-block:last-child { border-bottom: none; }
+    .year-label {
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      font-size: 0.8rem;
+      min-width: 65px;
+    }
+    .links-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+  }
+
+  /* chapters grid same as concours */
+  .chapters-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  @media (max-width: 650px) {
+    .chapters-grid { grid-template-columns: 1fr; }
+    .social-row { flex-direction: column; align-items: center; }
+  }
+
+  .chapter-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s;
+    backdrop-filter: blur(4px);
+  }
+  .chapter-card:hover {
+    border-color: var(--cyan);
+    background: rgba(0,229,255,0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,229,255,0.15);
+  }
+  .chapter-card.phys:hover { border-color: var(--cyan); }
+  .chapter-card.chem:hover { border-color: var(--gold); }
+  .chapter-card.spec:hover { border-color: var(--violet); }
+
+  .ch-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    font-weight: 900;
+    padding: 3px 7px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .phys .ch-num { background: rgba(0,229,255,0.15); color: var(--cyan); }
+  .chem .ch-num { background: rgba(255,213,79,0.15); color: var(--gold); }
+  .spec .ch-num { background: rgba(179,136,255,0.15); color: var(--violet); }
+
+  .ch-title {
+    font-size: 0.78rem;
+    line-height: 1.35;
+    font-weight: 400;
+    color: rgba(255,255,255,0.85);
+  }
+  .chapter-card:hover .ch-title { color: #fff; }
+
+  .footer {
+    text-align: center;
+    margin-top: 70px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+  }
+  .footer p {
+    font-size: 0.75rem;
+    color: rgba(255,140,60,0.6);
+    letter-spacing: 0.15em;
+    font-style: italic;
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+  .hero-name { animation: glow-pulse 3s ease-in-out infinite; }
+
+  @keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+  .scanline {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0,229,255,0.12), transparent);
+    animation: scan 8s linear infinite;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .divider-star {
+    text-align: center;
+    color: var(--gold);
+    font-size: 1.2rem;
+    margin: 8px 0 20px;
+    opacity: 0.6;
+  }
+  .img-deco {
+    max-width: 100%;
+    margin: 0 auto 20px;
+    display: block;
+    filter: drop-shadow(0 4px 16px rgba(0,0,0,0.8));
+    border-radius: 6px;
+  }
+  .back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    text-decoration: none;
+    background: rgba(0,0,0,0.7);
+    padding: 8px 12px;
+    border-radius: 30px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    border: 1px solid var(--border);
+    transition: 0.3s;
+    z-index: 100;
+  }
+  .back-to-top:hover {
+    background: var(--cyan);
+    color: black;
+  }
+</style>
+<meta name="generator" content="Namo WebEditor(Trial)">
+</head>
+<body>
+
+<div class="scanline"></div>
+
+<div class="page-wrap">
+
+  <!-- HEADER identical to ConcoursAvenir -->
+  <header class="hero">
+    <p class="hero-sub">Avec le Professeur de Physique-Chimie</p>
+    <h1 class="hero-name">Mr. TCHIKOU Redhouane</h1>
+    <p class="hero-email"><a href="mailto:redo009@gmail.com">redo009@gmail.com</a></p>
+
+    <div class="social-row">
+      <a class="social-btn" href="https://www.tiktok.com/@redo2000?_t=8oNTsvc8h5Z&_r=1">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.28 8.28 0 004.84 1.56V6.78a4.87 4.87 0 01-1.07-.09z"/></svg>
+        TikTok
+      </a>
+      <a class="social-btn" href="http://www.youtube.com/@redo_2000">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 00-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 00.5 6.19C0 8.04 0 12 0 12s0 3.96.5 5.81a3.02 3.02 0 002.12 2.14C4.46 20.5 12 20.5 12 20.5s7.54 0 9.38-.55a3.02 3.02 0 002.12-2.14C24 15.96 24 12 24 12s0-3.96-.5-5.81zM9.75 15.52V8.48L15.82 12l-6.07 3.52z"/></svg>
+        YouTube
+      </a>
+    </div>
+
+    <a class="hero-link" href="https://redo2000.github.io/">redo2000.github.io</a>
+
+    <div class="specialty-block">
+      <div class="specialty-label">BAC 2024 • 2025 • 2026</div>
+      <div class="specialty-title">
+        <span class="b">B</span><span class="dash">•</span><span class="a">A</span><span class="dash">•</span><span class="c">C</span>
+      </div>
+      <a class="terminale-tag" href="../Terminale.htm">Physique-Chimie Terminale</a>
+    </div>
+  </header>
+
+  <!-- ========== ANNÉE 2024 ========== -->
+  <div class="section-title"><span>✦ Session 2024 ✦</span></div>
+
+  <!-- Desktop table 2024 -->
+  <div class="annales-wrap">
+    <table class="annales-table">
+      <thead>
+        <tr><th>S&eacute;rie</th><th class="col-cyan">Sujet 1</th><th class="col-gold">Corrig&eacute; 1</th><th class="col-cyan">Sujet 2</th><th class="col-gold">Corrig&eacute; 2</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="year-cell">Am&eacute;rique nord</td><td><a class="doc-link sujet" href="2024-AmNord-J1-Sujet.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2024-AmNord-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2024-AmNord-J2-Sujet.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2024-AmNord-J2-Correction.pdf">Corr. 2</a></td></tr>
+        <tr><td class="year-cell">Centres &eacute;trangers</td><td><a class="doc-link sujet" href="2024-CentresEtrangers-J1-Sujet.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2024-CentresEtrangers-J1-Correction-.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2024-CentresEtrangers-J2-Sujet.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2024-CentresEtrangers-J2-Correction-.pdf">Corr. 2</a></td></tr>
+        <tr><td class="year-cell">Asie</td><td><a class="doc-link sujet" href="2024-Asie-J1-Sujet.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2024-Asie-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2024-Asie-J2-Sujet.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2024-Asie-J2-Correction.pdf">Corr. 2</a></td></tr>
+        <tr><td class="year-cell">M&eacute;tropole</td><td><a class="doc-link sujet" href="2024-Metro-J1-.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2024-Metro-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2024-Metro-J2-Sujet.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2024-Metro-J2-Correction.pdf">Corr. 2</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ========== ANNÉE 2025 ========== -->
+  <div class="section-title"><span>✦ Session 2025 ✦</span></div>
+  <div class="annales-wrap">
+    <table class="annales-table">
+      <thead><tr><th>S&eacute;rie</th><th class="col-cyan">Sujet 1</th><th class="col-gold">Corrig&eacute; 1</th><th class="col-cyan">Sujet 2</th><th class="col-gold">Corrig&eacute; 2</th><th>Suppl.</th></tr></thead>
+      <tbody>
+        <tr><td class="year-cell">Am&eacute;rique nord</td><td><a class="doc-link sujet" href="2025-AmNord-J1-Sujet-Original.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2025-AmNord-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2025-AmNord-J2-Sujet.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2025-AmNord-J2-Correction.pdf">Corr. 2</a></td><td><a class="doc-link sujet" href="spe-physique-chimie-2025-amerique-nord-2bis-Sujet-Corrigé.pdf">Bis+Corr</a></td></tr>
+        <tr><td class="year-cell">Asie</td><td><a class="doc-link sujet" href="2025-Asie-J1-Sujet-Original.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2025-Asie-J1-Corrigé.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2025-Asie-J2-Sujet-Original.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2025-Asie-J2-Corrigé.pdf">Corr. 2</a></td><td><span class="doc-link soon">—</span></td></tr>
+        <tr><td class="year-cell">Centres &eacute;trangers</td><td><a class="doc-link sujet" href="2025-CtresEtrangers1-J1-Sujet-Original.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2025-CtresEtrangers1-J1-Corrigé.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2025-CtresEtrangers1-J2-Sujet-Original.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2025-CtresEtrangers1-J2-Corrigé.pdf">Corr. 2</a></td><td><span class="doc-link soon">—</span></td></tr>
+        <tr><td class="year-cell">M&eacute;tropole</td><td><a class="doc-link sujet" href="2025-Metro-J1-Sujet-Original.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2025-Metro-J1-Corrigé-01.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="Metropole-sujet-2-2025.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="Metropole-Corrigé-2-2025.pdf">Corr. 2</a></td><td><span class="doc-link soon">—</span></td></tr>
+        <tr><td class="year-cell">Polyn&eacute;sie</td><td><a class="doc-link sujet" href="spe-physique-chimie-2025-polynesie-1-sujet-officiel.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2025-Polynesie-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2025-Polynesie-J2-Sujet-Original.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2025-Polynesie-J2-Correction.pdf">Corr. 2</a></td><td><span class="doc-link soon">—</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ========== ANNÉE 2026 ========== -->
+  <div class="section-title"><span>✦ Session 2026 ✦</span></div>
+  <div class="annales-wrap">
+    <table class="annales-table">
+      <thead><tr><th>S&eacute;rie</th><th class="col-cyan">Sujet 1</th><th class="col-gold">Corrig&eacute; 1</th><th class="col-cyan">Sujet 2</th><th class="col-gold">Corrig&eacute; 2</th></tr></thead>
+      <tbody>
+        <tr><td class="year-cell">Am&eacute;rique nord</td><td><a class="doc-link sujet" href="2026-AmNord-J1-Sujet-Original_0.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2026-AmNord-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2026-AmNord-J2-Sujet-Original_0.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2026-AmNord-J2-Corrigé.pdf">Corr. 2</a></td></tr>
+        <tr><td class="year-cell">Asie</td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td></tr>
+        <tr><td class="year-cell">Centres &eacute;trangers</td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td></tr>
+        <tr><td class="year-cell">M&eacute;tropole</td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td></tr>
+        <tr><td class="year-cell">Polyn&eacute;sie</td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MOBILE ADAPTATION (compact cards) -->
+  <div class="annales-mobile">
+    <div class="region-cards"><div class="region-header amerique">߇&ordm;߇&cedil; Am&eacute;rique nord 2024</div>
+      <div class="year-block"><span class="year-label">Jour 1</span><div class="links-group"><a class="doc-link sujet" href="2024-AmNord-J1-Sujet.pdf">Sujet</a><a class="doc-link corrige" href="2024-AmNord-J1-Correction.pdf">Corrig&eacute;</a></div></div>
+      <div class="year-block"><span class="year-label">Jour 2</span><div class="links-group"><a class="doc-link sujet" href="2024-AmNord-J2-Sujet.pdf">Sujet</a><a class="doc-link corrige" href="2024-AmNord-J2-Correction.pdf">Corrig&eacute;</a></div></div>
+    </div>
+    <div class="region-cards"><div class="region-header etrangers">ߌ Centres &eacute;trangers 2024</div>
+      <div class="year-block"><span class="year-label">Jour 1</span><div class="links-group"><a class="doc-link sujet" href="2024-CentresEtrangers-J1-Sujet.pdf">Sujet</a><a class="doc-link corrige" href="2024-CentresEtrangers-J1-Correction-.pdf">Corrig&eacute;</a></div></div>
+      <div class="year-block"><span class="year-label">Jour 2</span><div class="links-group"><a class="doc-link sujet" href="2024-CentresEtrangers-J2-Sujet.pdf">Sujet</a><a class="doc-link corrige" href="2024-CentresEtrangers-J2-Correction-.pdf">Corrig&eacute;</a></div></div>
+    </div>
+    <div class="region-cards"><div class="region-header asie">ߌ Asie 2025</div>
+      <div class="year-block"><span class="year-label">Jour 1</span><div class="links-group"><a class="doc-link sujet" href="2025-Asie-J1-Sujet-Original.pdf">Sujet</a><a class="doc-link corrige" href="2025-Asie-J1-Corrigé.pdf">Corrig&eacute;</a></div></div>
+      <div class="year-block"><span class="year-label">Jour 2</span><div class="links-group"><a class="doc-link sujet" href="2025-Asie-J2-Sujet-Original.pdf">Sujet</a><a class="doc-link corrige" href="2025-Asie-J2-Corrigé.pdf">Corrig&eacute;</a></div></div>
+    </div>
+    <div class="region-cards"><div class="region-header metropole">߇&laquo;߇&middot; M&eacute;tropole 2025</div>
+      <div class="year-block"><span class="year-label">Jour 1</span><div class="links-group"><a class="doc-link sujet" href="2025-Metro-J1-Sujet-Original.pdf">Sujet</a><a class="doc-link corrige" href="2025-Metro-J1-Corrigé-01.pdf">Corrig&eacute;</a></div></div>
+      <div class="year-block"><span class="year-label">Jour 2</span><div class="links-group"><a class="doc-link sujet" href="Metropole-sujet-2-2025.pdf">Sujet</a><a class="doc-link corrige" href="Metropole-Corrigé-2-2025.pdf">Corrig&eacute;</a></div></div>
+    </div>
+    <div class="region-cards"><div class="region-header amerique">ߏ️ Polyn&eacute;sie 2025</div>
+      <div class="year-block"><span class="year-label">Jour 1</span><div class="links-group"><a class="doc-link sujet" href="spe-physique-chimie-2025-polynesie-1-sujet-officiel.pdf">Sujet</a><a class="doc-link corrige" href="2025-Polynesie-J1-Correction.pdf">Corrig&eacute;</a></div></div>
+      <div class="year-block"><span class="year-label">Jour 2</span><div class="links-group"><a class="doc-link sujet" href="2025-Polynesie-J2-Sujet-Original.pdf">Sujet</a><a class="doc-link corrige" href="2025-Polynesie-J2-Correction.pdf">Corrig&eacute;</a></div></div>
+    </div>
+  </div>
+
+  <div class="divider-star">✧ ✦ ✧</div>
+
+  <!-- Programme sections -->
+  <div class="section-title"><span>✦ Programme • Cours &amp; Applications ✦</span></div>
+  
+    <p>&nbsp;</p>
+
+  <div class="chapters-grid">
+    <a class="chapter-card chem" href="01_Tle_Transformations_acide-base.htm"><span class="ch-num">01</span><span class="ch-title">Transformations acide-base</span></a>
+    <a class="chapter-card chem" href="02_Tle_Méthodes_physiques_d_analyse.htm"><span class="ch-num">02</span><span class="ch-title">M&eacute;thodes physiques d'analyse</span></a>
+    <a class="chapter-card chem" href="03_Tle_Méthodes_Chimiques_d_analyse.htm"><span class="ch-num">03</span><span class="ch-title">M&eacute;thodes chimiques d'analyse</span></a>
+    <a class="chapter-card chem" href="04_Tle_Sens_d_évolution_spontané_d_un_système.htm"><span class="ch-num">04</span><span class="ch-title">Sens d'&eacute;volution spontan&eacute;</span></a>
+    <a class="chapter-card chem" href="05_Tle_Force_des_acides_et_des_bases.htm"><span class="ch-num">05</span><span class="ch-title">Force des acides et bases</span></a>
+    <a class="chapter-card phys" href="06_Tle_Description_d_un_mouvement.htm"><span class="ch-num">06</span><span class="ch-title">Description d'un mouvement</span></a>
+    <a class="chapter-card phys" href="07_Tle_Deuxième_loi_de_Newton.htm"><span class="ch-num">07</span><span class="ch-title">Deuxi&egrave;me loi de Newton</span></a>
+    <a class="chapter-card phys" href="08_Tle_Mouvement_dans_un_champ_uniforme.htm"><span class="ch-num">08</span><span class="ch-title">Mouvement dans un champ uniforme</span></a>
+    <a class="chapter-card phys" href="09_Tle_Mouvement_dans_un_champ_de_gravitation.htm"><span class="ch-num">09</span><span class="ch-title">Champ de gravitation</span></a>
+    <a class="chapter-card chem" href="10_Tle_Evolution_temporelle_d_un_système_chimique.htm"><span class="ch-num">10</span><span class="ch-title">&Eacute;volution temporelle d'un syst&egrave;me</span></a>
+    <a class="chapter-card chem" href="11_Tle_Stratégies_en_synthèse_organique.htm"><span class="ch-num">11</span><span class="ch-title">Strat&eacute;gies en synth&egrave;se organique</span></a>
+    <a class="chapter-card phys" href="12_Tle_Les_phénomènes_ondulatoires.htm"><span class="ch-num">12</span><span class="ch-title">Ph&eacute;nom&egrave;nes ondulatoires</span></a>
+    <a class="chapter-card phys" href="13_Tle_Formation_d_images.htm"><span class="ch-num">13</span><span class="ch-title">Formation d'images</span></a>
+    <a class="chapter-card phys" href="14_Tle_Dynamique_d_un_système_électriques_dipôle_RC.htm"><span class="ch-num">14</span><span class="ch-title">Dynamique &eacute;lectrique (RC)</span></a>
+    <a class="chapter-card chem" href="15_Tle_Modèle_du_gaz_parfait.htm"><span class="ch-num">15</span><span class="ch-title">Mod&egrave;le du gaz parfait</span></a>
+    <a class="chapter-card phys" href="16_Tle_Premier_principe_de_la_thermodynamique.htm"><span class="ch-num">16</span><span class="ch-title">1er principe thermodynamique</span></a>
+    <a class="chapter-card phys" href="17_Tle_Transformations_nucléaires.htm"><span class="ch-num">17</span><span class="ch-title">Transformations nucl&eacute;aires</span></a>
+    <a class="chapter-card chem" href="18_Tle_Forcer_le sens_d_évolution_d_un_système.htm"><span class="ch-num">18</span><span class="ch-title">Forcer l'&eacute;volution d'un syst&egrave;me</span></a>
+    <a class="chapter-card phys" href="19_Tle_Écoulement_d_un_fluide.htm"><span class="ch-num">19</span><span class="ch-title">&Eacute;coulement d'un fluide</span></a>
+    <a class="chapter-card phys" href="20_Tle_Description_de_la_lumière_par_un_flux_de_photons.htm"><span class="ch-num">20</span><span class="ch-title">Lumi&egrave;re &amp; flux de photons</span></a>
+    <a class="chapter-card spec" href="21_GrandOral.htm"><span class="ch-num">21</span><span class="ch-title">Grand Oral</span></a>
+  </div>
+
+  <footer class="footer">
+        <p>TR Production &nbsp;•&nbsp; redo009@gmail.com</p>
+  </footer>
+</div>
+
+<a href="#" class="back-to-top" id="backToTopBtn">↑ HAUT</a>
+<script>
+  document.getElementById('backToTopBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>
