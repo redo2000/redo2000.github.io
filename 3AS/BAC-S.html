@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<title>BAC علوم تجريبية | فيزياء-كيمياء الجزائر</title>
+<link rel="icon" type="image/png" sizes="16x16" href="RedoFavIcon.png">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan: #00e5ff;
+    --gold: #ffd54f;
+    --violet: #b388ff;
+    --green: #69ff47;
+    --lime: #39ff14;
+    --bg: #040a14;
+    --bg2: #080f1e;
+    --card: rgba(0,229,255,0.04);
+    --border: rgba(0,229,255,0.18);
+    --text: #e8f4f8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated starfield background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(0,229,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 40%, rgba(255,213,79,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 8%, rgba(179,136,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 25%, rgba(0,229,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 85% 60%, rgba(255,213,79,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 75%, rgba(179,136,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 92% 85%, rgba(0,229,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 38% 90%, rgba(255,213,79,0.3) 0%, transparent 100%),
+      radial-gradient(2px 2px at 60% 70%, rgba(0,229,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 78% 45%, rgba(179,136,255,0.4) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glowing grid lines */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+
+  /* ── HEADER ── */
+  .hero {
+    text-align: center;
+    padding: 50px 0 40px;
+    position: relative;
+  }
+
+  .hero-sub {
+    font-size: 0.85rem;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+
+  .hero-name-ar {
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    text-shadow: 0 0 20px rgba(255,213,79,0.6), 0 0 40px rgba(255,213,79,0.3);
+    margin-bottom: 6px;
+    font-family: 'Segoe UI', 'Tahoma', sans-serif;
+  }
+
+  .hero-title-ar {
+    font-size: 1rem;
+    color: var(--cyan);
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    font-family: 'Segoe UI', 'Tahoma', sans-serif;
+  }
+
+  .hero-email a {
+    color: rgba(0,229,255,0.6);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    transition: color 0.3s;
+  }
+  .hero-email a:hover { color: var(--cyan); }
+
+  .social-row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 30px 0 20px;
+  }
+
+  .social-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 22px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--card);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    transition: all 0.3s;
+    backdrop-filter: blur(8px);
+  }
+  .social-btn:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 20px rgba(0,229,255,0.25);
+    color: var(--cyan);
+  }
+  .social-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  .hero-link {
+    display: inline-block;
+    margin: 10px 0 30px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    color: var(--green);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    border-bottom: 1px solid rgba(105,255,71,0.3);
+    padding-bottom: 2px;
+    transition: all 0.3s;
+  }
+  .hero-link:hover { color: #fff; border-bottom-color: #fff; }
+
+  /* ── SPECIALTY BADGE ── */
+  .specialty-block {
+    text-align: center;
+    margin: 20px 0 30px;
+  }
+  .specialty-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,213,79,0.7);
+    margin-bottom: 10px;
+    font-family: 'Segoe UI', 'Tahoma', sans-serif;
+  }
+  .specialty-title {
+    font-family: 'Segoe UI', 'Tahoma', sans-serif;
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+  }
+  .specialty-title .sc { color: var(--green); text-shadow: 0 0 30px rgba(57,255,20,0.8); }
+  .specialty-title .dash { color: rgba(255,255,255,0.3); margin: 0 6px; }
+
+  .terminale-tag {
+    display: inline-block;
+    margin: 14px 0 0;
+    padding: 5px 22px;
+    border: 1px solid rgba(255,213,79,0.4);
+    border-radius: 2px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .terminale-tag:hover {
+    background: rgba(255,213,79,0.1);
+    border-color: rgba(255,213,79,0.7);
+    box-shadow: 0 0 14px rgba(255,213,79,0.25);
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 50px 0 20px;
+  }
+  .section-title::before, .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border));
+  }
+  .section-title::after { background: linear-gradient(90deg, var(--border), transparent); }
+  .section-title span {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    white-space: nowrap;
+  }
+
+  /* ── ANNALES TABLE ── */
+  .annales-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow-x: auto;
+    backdrop-filter: blur(6px);
+    margin-bottom: 25px;
+  }
+
+  .annales-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 400px;
+  }
+
+  .annales-table thead th {
+    padding: 14px 12px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .annales-table thead th.col-sujet { color: var(--gold); }
+  .annales-table thead th.col-corrige { color: var(--green); }
+
+  .annales-table tbody tr {
+    border-bottom: 1px solid rgba(0,229,255,0.07);
+    transition: background 0.2s;
+  }
+  .annales-table tbody tr:last-child { border-bottom: none; }
+  .annales-table tbody tr:hover { background: rgba(0,229,255,0.05); }
+
+  .annales-table td {
+    padding: 12px 10px;
+    text-align: center;
+    font-size: 0.82rem;
+  }
+
+  .year-cell {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    color: var(--cyan);
+  }
+
+  .doc-link {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .doc-link.sujet {
+    border: 1px solid rgba(255,213,79,0.35);
+    color: var(--gold);
+    background: rgba(255,213,79,0.06);
+  }
+  .doc-link.sujet:hover {
+    background: rgba(255,213,79,0.15);
+    box-shadow: 0 0 12px rgba(255,213,79,0.3);
+  }
+  .doc-link.corrige {
+    border: 1px solid rgba(105,255,71,0.35);
+    color: var(--green);
+    background: rgba(105,255,71,0.06);
+  }
+  .doc-link.corrige:hover {
+    background: rgba(105,255,71,0.15);
+    box-shadow: 0 0 12px rgba(105,255,71,0.3);
+  }
+  .doc-link.soon {
+    color: rgba(255,255,255,0.2);
+    font-style: italic;
+    cursor: default;
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 5px 14px;
+  }
+
+  /* Mobile cards */
+  .annales-mobile {
+    display: none;
+  }
+
+  @media (max-width: 600px) {
+    .annales-table {
+      display: none;
+    }
+    .annales-mobile {
+      display: block;
+    }
+    .mobile-year-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .mobile-year-header {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0,229,255,0.05);
+      letter-spacing: 0.15em;
+    }
+    .mobile-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(0,229,255,0.07);
+    }
+    .mobile-row:last-child { border-bottom: none; }
+    .mobile-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .mobile-btns {
+      display: flex;
+      gap: 8px;
+    }
+  }
+
+  /* Footer link to other BAC */
+  .other-bac {
+    text-align: center;
+    margin: 30px 0 20px;
+    padding: 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .other-bac a {
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    transition: all 0.3s;
+    font-family: 'Segoe UI', 'Tahoma', sans-serif;
+  }
+  .other-bac a:hover {
+    color: var(--cyan);
+    text-shadow: 0 0 10px rgba(0,229,255,0.5);
+  }
+  .other-bac .divider {
+    color: rgba(255,255,255,0.3);
+    margin: 0 10px;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+  }
+  .footer p {
+    font-size: 0.75rem;
+    color: rgba(255,140,60,0.6);
+    letter-spacing: 0.15em;
+    font-style: italic;
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+  .hero-name-ar { animation: glow-pulse 3s ease-in-out infinite; }
+
+  @keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+  .scanline {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0,229,255,0.12), transparent);
+    animation: scan 8s linear infinite;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    text-decoration: none;
+    background: rgba(0,0,0,0.7);
+    padding: 8px 12px;
+    border-radius: 30px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    border: 1px solid var(--border);
+    transition: 0.3s;
+    z-index: 100;
+  }
+  .back-to-top:hover {
+    background: var(--cyan);
+    color: black;
+  }
+
+  .star-divider {
+    text-align: center;
+    color: var(--lime);
+    font-size: 1.5rem;
+    margin: 20px 0 10px;
+    opacity: 0.6;
+  }
+</style>
+<meta name="generator" content="Namo WebEditor(Trial)">
+</head>
+<body>
+
+<div class="scanline"></div>
+
+<div class="page-wrap">
+
+  <!-- HEADER with Arabic / French mix -->
+  <header class="hero">
+    <p class="hero-sub">Avec le Professeur de Physique-Chimie</p>
+    <div class="hero-name-ar">تشيكو رضوان</div>
+    <div class="hero-title-ar">أستاذ العلوم الفيزيائية</div>
+    <p class="hero-email"><a href="mailto:redo009@gmail.com">redo009@gmail.com</a></p>
+
+    <div class="social-row">
+      <a class="social-btn" href="https://www.tiktok.com/@redo2000?_t=8oNTsvc8h5Z&_r=1">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.28 8.28 0 004.84 1.56V6.78a4.87 4.87 0 01-1.07-.09z"/></svg>
+        TikTok
+      </a>
+      <a class="social-btn" href="http://www.youtube.com/@redo_2000">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 00-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 00.5 6.19C0 8.04 0 12 0 12s0 3.96.5 5.81a3.02 3.02 0 002.12 2.14C4.46 20.5 12 20.5 12 20.5s7.54 0 9.38-.55a3.02 3.02 0 002.12-2.14C24 15.96 24 12 24 12s0-3.96-.5-5.81zM9.75 15.52V8.48L15.82 12l-6.07 3.52z"/></svg>
+        YouTube
+      </a>
+    </div>
+
+    <a class="hero-link" href="https://redo2000.github.io/">redo2000.github.io</a>
+
+    <div class="specialty-block">
+      <div class="specialty-label">مواضيع و حلول بكالوريا</div>
+      <div class="specialty-title">
+        <span class="sc">العلوم التجريبية</span>
+      </div>
+      <a class="terminale-tag" href="../3AS.htm">Physique-Chimie Terminale
+</a>    </div>
+  </header>
+
+  <div class="star-divider">✧ ✦ ✧</div>
+
+  <!-- SECTION TITLE -->
+  <div class="section-title"><span>✦ Sujets &amp; Corrig&eacute;s BAC S (Alg&eacute;rie) ✦</span></div>
+
+  <!-- DESKTOP TABLE -->
+  <div class="annales-wrap">
+    <table class="annales-table">
+      <thead>
+        <tr>
+          <th>السنة</th>
+          <th class="col-sujet">ߓ الموضوع</th>
+          <th class="col-corrige">✅ التصحيح</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 2008 -->
+        <tr><td class="year-cell">2008</td><td><a class="doc-link sujet" href="BAC-S/bac2008-physics-se.pdf">الموضوع 2008</a></td><td><a class="doc-link corrige" href="BAC-S/bac2008-physics-se-correction.pdf">التصحيح 2008</a></td></tr>
+        <!-- 2009 -->
+        <tr><td class="year-cell">2009</td><td><a class="doc-link sujet" href="BAC-S/bac2009-physics-se.pdf">الموضوع 2009</a></td><td><a class="doc-link corrige" href="BAC-S/bac2009-physics-se-correction.pdf">التصحيح 2009</a></td></tr>
+        <!-- 2010 -->
+        <tr><td class="year-cell">2010</td><td><a class="doc-link sujet" href="BAC-S/bac2010-physics-se.pdf">الموضوع 2010</a></td><td><a class="doc-link corrige" href="BAC-S/bac2010-physics-se-correction.pdf">التصحيح 2010</a></td></tr>
+        <!-- 2011 -->
+        <tr><td class="year-cell">2011</td><td><a class="doc-link sujet" href="BAC-S/bac2011-physics-se.pdf">الموضوع 2011</a></td><td><a class="doc-link corrige" href="BAC-S/bac2011-physics-se-correction.pdf">التصحيح 2011</a></td></tr>
+        <!-- 2012 -->
+        <tr><td class="year-cell">2012</td><td><a class="doc-link sujet" href="BAC-S/bac2012-physics-se.pdf">الموضوع 2012</a></td><td><a class="doc-link corrige" href="BAC-S/bac2012-physics-se-correction.pdf">التصحيح 2012</a></td></tr>
+        <!-- 2013 -->
+        <tr><td class="year-cell">2013</td><td><a class="doc-link sujet" href="BAC-S/bac2013-physics-se.pdf">الموضوع 2013</a></td><td><a class="doc-link corrige" href="BAC-S/bac2013-physics-se-correction.pdf">التصحيح 2013</a></td></tr>
+        <!-- 2014 -->
+        <tr><td class="year-cell">2014</td><td><a class="doc-link sujet" href="BAC-S/bac2014-physics-se.pdf">الموضوع 2014</a></td><td><a class="doc-link corrige" href="BAC-S/bac2014-physics-se-correction.pdf">التصحيح 2014</a></td></tr>
+        <!-- 2015 -->
+        <tr><td class="year-cell">2015</td><td><a class="doc-link sujet" href="BAC-S/bac2015-physics-se.pdf">الموضوع 2015</a></td><td><a class="doc-link corrige" href="BAC-S/bac2015-physics-se-correction.pdf">التصحيح 2015</a></td></tr>
+        <!-- 2016 -->
+        <tr><td class="year-cell">2016</td><td><a class="doc-link sujet" href="BAC-S/bac2016-physics-se.pdf">الموضوع 2016</a></td><td><a class="doc-link corrige" href="BAC-S/bac2016-physics-se-correction.pdf">التصحيح 2016</a></td></tr>
+        <!-- 2016 bis -->
+        <tr><td class="year-cell">2016 (2)</td><td><a class="doc-link sujet" href="BAC-S/bac2016-physics-se_2.pdf">الموضوع 2016-2</a></td><td><a class="doc-link corrige" href="BAC-S/bac2016-physics-se_2-correction.pdf">التصحيح 2016-2</a></td></tr>
+        <!-- 2017 -->
+        <tr><td class="year-cell">2017</td><td><a class="doc-link sujet" href="BAC-S/bac2017-physics-se.pdf">الموضوع 2017</a></td><td><a class="doc-link corrige" href="BAC-S/bac2017-physics-se-correction.pdf">التصحيح 2017</a></td></tr>
+        <!-- 2017 bis -->
+        <tr><td class="year-cell">2017 (2)</td><td><a class="doc-link sujet" href="BAC-S/bac2017-physics-se_2.pdf">الموضوع 2017-2</a></td><td><a class="doc-link sujet" href="BAC-S/bac2017-physics-se_2.pdf">↻ m&ecirc;me doc</a></td></tr>
+        <!-- 2018 -->
+        <tr><td class="year-cell">2018</td><td><a class="doc-link sujet" href="BAC-S/bac2018-physics-se.pdf">الموضوع 2018</a></td><td><a class="doc-link corrige" href="BAC-S/bac2018-physics-se-correction.pdf">التصحيح 2018</a></td></tr>
+        <!-- 2019 -->
+        <tr><td class="year-cell">2019</td><td><a class="doc-link sujet" href="BAC-S/bac2019-physics-se.pdf">الموضوع 2019</a></td><td><a class="doc-link corrige" href="BAC-S/bac2019-physics-se-correction.pdf">التصحيح 2019</a></td></tr>
+        <!-- 2020 -->
+        <tr><td class="year-cell">2020</td><td><a class="doc-link sujet" href="BAC-S/bac2020-physics-se.pdf">الموضوع 2020</a></td><td><a class="doc-link corrige" href="BAC-S/bac2020-physics-se_correction.pdf">التصحيح 2020</a></td></tr>
+        <!-- 2021 -->
+        <tr><td class="year-cell">2021</td><td><a class="doc-link sujet" href="BAC-S/bac2021-physics-se.pdf">الموضوع 2021</a></td><td><a class="doc-link corrige" href="BAC-S/bac2021-physics-se_correction.pdf">التصحيح 2021</a></td></tr>
+        <!-- 2022 -->
+        <tr><td class="year-cell">2022</td><td><a class="doc-link sujet" href="BAC-S/bac2022-physics-se.pdf">الموضوع 2022</a></td><td><a class="doc-link corrige" href="BAC-S/bac2022-physics-se_correction.pdf">التصحيح 2022</a></td></tr>
+        <!-- 2023 -->
+        <tr><td class="year-cell">2023</td><td><a class="doc-link sujet" href="BAC-S/bac2023-physics-se.pdf">الموضوع 2023</a></td><td><a class="doc-link corrige" href="BAC-S/bac2023-physics-se-correction.pdf">التصحيح 2023</a></td></tr>
+        <!-- 2024 -->
+        <tr><td class="year-cell">2024</td><td><a class="doc-link sujet" href="BAC-S/bac2024-physics-se.pdf">الموضوع 2024</a></td><td><a class="doc-link corrige" href="BAC-S/bac2024-physics-se-correction.pdf">التصحيح 2024</a></td></tr>
+        <!-- 2025 - coming soon -->
+        <tr><td class="year-cell">2025</td><td><span class="doc-link soon">قريباً</span></td><td><span class="doc-link soon">قريباً</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MOBILE VERSION -->
+  <div class="annales-mobile">
+    <div class="mobile-year-block">
+      <div class="mobile-year-header">ߓ BAC S (2008 - 2024)</div>
+      <div class="mobile-row"><span class="mobile-label">2008</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2008-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2008-physics-se-correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2009</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2009-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2009-physics-se-correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2010</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2010-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2010-physics-se-correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2011</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2011-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2011-physics-se-correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2012</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2012-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2012-physics-se-correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2013</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2013-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2013-physics-se-correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2014</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2014-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2014-physics-se-correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2015</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2015-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2015-physics-se-correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2016</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2016-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2016-physics-se-correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2017</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2017-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2017-physics-se-correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2018</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2018-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2018-physics-se-correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2019</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2019-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2019-physics-se-correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2020</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2020-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2020-physics-se_correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2021</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2021-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2021-physics-se_correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2022</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2022-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2022-physics-se_correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2023</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2023-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2023-physics-se-correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2024</span><div class="mobile-btns"><a class="doc-link sujet" href="BAC-S/bac2024-physics-se.pdf">الموضوع</a><a class="doc-link corrige" href="BAC-S/bac2024-physics-se-correction.pdf">التصحيح</a></div></div>
+      <div class="mobile-row"><span class="mobile-label">2025</span><div class="mobile-btns"><span class="doc-link soon">قريباً</span><span class="doc-link soon">قريباً</span></div></div>
+    </div>
+  </div>
+
+  <!-- Link to other BAC (Maths / Tech Maths) -->
+  <div class="other-bac">
+    <span class="divider">✦</span>
+    <a href="BAC-M-MT.htm">ߓ مواضيع و حلول بكالوريا</a>
+    <span class="divider">✦</span>
+    <br>
+    <a href="BAC-M-MT.htm" style="font-size:0.85rem;">رياضي - تقني رياضي</a>
+  </div>
+
+  <div class="star-divider">✧ ✦ ✧</div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>TR Production &nbsp;•&nbsp; redo009@gmail.com</p>
+  </footer>
+
+</div>
+
+<a href="#" class="back-to-top" id="backToTopBtn">↑ HAUT</a>
+
+<script>
+  document.getElementById('backToTopBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>
