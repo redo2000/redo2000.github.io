@@ -29,7 +29,6 @@
     overflow-x: hidden;
   }
 
-  /* Animated starfield background */
   body::before {
     content: '';
     position: fixed;
@@ -49,7 +48,6 @@
     z-index: 0;
   }
 
-  /* Glowing grid lines */
   body::after {
     content: '';
     position: fixed;
@@ -95,6 +93,7 @@
     letter-spacing: 0.15em;
     text-shadow: 0 0 20px rgba(0,229,255,0.6), 0 0 40px rgba(0,229,255,0.3);
     margin-bottom: 6px;
+    animation: glow-pulse 3s ease-in-out infinite;
   }
 
   .hero-email a {
@@ -109,7 +108,7 @@
   .social-row {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 20px;
     margin: 30px 0 20px;
   }
 
@@ -223,15 +222,14 @@
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 8px;
-    overflow-x: auto;
     backdrop-filter: blur(6px);
     margin-bottom: 25px;
+    padding: 5px;
   }
 
   .annales-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 700px;
   }
 
   .annales-table thead th {
@@ -247,7 +245,6 @@
   }
   .annales-table thead th.col-cyan { color: var(--cyan); }
   .annales-table thead th.col-gold { color: var(--gold); }
-  .annales-table thead th.col-green { color: var(--green); }
 
   .annales-table tbody tr {
     border-bottom: 1px solid rgba(0,229,255,0.07);
@@ -267,11 +264,12 @@
     font-weight: 700;
     font-size: 0.85rem;
     letter-spacing: 0.08em;
+    color: #fff;
   }
 
   .doc-link {
     display: inline-block;
-    padding: 5px 14px;
+    padding: 6px 12px;
     border-radius: 3px;
     font-size: 0.72rem;
     font-weight: 600;
@@ -305,86 +303,17 @@
     padding: 5px 14px;
   }
 
-  .region-badge {
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-  }
-
-  /* Mobile cards for annales (replaces complex table on small screens) */
-  .annales-mobile {
-    display: none;
-  }
-
-  @media (max-width: 750px) {
-    .annales-table {
-      display: none;
-    }
-    .annales-mobile {
-      display: block;
-    }
-    .region-cards {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 20px;
-      backdrop-filter: blur(6px);
-      overflow: hidden;
-    }
-    .region-header {
-      font-family: 'Orbitron', monospace;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      padding: 12px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-    .region-header.amerique { color: var(--cyan); }
-    .region-header.asie { color: var(--gold); }
-    .region-header.etrangers { color: var(--green); }
-    .region-header.metropole { color: var(--violet); }
-
-    .year-block {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 12px;
-      border-bottom: 1px solid rgba(0,229,255,0.07);
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .year-block:last-child { border-bottom: none; }
-    .year-label {
-      font-family: 'Orbitron', monospace;
-      font-weight: 700;
-      font-size: 0.8rem;
-      min-width: 65px;
-    }
-    .links-group {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-  }
-
-  /* chapters grid same as concours */
+  /* ── CHAPTERS GRID ── */
   .chapters-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-
-  @media (max-width: 650px) {
-    .chapters-grid { grid-template-columns: 1fr; }
-    .social-row { flex-direction: column; align-items: center; }
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
   }
 
   .chapter-card {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     padding: 14px 16px;
     background: var(--card);
     border: 1px solid var(--border);
@@ -399,7 +328,6 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 20px rgba(0,229,255,0.15);
   }
-  .chapter-card.phys:hover { border-color: var(--cyan); }
   .chapter-card.chem:hover { border-color: var(--gold); }
   .chapter-card.spec:hover { border-color: var(--violet); }
 
@@ -440,7 +368,6 @@
     0%, 100% { opacity: 0.7; }
     50% { opacity: 1; }
   }
-  .hero-name { animation: glow-pulse 3s ease-in-out infinite; }
 
   @keyframes scan {
     0% { transform: translateY(-100%); }
@@ -460,16 +387,10 @@
     text-align: center;
     color: var(--gold);
     font-size: 1.2rem;
-    margin: 8px 0 20px;
+    margin: 20px 0;
     opacity: 0.6;
   }
-  .img-deco {
-    max-width: 100%;
-    margin: 0 auto 20px;
-    display: block;
-    filter: drop-shadow(0 4px 16px rgba(0,0,0,0.8));
-    border-radius: 6px;
-  }
+
   .back-to-top {
     position: fixed;
     bottom: 20px;
@@ -490,29 +411,75 @@
     color: black;
   }
 
-/* ===== CORRECTIONS SMARTPHONE ===== */
-@media (max-width:768px){
-  .page-wrap{padding:15px 8px 40px;}
-  .hero{padding:20px 0;}
-  .hero-sub{font-size:.7rem;letter-spacing:.12em;}
-  .hero-name{font-size:1.1rem;letter-spacing:.05em;}
-  .hero-email a{font-size:.75rem;}
-  .social-row{flex-direction:column;align-items:center;gap:10px;margin:20px 0;}
-  .social-btn{width:100%;max-width:320px;justify-content:center;padding:12px;}
-  .specialty-title{font-size:2rem;line-height:1.1;}
-  .specialty-label{font-size:.7rem;letter-spacing:.15em;}
-  .terminale-tag{font-size:.7rem;letter-spacing:.08em;padding:6px 10px;}
-  .section-title{gap:8px;margin:30px 0 15px;}
-  .section-title span{font-size:.58rem;letter-spacing:.12em;white-space:normal;text-align:center;line-height:1.4;}
-  .doc-link{padding:7px 10px;font-size:.68rem;}
-  .chapter-card{padding:12px;}
-  .ch-title{font-size:.72rem;}
-  .footer p{font-size:.65rem;}
-  .back-to-top{bottom:10px;right:10px;font-size:.65rem;padding:6px 10px;}
-}
+/* ========================================================
+   MÉDIAS QUERIES : TRANSFORMATION DU TABLEAU SUR MOBILE
+   ======================================================== */
+@media (max-width: 750px) {
+  .page-wrap { padding: 15px 10px 40px; }
+  .hero { padding: 20px 0; }
+  .hero-sub { font-size: .7rem; letter-spacing: .12em; }
+  .hero-name { font-size: 1.1rem; letter-spacing: .05em; }
+  .social-row { flex-direction: column; align-items: center; gap: 10px; margin: 20px 0; }
+  .social-btn { width: 100%; max-width: 320px; justify-content: center; }
+  .specialty-title { font-size: 2rem; }
+  
+  .section-title span { font-size: .6rem; letter-spacing: .15em; white-space: normal; text-align: center; }
 
+  /* Force le tableau à se comporter comme des blocs de cartes */
+  .annales-table, .annales-table thead, .annales-table tbody, .annales-table th, .annales-table td, .annales-table tr { 
+    display: block; 
+  }
+  
+  /* Cache les entêtes du tableau PC */
+  .annales-table thead { display: none; }
+  
+  .annales-table tbody tr {
+    border-bottom: 2px solid var(--border);
+    padding: 15px 10px;
+    background: rgba(0, 229, 255, 0.02);
+    margin-bottom: 10px;
+    border-radius: 6px;
+  }
+  
+  .annales-table td {
+    text-align: left;
+    padding: 6px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+  }
+
+  /* Met en valeur la région/série en haut de chaque bloc */
+  .annales-table td.year-cell {
+    font-size: 0.95rem;
+    border-bottom: 1px dashed rgba(0,229,255,0.15);
+    padding-bottom: 10px;
+    margin-bottom: 8px;
+    color: var(--cyan);
+    display: block;
+    text-align: center;
+  }
+
+  /* Génère dynamiquement les labels en face des boutons sur mobile */
+  .annales-table td:not(.year-cell):nth-of-type(2)::before { content: "Jour 1 - Sujet :"; font-family: 'Orbitron', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.5); }
+  .annales-table td:not(.year-cell):nth-of-type(3)::before { content: "Jour 1 - Corrigé :"; font-family: 'Orbitron', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.5); }
+  .annales-table td:not(.year-cell):nth-of-type(4)::before { content: "Jour 2 - Sujet :"; font-family: 'Orbitron', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.5); }
+  .annales-table td:not(.year-cell):nth-of-type(5)::before { content: "Jour 2 - Corrigé :"; font-family: 'Orbitron', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.5); }
+  /* Pour le cas spécifique de 2025 avec sa colonne Suppl. */
+  .annales-table td:not(.year-cell):nth-of-type(6)::before { content: "Supplément :"; font-family: 'Orbitron', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.5); }
+
+  .doc-link {
+    padding: 6px 16px;
+    min-width: 110px;
+    text-align: center;
+  }
+
+  .chapters-grid { grid-template-columns: 1fr; }
+  .ch-title { font-size: 0.75rem; }
+  .back-to-top { bottom: 10px; right: 10px; font-size: .65rem; padding: 6px 10px; }
+}
 </style>
-<meta name="generator" content="Namo WebEditor(Trial)">
 </head>
 <body>
 
@@ -520,7 +487,6 @@
 
 <div class="page-wrap">
 
-  <!-- HEADER identical to ConcoursAvenir -->
   <header class="hero">
     <p class="hero-sub">Avec le Professeur de Physique-Chimie</p>
     <h1 class="hero-name">Mr. TCHIKOU Redhouane</h1>
@@ -548,106 +514,77 @@
     </div>
   </header>
 
-  <!-- ========== ANNÉE 2024 ========== -->
   <div class="section-title"><span>✦ Session 2024 ✦</span></div>
 
-  <!-- Desktop table 2024 -->
   <div class="annales-wrap">
     <table class="annales-table">
       <thead>
-        <tr><th>S&eacute;rie</th><th class="col-cyan">Sujet 1</th><th class="col-gold">Corrig&eacute; 1</th><th class="col-cyan">Sujet 2</th><th class="col-gold">Corrig&eacute; 2</th></tr>
+        <tr><th>Série</th><th class="col-cyan">Sujet 1</th><th class="col-gold">Corrigé 1</th><th class="col-cyan">Sujet 2</th><th class="col-gold">Corrigé 2</th></tr>
       </thead>
       <tbody>
-        <tr><td class="year-cell">Am&eacute;rique nord</td><td><a class="doc-link sujet" href="2024-AmNord-J1-Sujet.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2024-AmNord-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2024-AmNord-J2-Sujet.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2024-AmNord-J2-Correction.pdf">Corr. 2</a></td></tr>
-        <tr><td class="year-cell">Centres &eacute;trangers</td><td><a class="doc-link sujet" href="2024-CentresEtrangers-J1-Sujet.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2024-CentresEtrangers-J1-Correction-.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2024-CentresEtrangers-J2-Sujet.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2024-CentresEtrangers-J2-Correction-.pdf">Corr. 2</a></td></tr>
+        <tr><td class="year-cell">Amérique nord</td><td><a class="doc-link sujet" href="2024-AmNord-J1-Sujet.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2024-AmNord-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2024-AmNord-J2-Sujet.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2024-AmNord-J2-Correction.pdf">Corr. 2</a></td></tr>
+        <tr><td class="year-cell">Centres étrangers</td><td><a class="doc-link sujet" href="2024-CentresEtrangers-J1-Sujet.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2024-CentresEtrangers-J1-Correction-.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2024-CentresEtrangers-J2-Sujet.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2024-CentresEtrangers-J2-Correction-.pdf">Corr. 2</a></td></tr>
         <tr><td class="year-cell">Asie</td><td><a class="doc-link sujet" href="2024-Asie-J1-Sujet.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2024-Asie-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2024-Asie-J2-Sujet.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2024-Asie-J2-Correction.pdf">Corr. 2</a></td></tr>
-        <tr><td class="year-cell">M&eacute;tropole</td><td><a class="doc-link sujet" href="2024-Metro-J1-.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2024-Metro-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2024-Metro-J2-Sujet.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2024-Metro-J2-Correction.pdf">Corr. 2</a></td></tr>
+        <tr><td class="year-cell">Métropole</td><td><a class="doc-link sujet" href="2024-Metro-J1-.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2024-Metro-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2024-Metro-J2-Sujet.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2024-Metro-J2-Correction.pdf">Corr. 2</a></td></tr>
       </tbody>
     </table>
   </div>
 
-  <!-- ========== ANNÉE 2025 ========== -->
   <div class="section-title"><span>✦ Session 2025 ✦</span></div>
   <div class="annales-wrap">
     <table class="annales-table">
-      <thead><tr><th>S&eacute;rie</th><th class="col-cyan">Sujet 1</th><th class="col-gold">Corrig&eacute; 1</th><th class="col-cyan">Sujet 2</th><th class="col-gold">Corrig&eacute; 2</th><th>Suppl.</th></tr></thead>
+      <thead><tr><th>Série</th><th class="col-cyan">Sujet 1</th><th class="col-gold">Corrigé 1</th><th class="col-cyan">Sujet 2</th><th class="col-gold">Corrigé 2</th><th>Suppl.</th></tr></thead>
       <tbody>
-        <tr><td class="year-cell">Am&eacute;rique nord</td><td><a class="doc-link sujet" href="2025-AmNord-J1-Sujet-Original.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2025-AmNord-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2025-AmNord-J2-Sujet.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2025-AmNord-J2-Correction.pdf">Corr. 2</a></td><td><a class="doc-link sujet" href="spe-physique-chimie-2025-amerique-nord-2bis-Sujet-Corrigé.pdf">Bis+Corr</a></td></tr>
+        <tr><td class="year-cell">Amérique nord</td><td><a class="doc-link sujet" href="2025-AmNord-J1-Sujet-Original.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2025-AmNord-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2025-AmNord-J2-Sujet.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2025-AmNord-J2-Correction.pdf">Corr. 2</a></td><td><a class="doc-link sujet" href="spe-physique-chimie-2025-amerique-nord-2bis-Sujet-Corrigé.pdf">Bis+Corr</a></td></tr>
         <tr><td class="year-cell">Asie</td><td><a class="doc-link sujet" href="2025-Asie-J1-Sujet-Original.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2025-Asie-J1-Corrigé.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2025-Asie-J2-Sujet-Original.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2025-Asie-J2-Corrigé.pdf">Corr. 2</a></td><td><span class="doc-link soon">—</span></td></tr>
-        <tr><td class="year-cell">Centres &eacute;trangers</td><td><a class="doc-link sujet" href="2025-CtresEtrangers1-J1-Sujet-Original.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2025-CtresEtrangers1-J1-Corrigé.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2025-CtresEtrangers1-J2-Sujet-Original.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2025-CtresEtrangers1-J2-Corrigé.pdf">Corr. 2</a></td><td><span class="doc-link soon">—</span></td></tr>
-        <tr><td class="year-cell">M&eacute;tropole</td><td><a class="doc-link sujet" href="2025-Metro-J1-Sujet-Original.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2025-Metro-J1-Corrigé-01.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="Metropole-sujet-2-2025.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="Metropole-Corrigé-2-2025.pdf">Corr. 2</a></td><td><span class="doc-link soon">—</span></td></tr>
-        <tr><td class="year-cell">Polyn&eacute;sie</td><td><a class="doc-link sujet" href="spe-physique-chimie-2025-polynesie-1-sujet-officiel.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2025-Polynesie-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2025-Polynesie-J2-Sujet-Original.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2025-Polynesie-J2-Correction.pdf">Corr. 2</a></td><td><span class="doc-link soon">—</span></td></tr>
+        <tr><td class="year-cell">Centres étrangers</td><td><a class="doc-link sujet" href="2025-CtresEtrangers1-J1-Sujet-Original.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2025-CtresEtrangers1-J1-Corrigé.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2025-CtresEtrangers1-J2-Sujet-Original.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2025-CtresEtrangers1-J2-Corrigé.pdf">Corr. 2</a></td><td><span class="doc-link soon">—</span></td></tr>
+        <tr><td class="year-cell">Métropole</td><td><a class="doc-link sujet" href="2025-Metro-J1-Sujet-Original.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2025-Metro-J1-Corrigé-01.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="Metropole-sujet-2-2025.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="Metropole-Corrigé-2-2025.pdf">Corr. 2</a></td><td><span class="doc-link soon">—</span></td></tr>
+        <tr><td class="year-cell">Polynésie</td><td><a class="doc-link sujet" href="spe-physique-chimie-2025-polynesie-1-sujet-officiel.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2025-Polynesie-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2025-Polynesie-J2-Sujet-Original.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2025-Polynesie-J2-Correction.pdf">Corr. 2</a></td><td><span class="doc-link soon">—</span></td></tr>
       </tbody>
     </table>
   </div>
 
-  <!-- ========== ANNÉE 2026 ========== -->
   <div class="section-title"><span>✦ Session 2026 ✦</span></div>
   <div class="annales-wrap">
     <table class="annales-table">
-      <thead><tr><th>S&eacute;rie</th><th class="col-cyan">Sujet 1</th><th class="col-gold">Corrig&eacute; 1</th><th class="col-cyan">Sujet 2</th><th class="col-gold">Corrig&eacute; 2</th></tr></thead>
+      <thead><tr><th>Série</th><th class="col-cyan">Sujet 1</th><th class="col-gold">Corrigé 1</th><th class="col-cyan">Sujet 2</th><th class="col-gold">Corrigé 2</th></tr></thead>
       <tbody>
-        <tr><td class="year-cell">Am&eacute;rique nord</td><td><a class="doc-link sujet" href="2026-AmNord-J1-Sujet-Original_0.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2026-AmNord-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2026-AmNord-J2-Sujet-Original_0.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2026-AmNord-J2-Corrigé.pdf">Corr. 2</a></td></tr>
-        <tr><td class="year-cell">Asie</td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td></tr>
-        <tr><td class="year-cell">Centres &eacute;trangers</td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td></tr>
-        <tr><td class="year-cell">M&eacute;tropole</td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td></tr>
-        <tr><td class="year-cell">Polyn&eacute;sie</td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td><td><span class="doc-link soon">&Agrave; venir</span></td></tr>
+        <tr><td class="year-cell">Amérique nord</td><td><a class="doc-link sujet" href="2026-AmNord-J1-Sujet-Original_0.pdf">Sujet 1</a></td><td><a class="doc-link corrige" href="2026-AmNord-J1-Correction.pdf">Corr. 1</a></td><td><a class="doc-link sujet" href="2026-AmNord-J2-Sujet-Original_0.pdf">Sujet 2</a></td><td><a class="doc-link corrige" href="2026-AmNord-J2-Corrigé.pdf">Corr. 2</a></td></tr>
+        <tr><td class="year-cell">Asie</td><td><span class="doc-link soon">À venir</span></td><td><span class="doc-link soon">À venir</span></td><td><span class="doc-link soon">À venir</span></td><td><span class="doc-link soon">À venir</span></td></tr>
+        <tr><td class="year-cell">Centres étrangers</td><td><span class="doc-link soon">À venir</span></td><td><span class="doc-link soon">À venir</span></td><td><span class="doc-link soon">À venir</span></td><td><span class="doc-link soon">À venir</span></td></tr>
+        <tr><td class="year-cell">Métropole</td><td><span class="doc-link soon">À venir</span></td><td><span class="doc-link soon">À venir</span></td><td><span class="doc-link soon">À venir</span></td><td><span class="doc-link soon">À venir</span></td></tr>
+        <tr><td class="year-cell">Polynésie</td><td><span class="doc-link soon">À venir</span></td><td><span class="doc-link soon">À venir</span></td><td><span class="doc-link soon">À venir</span></td><td><span class="doc-link soon">À venir</span></td></tr>
       </tbody>
     </table>
-  </div>
-
-  <!-- MOBILE ADAPTATION (compact cards) -->
-  <div class="annales-mobile">
-    <div class="region-cards"><div class="region-header amerique">߇&ordm;߇&cedil; Am&eacute;rique nord 2024</div>
-      <div class="year-block"><span class="year-label">Jour 1</span><div class="links-group"><a class="doc-link sujet" href="2024-AmNord-J1-Sujet.pdf">Sujet</a><a class="doc-link corrige" href="2024-AmNord-J1-Correction.pdf">Corrig&eacute;</a></div></div>
-      <div class="year-block"><span class="year-label">Jour 2</span><div class="links-group"><a class="doc-link sujet" href="2024-AmNord-J2-Sujet.pdf">Sujet</a><a class="doc-link corrige" href="2024-AmNord-J2-Correction.pdf">Corrig&eacute;</a></div></div>
-    </div>
-    <div class="region-cards"><div class="region-header etrangers">ߌ Centres &eacute;trangers 2024</div>
-      <div class="year-block"><span class="year-label">Jour 1</span><div class="links-group"><a class="doc-link sujet" href="2024-CentresEtrangers-J1-Sujet.pdf">Sujet</a><a class="doc-link corrige" href="2024-CentresEtrangers-J1-Correction-.pdf">Corrig&eacute;</a></div></div>
-      <div class="year-block"><span class="year-label">Jour 2</span><div class="links-group"><a class="doc-link sujet" href="2024-CentresEtrangers-J2-Sujet.pdf">Sujet</a><a class="doc-link corrige" href="2024-CentresEtrangers-J2-Correction-.pdf">Corrig&eacute;</a></div></div>
-    </div>
-    <div class="region-cards"><div class="region-header asie">ߌ Asie 2025</div>
-      <div class="year-block"><span class="year-label">Jour 1</span><div class="links-group"><a class="doc-link sujet" href="2025-Asie-J1-Sujet-Original.pdf">Sujet</a><a class="doc-link corrige" href="2025-Asie-J1-Corrigé.pdf">Corrig&eacute;</a></div></div>
-      <div class="year-block"><span class="year-label">Jour 2</span><div class="links-group"><a class="doc-link sujet" href="2025-Asie-J2-Sujet-Original.pdf">Sujet</a><a class="doc-link corrige" href="2025-Asie-J2-Corrigé.pdf">Corrig&eacute;</a></div></div>
-    </div>
-    <div class="region-cards"><div class="region-header metropole">߇&laquo;߇&middot; M&eacute;tropole 2025</div>
-      <div class="year-block"><span class="year-label">Jour 1</span><div class="links-group"><a class="doc-link sujet" href="2025-Metro-J1-Sujet-Original.pdf">Sujet</a><a class="doc-link corrige" href="2025-Metro-J1-Corrigé-01.pdf">Corrig&eacute;</a></div></div>
-      <div class="year-block"><span class="year-label">Jour 2</span><div class="links-group"><a class="doc-link sujet" href="Metropole-sujet-2-2025.pdf">Sujet</a><a class="doc-link corrige" href="Metropole-Corrigé-2-2025.pdf">Corrig&eacute;</a></div></div>
-    </div>
-    <div class="region-cards"><div class="region-header amerique">ߏ️ Polyn&eacute;sie 2025</div>
-      <div class="year-block"><span class="year-label">Jour 1</span><div class="links-group"><a class="doc-link sujet" href="spe-physique-chimie-2025-polynesie-1-sujet-officiel.pdf">Sujet</a><a class="doc-link corrige" href="2025-Polynesie-J1-Correction.pdf">Corrig&eacute;</a></div></div>
-      <div class="year-block"><span class="year-label">Jour 2</span><div class="links-group"><a class="doc-link sujet" href="2025-Polynesie-J2-Sujet-Original.pdf">Sujet</a><a class="doc-link corrige" href="2025-Polynesie-J2-Correction.pdf">Corrig&eacute;</a></div></div>
-    </div>
   </div>
 
   <div class="divider-star">✧ ✦ ✧</div>
 
-  <!-- Programme sections -->
   <div class="section-title"><span>✦ Programme • Cours &amp; Applications ✦</span></div>
   
-    <p>&nbsp;</p>
+  <p>&nbsp;</p>
 
   <div class="chapters-grid">
     <a class="chapter-card chem" href="01_Tle_Transformations_acide-base.htm"><span class="ch-num">01</span><span class="ch-title">Transformations acide-base</span></a>
-    <a class="chapter-card chem" href="02_Tle_Méthodes_physiques_d_analyse.htm"><span class="ch-num">02</span><span class="ch-title">M&eacute;thodes physiques d'analyse</span></a>
-    <a class="chapter-card chem" href="03_Tle_Méthodes_Chimiques_d_analyse.htm"><span class="ch-num">03</span><span class="ch-title">M&eacute;thodes chimiques d'analyse</span></a>
-    <a class="chapter-card chem" href="04_Tle_Sens_d_évolution_spontané_d_un_système.htm"><span class="ch-num">04</span><span class="ch-title">Sens d'&eacute;volution spontan&eacute;</span></a>
+    <a class="chapter-card chem" href="02_Tle_Méthodes_physiques_d_analyse.htm"><span class="ch-num">02</span><span class="ch-title">Méthodes physiques d'analyse</span></a>
+    <a class="chapter-card chem" href="03_Tle_Méthodes_Chimiques_d_analyse.htm"><span class="ch-num">03</span><span class="ch-title">Méthodes chimiques d'analyse</span></a>
+    <a class="chapter-card chem" href="04_Tle_Sens_d_évolution_spontané_d_un_système.htm"><span class="ch-num">04</span><span class="ch-title">Sens d'évolution spontané</span></a>
     <a class="chapter-card chem" href="05_Tle_Force_des_acides_et_des_bases.htm"><span class="ch-num">05</span><span class="ch-title">Force des acides et bases</span></a>
     <a class="chapter-card phys" href="06_Tle_Description_d_un_mouvement.htm"><span class="ch-num">06</span><span class="ch-title">Description d'un mouvement</span></a>
-    <a class="chapter-card phys" href="07_Tle_Deuxième_loi_de_Newton.htm"><span class="ch-num">07</span><span class="ch-title">Deuxi&egrave;me loi de Newton</span></a>
+    <a class="chapter-card phys" href="07_Tle_Deuxième_loi_de_Newton.htm"><span class="ch-num">07</span><span class="ch-title">Deuxième loi de Newton</span></a>
     <a class="chapter-card phys" href="08_Tle_Mouvement_dans_un_champ_uniforme.htm"><span class="ch-num">08</span><span class="ch-title">Mouvement dans un champ uniforme</span></a>
     <a class="chapter-card phys" href="09_Tle_Mouvement_dans_un_champ_de_gravitation.htm"><span class="ch-num">09</span><span class="ch-title">Champ de gravitation</span></a>
-    <a class="chapter-card chem" href="10_Tle_Evolution_temporelle_d_un_système_chimique.htm"><span class="ch-num">10</span><span class="ch-title">&Eacute;volution temporelle d'un syst&egrave;me</span></a>
-    <a class="chapter-card chem" href="11_Tle_Stratégies_en_synthèse_organique.htm"><span class="ch-num">11</span><span class="ch-title">Strat&eacute;gies en synth&egrave;se organique</span></a>
-    <a class="chapter-card phys" href="12_Tle_Les_phénomènes_ondulatoires.htm"><span class="ch-num">12</span><span class="ch-title">Ph&eacute;nom&egrave;nes ondulatoires</span></a>
+    <a class="chapter-card chem" href="10_Tle_Evolution_temporelle_d_un_système_chimique.htm"><span class="ch-num">10</span><span class="ch-title">Évolution temporelle d'un système</span></a>
+    <a class="chapter-card chem" href="11_Tle_Stratégies_en_synthèse_organique.htm"><span class="ch-num">11</span><span class="ch-title">Stratégies en synthèse organique</span></a>
+    <a class="chapter-card phys" href="12_Tle_Les_phénomènes_ondulatoires.htm"><span class="ch-num">12</span><span class="ch-title">Phénomènes ondulatoires</span></a>
     <a class="chapter-card phys" href="13_Tle_Formation_d_images.htm"><span class="ch-num">13</span><span class="ch-title">Formation d'images</span></a>
-    <a class="chapter-card phys" href="14_Tle_Dynamique_d_un_système_électriques_dipôle_RC.htm"><span class="ch-num">14</span><span class="ch-title">Dynamique &eacute;lectrique (RC)</span></a>
-    <a class="chapter-card chem" href="15_Tle_Modèle_du_gaz_parfait.htm"><span class="ch-num">15</span><span class="ch-title">Mod&egrave;le du gaz parfait</span></a>
+    <a class="chapter-card phys" href="14_Tle_Dynamique_d_un_système_électriques_dipôle_RC.htm"><span class="ch-num">14</span><span class="ch-title">Dynamique électrique (RC)</span></a>
+    <a class="chapter-card chem" href="15_Tle_Modèle_du_gaz_parfait.htm"><span class="ch-num">15</span><span class="ch-title">Modèle du gaz parfait</span></a>
     <a class="chapter-card phys" href="16_Tle_Premier_principe_de_la_thermodynamique.htm"><span class="ch-num">16</span><span class="ch-title">1er principe thermodynamique</span></a>
-    <a class="chapter-card phys" href="17_Tle_Transformations_nucléaires.htm"><span class="ch-num">17</span><span class="ch-title">Transformations nucl&eacute;aires</span></a>
-    <a class="chapter-card chem" href="18_Tle_Forcer_le sens_d_évolution_d_un_système.htm"><span class="ch-num">18</span><span class="ch-title">Forcer l'&eacute;volution d'un syst&egrave;me</span></a>
-    <a class="chapter-card phys" href="19_Tle_Écoulement_d_un_fluide.htm"><span class="ch-num">19</span><span class="ch-title">&Eacute;coulement d'un fluide</span></a>
-    <a class="chapter-card phys" href="20_Tle_Description_de_la_lumière_par_un_flux_de_photons.htm"><span class="ch-num">20</span><span class="ch-title">Lumi&egrave;re &amp; flux de photons</span></a>
+    <a class="chapter-card phys" href="17_Tle_Transformations_nucléaires.htm"><span class="ch-num">17</span><span class="ch-title">Transformations nucléaires</span></a>
+    <a class="chapter-card chem" href="18_Tle_Forcer_le sens_d_évolution_d_un_système.htm"><span class="ch-num">18</span><span class="ch-title">Forcer l'évolution d'un système</span></a>
+    <a class="chapter-card phys" href="19_Tle_Écoulement_d_un_fluide.htm"><span class="ch-num">19</span><span class="ch-title">Écoulement d'un fluide</span></a>
+    <a class="chapter-card phys" href="20_Tle_Description_de_la_lumière_par_un_flux_de_photons.htm"><span class="ch-num">20</span><span class="ch-title">Lumière &amp; flux de photons</span></a>
     <a class="chapter-card spec" href="21_GrandOral.htm"><span class="ch-num">21</span><span class="ch-title">Grand Oral</span></a>
   </div>
 
