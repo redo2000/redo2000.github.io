@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation - Fluide au repos (1ère Spécialité PC)</title>
+    <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #3b82f6;
+      --accent: #0284c7;
+      --bg-slate: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-slate);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e3a8a, #0369a1);
+      color: white;
+      padding: 24px 32px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      color: #bae6fd;
+      font-size: 1rem;
+    }
+
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 850px) {
+      .grid-layout {
+        grid-template-columns: 340px 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      color: var(--primary);
+      margin-bottom: 18px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .control-group {
+      margin-bottom: 20px;
+    }
+
+    .control-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .control-group select,
+    .control-group input[type="range"] {
+      width: 100%;
+    }
+
+    select {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background-color: #f8fafc;
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    select:focus {
+      border-color: var(--primary-light);
+    }
+
+    .val-display {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .val-display strong {
+      color: var(--primary);
+    }
+
+    input[type="range"] {
+      accent-color: var(--primary-light);
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 3px;
+    }
+
+    /* Simulation Viewport */
+    .sim-container {
+      position: relative;
+      height: 380px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid #cbd5e1;
+      background: #e0f2fe;
+    }
+
+    .sky {
+      height: 60px;
+      background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 100%);
+      position: relative;
+      border-bottom: 1px dashed #0284c7;
+    }
+
+    .sky-label {
+      position: absolute;
+      top: 10px;
+      left: 15px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #0369a1;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .fluid-tank {
+      height: 320px;
+      position: relative;
+      transition: background-color 0.4s ease;
+    }
+
+    .sensor {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 180px;
+      height: 36px;
+      background: #0f172a;
+      color: #00ffcc;
+      font-family: monospace;
+      font-size: 0.95rem;
+      font-weight: bold;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      border: 2px solid #38bdf8;
+      transition: top 0.1s linear;
+      z-index: 10;
+    }
+
+    .sensor::before {
+      content: '';
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      width: 2px;
+      height: 15px;
+      background: #475569;
+    }
+
+    .depth-marker {
+      position: absolute;
+      right: 15px;
+      top: 60px;
+      bottom: 0;
+      width: 40px;
+      border-left: 2px dashed #64748b;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 5px 0 5px 8px;
+      font-size: 0.75rem;
+      color: #475569;
+      font-weight: 600;
+    }
+
+    /* Calculation Display */
+    .calc-card {
+      margin-top: 24px;
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .formula-box {
+      background: white;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      text-align: center;
+      font-family: 'Georgia', serif;
+      color: #1e293b;
+      border: 1px solid #cbd5e1;
+      margin: 12px 0;
+    }
+
+    .step-list {
+      list-style: none;
+      font-size: 0.95rem;
+    }
+
+    .step-list li {
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 4px;
+    }
+
+    .highlight-result {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #0284c7;
+      text-align: center;
+      margin-top: 12px;
+      padding: 10px;
+      background: #e0f2fe;
+      border-radius: 8px;
+    }
+
+    .theory-section {
+      margin-top: 24px;
+      line-height: 1.6;
+    }
+
+    .theory-section h3 {
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .theory-section p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      background: #e2e8f0;
+      color: #334155;
+    }
+  </style>
+    <script type="text/javascript" nonce="b8bf0c65f1fa4833ae991566125" src="//local.adguard.org?ts=1786972970710&type=content-script&dmn=contribution.usercontent.google.com&url=https%3A%2F%2Fcontribution.usercontent.google.com%2Fdownload%3Fc%3DCgxiYXJkX3N0b3JhZ2USTxINcmVzcG9uc2VfZGF0YRo-CjBhMzVhZGM1NDMzNjY1ODlkMDAwNjU5M2VjNjI1MjE1NzA3MDJjMGMyZTExYjIzNzkSChIGEK3ChM5fGAE%26filename%3Dsimulation_fluide_repos.html%26opi%3D103135050&app=brave.exe&css=3&js=1&rel=1&rji=1&sbe=1"></script>
+    <script type="text/javascript" nonce="b8bf0c65f1fa4833ae991566125" src="//local.adguard.org?ts=1786972970710&name=AdGuard%20Extra&type=user-script"></script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Pression dans un Fluide au Repos</h1>
+        <p>Physique-Chimie — Première Spécialité (Loi fondamentale de la
+          statique des fluides)</p>
+      </header>
+      <div class="grid-layout">
+        <!-- Panneau des Contrôles -->
+        <div class="card">
+          <h2> Paramètres</h2>
+          <div class="control-group"> <label for="fluid-select">Fluide étudié :</label>
+            <select id="fluid-select">
+              <option value="1000|#38bdf8">Eau douce (ρ = 1000 kg/m³)</option>
+              <option value="1025|#0284c7">Eau de mer (ρ = 1025 kg/m³)</option>
+              <option value="920|#facc15">Huile d'olive (ρ = 920 kg/m³)</option>
+              <option value="1260|#a855f7">Glycérine (ρ = 1260 kg/m³)</option>
+              <option value="13600|#94a3b8">Mercure (ρ = 13600 kg/m³)</option>
+            </select>
+          </div>
+          <div class="control-group"> <label for="depth-range">Profondeur <span
+                class="math">h</span> :</label> <input id="depth-range" min="0"
+              max="10" step="0.1" value="2.0" type="range">
+            <div class="val-display"> <span>0 m</span> <strong id="depth-val">2.0
+                m</strong> <span>10 m</span> </div>
+          </div>
+          <div class="control-group"> <label for="gravity-select">Astre /
+              Pesanteur <span class="math">g</span> :</label>
+            <select id="gravity-select">
+              <option value="9.81">Terre (g = 9.81 N/kg)</option>
+              <option value="1.62">Lune (g = 1.62 N/kg)</option>
+              <option value="3.71">Mars (g = 3.71 N/kg)</option>
+              <option value="24.79">Jupiter (g = 24.79 N/kg)</option>
+            </select>
+          </div>
+          <div class="control-group"> <label for="patm-input">Pression
+              atmosphérique <span class="math">P<sub>atm</sub></span> :</label>
+            <select id="patm-select">
+              <option value="101325">1 bar / 101 325 Pa (Standard)</option>
+              <option value="0">0 Pa (Sous vide)</option>
+            </select>
+          </div>
+        </div>
+        <!-- Simulation et Calculs -->
+        <div>
+          <div class="card">
+            <h2> Cuve et Capteur de Pression</h2>
+            <div class="sim-container">
+              <div class="sky"> <span class="sky-label">Surface (P<sub>atm</sub>)</span>
+              </div>
+              <div class="fluid-tank" id="fluid-tank">
+                <div class="sensor" id="sensor"> <span id="sensor-text">120.94
+                    kPa</span> </div>
+              </div>
+              <div class="depth-marker"> <span>0 m</span> <span>2.5 m</span> <span>5.0
+                  m</span> <span>7.5 m</span> <span>10 m</span> </div>
+            </div>
+            <div class="calc-card">
+              <h3 style="font-size:1rem; color:#334155; margin-bottom:8px;">Calcul
+                détaillé de la pression :</h3>
+              <div class="formula-box"> P<sub>totale</sub> = P<sub>atm</sub> +
+                (ρ × g × h) </div>
+              <ul class="step-list">
+                <li> <span>Pression atmosphérique (P<sub>atm</sub>) :</span> <strong
+                    id="calc-patm">101 325 Pa</strong> </li>
+                <li> <span>Masse volumique (ρ) :</span> <strong id="calc-rho">1000
+                    kg/m³</strong> </li>
+                <li> <span>Intensité de pesanteur (g) :</span> <strong id="calc-g">9.81
+                    N/kg</strong> </li>
+                <li> <span>Profondeur (h) :</span> <strong id="calc-h">2.0 m</strong>
+                </li>
+                <li> <span>Pression du fluide (ΔP = ρ·g·h) :</span> <strong id="calc-delta">19
+                    620 Pa</strong> </li>
+              </ul>
+              <div class="highlight-result"> P<sub>totale</sub> = <span id="res-pa">120
+                  945</span> Pa = <span id="res-hpa">1 209.5</span> hPa </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Synthèse du cours -->
+      <div class="card theory-section">
+        <h3>📚 Éléments du cours (1ère Spécialité Physique-Chimie)</h3>
+        <p> <strong>1. Loi fondamentale de la statique des fluides :</strong><br>
+          Pour un fluide incompressible (comme l'eau) et au repos, la différence
+          de pression entre deux points séparés d'une profondeur <span class="math">h</span>
+          est donnée par la relation : <br>
+          <code style="background:#f1f5f9; padding:4px 8px; border-radius:4px; display:inline-block; margin:6px 0;">ΔP
+            = P<sub>bas</sub> - P<sub>haut</sub> = ρ · g · h</code> </p>
+        <p> <strong>2. Vocabulaire et Unités SI :</strong> </p>
+        <ul style="margin-left: 20px; font-size: 0.9rem; color: var(--text-muted);">
+          <li><span class="badge">P</span> Pression exprimée en <strong>Pascals
+              (Pa)</strong> (1 bar = 10<sup>5</sup> Pa = 1000 hPa).</li>
+          <li><span class="badge">ρ</span> Masse volumique de l'élément fluide
+            en <strong>kg/m³</strong> (ex: eau = 1000 kg/m³).</li>
+          <li><span class="badge">g</span> Intensité de la pesanteur en <strong>N/kg</strong>
+            (ou m/s²).</li>
+          <li><span class="badge">h</span> Profondeur ou verticalité mesurée
+            vers le bas en <strong>mètres (m)</strong>.</li>
+        </ul>
+        <p align="center"><b><i><a href="https://redo2000.github.io/"><font size="5"
+                  color="#92D050">https://redo2000.github.io/</font></a></i></b></p>
+        <ul style="margin-left: 20px; font-size: 0.9rem; color: var(--text-muted);">
+        </ul>
+      </div>
+    </div>
+    <script>
+    // Éléments du DOM
+    const fluidSelect = document.getElementById('fluid-select');
+    const depthRange = document.getElementById('depth-range');
+    const depthVal = document.getElementById('depth-val');
+    const gravitySelect = document.getElementById('gravity-select');
+    const patmSelect = document.getElementById('patm-select');
+
+    const fluidTank = document.getElementById('fluid-tank');
+    const sensor = document.getElementById('sensor');
+    const sensorText = document.getElementById('sensor-text');
+
+    const calcPatm = document.getElementById('calc-patm');
+    const calcRho = document.getElementById('calc-rho');
+    const calcG = document.getElementById('calc-g');
+    const calcH = document.getElementById('calc-h');
+    const calcDelta = document.getElementById('calc-delta');
+    const resPa = document.getElementById('res-pa');
+    const resHpa = document.getElementById('res-hpa');
+
+    function updateSimulation() {
+      // Récupération des valeurs
+      const [rhoVal, colorHex] = fluidSelect.value.split('|');
+      const rho = parseFloat(rhoVal);
+      const h = parseFloat(depthRange.value);
+      const g = parseFloat(gravitySelect.value);
+      const patm = parseFloat(patmSelect.value);
+
+      // Calculs
+      const deltaP = rho * g * h;
+      const pTotal = patm + deltaP;
+
+      // Mises à jour visuelles du bac et capteur
+      fluidTank.style.backgroundColor = colorHex;
+      
+      // Calcul position capteur (h de 0 à 10m -> 0 à 280px)
+      const topPx = (h / 10) * 280;
+      sensor.style.top = topPx + 'px';
+
+      // Texte du capteur en kPa
+      sensorText.textContent = (pTotal / 1000).toFixed(2) + ' kPa';
+
+      // Affichage du panneau de données
+      depthVal.textContent = h.toFixed(1) + ' m';
+      calcPatm.textContent = patm.toLocaleString('fr-FR') + ' Pa';
+      calcRho.textContent = rho.toLocaleString('fr-FR') + ' kg/m³';
+      calcG.textContent = g.toFixed(2) + ' N/kg';
+      calcH.textContent = h.toFixed(1) + ' m';
+      calcDelta.textContent = Math.round(deltaP).toLocaleString('fr-FR') + ' Pa';
+
+      resPa.textContent = Math.round(pTotal).toLocaleString('fr-FR');
+      resHpa.textContent = (pTotal / 100).toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    }
+
+    // Écouteurs d'événements
+    fluidSelect.addEventListener('change', updateSimulation);
+    depthRange.addEventListener('input', updateSimulation);
+    gravitySelect.addEventListener('change', updateSimulation);
+    patmSelect.addEventListener('change', updateSimulation);
+
+    // Initialisation au chargement
+    updateSimulation();
+  </script>
+  </body>
+</html>
