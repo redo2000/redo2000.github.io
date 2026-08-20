@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oxydoréduction — l'échange d'électrons</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;display=swap"
+      rel="stylesheet">
+    <style>
+  :root{
+    --bg:#0a1420;
+    --bg-2:#0e1c2c;
+    --surface:#132a40;
+    --surface-2:#1a3550;
+    --line: rgba(200,220,240,0.10);
+    --text:#e9f0f7;
+    --muted:#8ea3bd;
+    --ox:#c1622d;       /* oxydation — rouille, cuivre oxydé */
+    --ox-glow:#f0985d;
+    --red:#3e92cc;       /* réduction — électron */
+    --red-glow:#7fc4ee;
+    --e-color:#ffd873;   /* électron */
+    --radius: 14px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 600px at 15% -10%, rgba(62,146,204,0.14), transparent 60%),
+      radial-gradient(900px 500px at 100% 10%, rgba(193,98,45,0.10), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3, .display{
+    font-family:'Space Grotesk', sans-serif;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--red-glow); outline-offset:3px; border-radius:4px;}
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+
+  /* NAV */
+  nav.top{
+    position:sticky; top:0; z-index:40;
+    backdrop-filter: blur(10px);
+    background:rgba(10,20,32,0.75);
+    border-bottom:1px solid var(--line);
+  }
+  nav.top .wrap{display:flex; align-items:center; justify-content:space-between; padding:14px 24px;}
+  .brand{display:flex; align-items:center; gap:10px; font-family:'Space Grotesk'; font-weight:600; font-size:16px;}
+  .brand .dot{width:9px;height:9px;border-radius:50%; background:linear-gradient(135deg,var(--red),var(--ox)); box-shadow:0 0 12px var(--red-glow);}
+  nav.top ul{list-style:none; display:flex; gap:22px; margin:0; padding:0; font-size:14px; color:var(--muted);}
+  nav.top ul a{text-decoration:none; transition:color .2s;}
+  nav.top ul a:hover{color:var(--text);}
+  nav.top ul{display:none;}
+  @media(min-width:760px){ nav.top ul{display:flex;} }
+
+  /* HERO */
+  header.hero{padding:64px 0 20px;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--muted); border:1px solid var(--line); padding:6px 12px; border-radius:999px;
+    background:rgba(255,255,255,0.02);
+  }
+  h1.title{font-size:clamp(34px,6vw,58px); font-weight:700; margin-top:18px; line-height:1.05;}
+  h1.title span{color:transparent; -webkit-text-stroke:1.5px var(--muted); }
+  p.lede{max-width:620px; color:var(--muted); font-size:17px; margin-top:16px;}
+
+  /* REACTION LAB (signature element) */
+  .lab{
+    margin-top:44px;
+    background:linear-gradient(180deg, var(--surface), var(--bg-2));
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:8px;
+    box-shadow:0 30px 80px -30px rgba(0,0,0,0.6);
+  }
+  .lab-tabs{display:flex; gap:6px; padding:8px; flex-wrap:wrap;}
+  .lab-tab{
+    flex:1 1 auto; min-width:140px;
+    background:transparent; border:1px solid transparent; color:var(--muted);
+    font-family:'Inter'; font-size:13.5px; font-weight:500;
+    padding:10px 14px; border-radius:11px; cursor:pointer; transition:all .2s;
+  }
+  .lab-tab:hover{color:var(--text); background:rgba(255,255,255,0.04);}
+  .lab-tab[aria-selected="true"]{
+    background:var(--surface-2); color:var(--text); border-color:var(--line);
+  }
+
+  .stage{
+    position:relative;
+    padding:10px 18px 26px;
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:10px;
+  }
+  .stage-viz{
+    width:100%;
+    aspect-ratio: 16/8;
+    max-height:340px;
+  }
+  @media(min-width:640px){ .stage-viz{aspect-ratio:16/6.5;} }
+
+  .atom-label{font-family:'Space Grotesk'; font-weight:700;}
+  .caption-row{
+    display:flex; flex-wrap:wrap; gap:10px 26px; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono'; font-size:13px; color:var(--muted); margin-top:2px;
+  }
+  .caption-row .eq{color:var(--text);}
+  .tag-ox{color:var(--ox-glow);}
+  .tag-red{color:var(--red-glow);}
+
+  .lab-controls{
+    display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;
+    padding:6px 18px 20px;
+  }
+  button.btn{
+    font-family:'Inter'; font-weight:600; font-size:14px;
+    border:1px solid var(--line); background:var(--surface-2); color:var(--text);
+    padding:11px 20px; border-radius:11px; cursor:pointer; transition:transform .15s, background .2s, border-color .2s;
+  }
+  button.btn:hover{border-color:var(--red-glow); transform:translateY(-1px);}
+  button.btn.primary{background:linear-gradient(135deg, var(--red), #2c6fa0); border-color:transparent;}
+  button.btn.primary:hover{filter:brightness(1.08);}
+  button.btn:disabled{opacity:0.45; cursor:not-allowed; transform:none;}
+  .status-line{
+    text-align:center; font-family:'IBM Plex Mono'; font-size:12.5px; color:var(--muted);
+    min-height:18px; padding-bottom:14px;
+  }
+  .status-line strong{color:var(--e-color);}
+
+  /* SECTIONS */
+  section{padding:76px 0;}
+  section.tight{padding-top:0;}
+  .section-head{max-width:640px; margin-bottom:36px;}
+  .kicker{font-family:'IBM Plex Mono'; font-size:12px; color:var(--red-glow); letter-spacing:0.08em; text-transform:uppercase;}
+  h2.section-title{font-size:clamp(26px,4vw,36px); margin-top:10px; font-weight:600;}
+  p.section-sub{color:var(--muted); margin-top:12px; font-size:15.5px;}
+
+  /* DEFINITION CARDS */
+  .def-grid{display:grid; grid-template-columns:1fr; gap:20px;}
+  @media(min-width:720px){ .def-grid{grid-template-columns:1fr 1fr;} }
+  .def-card{
+    border:1px solid var(--line); border-radius:18px; padding:28px;
+    background:var(--surface);
+    position:relative; overflow:hidden;
+  }
+  .def-card::before{
+    content:''; position:absolute; inset:0; opacity:0.5;
+    background:radial-gradient(340px 160px at 100% 0%, var(--glow), transparent 70%);
+    pointer-events:none;
+  }
+  .def-card.ox{--glow:rgba(193,98,45,0.28);}
+  .def-card.red{--glow:rgba(62,146,204,0.28);}
+  .def-card .label{
+    font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+    display:inline-block; padding:5px 10px; border-radius:8px;
+  }
+  .def-card.ox .label{color:var(--ox-glow); background:rgba(193,98,45,0.14);}
+  .def-card.red .label{color:var(--red-glow); background:rgba(62,146,204,0.14);}
+  .def-card h3{font-size:24px; margin-top:14px;}
+  .def-card p{color:var(--muted); margin-top:10px; font-size:15px;}
+  .def-card .eqn{
+    margin-top:18px; font-family:'IBM Plex Mono'; font-size:15px;
+    background:rgba(0,0,0,0.25); border:1px solid var(--line); border-radius:10px; padding:12px 14px;
+  }
+  .def-card.ox .eqn{color:var(--ox-glow);}
+  .def-card.red .eqn{color:var(--red-glow);}
+  .mem{margin-top:22px; font-size:13.5px; color:var(--muted); border-top:1px dashed var(--line); padding-top:16px;}
+  .mem strong{color:var(--text);}
+
+  /* RULES LIST */
+  .rules{
+    counter-reset: rule;
+    display:grid; gap:14px;
+    grid-template-columns:1fr;
+  }
+  @media(min-width:720px){ .rules{grid-template-columns:1fr 1fr;} }
+  .rule{
+    display:flex; gap:14px; align-items:flex-start;
+    border:1px solid var(--line); border-radius:14px; padding:16px 18px; background:var(--surface);
+  }
+  .rule::before{
+    counter-increment:rule; content: counter(rule);
+    font-family:'IBM Plex Mono'; font-weight:600; font-size:13px;
+    width:28px; height:28px; flex:none; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--surface-2); color:var(--red-glow); border:1px solid var(--line);
+  }
+  .rule p{margin:0; font-size:14.5px; color:var(--muted);}
+  .rule p strong{color:var(--text); font-weight:600;}
+
+  /* EXAMPLES GRID */
+  .ex-grid{display:grid; grid-template-columns:1fr; gap:16px;}
+  @media(min-width:640px){ .ex-grid{grid-template-columns:1fr 1fr;} }
+  @media(min-width:980px){ .ex-grid{grid-template-columns:1fr 1fr 1fr;} }
+  .ex-card{
+    border:1px solid var(--line); border-radius:16px; padding:22px; background:var(--surface);
+    transition:border-color .2s, transform .2s;
+  }
+  .ex-card:hover{border-color:var(--red-glow); transform:translateY(-2px);}
+  .ex-card .ico{
+    width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+    background:var(--surface-2); margin-bottom:14px; font-size:18px;
+  }
+  .ex-card h4{font-family:'Space Grotesk'; font-size:16.5px; margin:0 0 8px; font-weight:600;}
+  .ex-card p{font-size:14px; color:var(--muted); margin:0;}
+  .ex-card .mini-eq{
+    margin-top:12px; font-family:'IBM Plex Mono'; font-size:12.5px; color:var(--red-glow);
+  }
+
+  /* QUIZ */
+  .quiz{
+    border:1px solid var(--line); border-radius:20px; background:var(--surface); padding:8px;
+  }
+  .quiz-inner{padding:26px;}
+  .q-progress{
+    display:flex; gap:6px; margin-bottom:22px;
+  }
+  .q-progress span{flex:1; height:4px; border-radius:4px; background:var(--surface-2);}
+  .q-progress span.done{background:var(--red);}
+  .q-progress span.current{background:var(--ox);}
+  .q-text{font-family:'Space Grotesk'; font-size:19px; font-weight:600; margin-bottom:18px;}
+  .q-options{display:grid; gap:10px;}
+  .q-opt{
+    text-align:left; width:100%;
+    border:1px solid var(--line); background:var(--surface-2); color:var(--text);
+    padding:13px 16px; border-radius:11px; cursor:pointer; font-size:14.5px; font-family:'Inter';
+    transition:all .15s;
+  }
+  .q-opt:hover:not(:disabled){border-color:var(--red-glow);}
+  .q-opt.correct{background:rgba(62,146,204,0.22); border-color:var(--red-glow);}
+  .q-opt.wrong{background:rgba(193,98,45,0.20); border-color:var(--ox-glow);}
+  .q-opt:disabled{cursor:default;}
+  .q-feedback{margin-top:14px; font-size:14px; color:var(--muted); min-height:20px;}
+  .q-footer{display:flex; justify-content:space-between; align-items:center; margin-top:20px;}
+  .q-score{font-family:'IBM Plex Mono'; font-size:13px; color:var(--muted);}
+  .q-result{text-align:center; padding:20px 0;}
+  .q-result .big{font-family:'Space Grotesk'; font-size:42px; font-weight:700;}
+
+  footer{border-top:1px solid var(--line); padding:34px 0 60px; color:var(--muted); font-size:13px;}
+  footer .wrap{display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between;}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+</style>
+  </head>
+  <body>
+    <nav class="top">
+      <div class="wrap">
+        <div class="brand"><span class="dot"></span> Oxydoréduction</div>
+        <ul>
+          <li><a href="#lab">Laboratoire</a></li>
+          <li><a href="#definitions">Définitions</a></li>
+          <li><a href="#regles">Règles</a></li>
+          <li><a href="#exemples">Exemples</a></li>
+          <li><a href="#quiz">Quiz</a></li>
+        </ul>
+      </div>
+    </nav>
+    <header class="hero">
+      <div class="wrap"> <span class="eyebrow">Chimie · Réactions
+          d'oxydoréduction</span>
+        <p align="center"><b><i><a href="https://redo2000.github.io/"><font size="5"
+                  color="#66FF33">https://redo2000.github.io/</font></a></i></b></p>
+        <h1 class="title">Là où les électrons<br>
+          <span>changent de propriétaire</span></h1>
+        <p class="lede">Une réaction d'oxydoréduction, c'est un échange
+          d'électrons entre deux espèces chimiques. L'une en perd, l'autre en
+          gagne — jamais l'inverse. Regardez le transfert se produire, en
+          direct.</p>
+      </div>
+    </header>
+    <section id="lab" class="tight">
+      <div class="wrap">
+        <div class="lab">
+          <div class="lab-tabs" role="tablist" aria-label="Choisir une réaction">
+            <button class="lab-tab" role="tab" aria-selected="true" data-reaction="daniell">Pile
+              Daniell — Zn / Cu²⁺</button> <button class="lab-tab" role="tab" aria-selected="false"
+              data-reaction="rouille">Rouille du fer — Fe / O₂</button> <button
+              class="lab-tab" role="tab" aria-selected="false" data-reaction="combustion">Combustion
+              — C / O₂</button> </div>
+          <div class="stage">
+            <svg class="stage-viz" viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg"
+              role="img" aria-label="Animation du transfert d'électrons">
+              <!-- connecting path used for electron motion -->
+              <path id="ePathTop" d="M 175,105 C 280,50 360,50 465,105" fill="none"
+                stroke="none"></path>
+              <path id="ePathBot" d="M 175,155 C 280,210 360,210 465,155" fill="none"
+                stroke="none"></path>
+              <!-- left atom -->
+              <g id="atomLeft">
+                <circle cx="150" cy="130" r="9" fill="url(#nucGradOx)"></circle>
+                <circle id="shellLeft" cx="150" cy="130" r="46" fill="none" stroke="var(--line)"
+                  stroke-width="1.5" stroke-dasharray="3 4"></circle>
+                <text id="labelLeft" x="150" y="205" text-anchor="middle" class="atom-label"
+                  fill="var(--text)" font-size="19">Zn</text>
+                <text id="sublabelLeft" x="150" y="223" text-anchor="middle" class="mono"
+                  fill="var(--muted)" font-size="11">réducteur</text> </g>
+              <!-- right atom -->
+              <g id="atomRight">
+                <circle cx="490" cy="130" r="9" fill="url(#nucGradRed)"></circle>
+                <circle id="shellRight" cx="490" cy="130" r="46" fill="none" stroke="var(--line)"
+                  stroke-width="1.5" stroke-dasharray="3 4"></circle>
+                <text id="labelRight" x="490" y="205" text-anchor="middle" class="atom-label"
+                  fill="var(--text)" font-size="19">Cu²⁺</text>
+                <text id="sublabelRight" x="490" y="223" text-anchor="middle" class="mono"
+                  fill="var(--muted)" font-size="11">oxydant</text> </g>
+              <!-- electrons -->
+              <circle id="eTop" r="6" fill="var(--e-color)" style="filter:drop-shadow(0 0 5px var(--e-color));">
+                <animateMotion id="animTop" dur="1.6s" begin="indefinite" fill="freeze">
+                  <mpath href="#ePathTop"></mpath> </animateMotion> </circle>
+              <circle id="eBot" r="6" fill="var(--e-color)" style="filter:drop-shadow(0 0 5px var(--e-color));">
+                <animateMotion id="animBot" dur="1.6s" begin="0.15s" fill="freeze">
+                  <mpath href="#ePathBot"></mpath> </animateMotion> </circle>
+              <defs>
+                <radialGradient id="nucGradOx" cx="35%" cy="30%" r="75%">
+                  <stop offset="0%" stop-color="var(--ox-glow)"></stop>
+                  <stop offset="100%" stop-color="var(--ox)"></stop> </radialGradient>
+                <radialGradient id="nucGradRed" cx="35%" cy="30%" r="75%">
+                  <stop offset="0%" stop-color="var(--red-glow)"></stop>
+                  <stop offset="100%" stop-color="var(--red)"></stop> </radialGradient>
+              </defs> </svg>
+            <div class="caption-row"> <span class="eq"><span class="tag-ox" id="halfOx">Zn
+                  → Zn²⁺ + 2 e⁻</span></span> <span class="eq"><span class="tag-red"
+                  id="halfRed">Cu²⁺ + 2 e⁻ → Cu</span></span> </div>
+          </div>
+          <div class="lab-controls"> <button class="btn primary" id="playBtn">Lancer
+              le transfert d'électrons</button> <button class="btn" id="resetBtn">Réinitialiser</button>
+          </div>
+          <p class="status-line" id="statusLine">Prêt. <strong>2 électrons</strong>
+            attendent de changer de camp.</p>
+        </div>
+      </div>
+    </section>
+    <section id="definitions">
+      <div class="wrap">
+        <div class="section-head"> <span class="kicker">La règle de base</span>
+          <h2 class="section-title">Deux moitiés, un seul échange</h2>
+          <p class="section-sub">Oxydation et réduction se produisent toujours
+            ensemble : ce sont les deux moitiés de la même transaction
+            d'électrons. On les appelle des demi-équations.</p>
+        </div>
+        <div class="def-grid">
+          <div class="def-card ox"> <span class="label">Oxydation</span>
+            <h3>Perte d'électrons</h3>
+            <p>L'espèce qui s'oxyde donne des électrons. Son nombre d'oxydation
+              augmente. C'est elle le <strong style="color:var(--text)">réducteur</strong>
+              de la réaction, car elle permet à l'autre espèce d'être réduite.</p>
+            <div class="eqn">Zn → Zn²⁺ + 2 e⁻</div>
+          </div>
+          <div class="def-card red"> <span class="label">Réduction</span>
+            <h3>Gain d'électrons</h3>
+            <p>L'espèce qui se réduit capte des électrons. Son nombre
+              d'oxydation diminue. C'est elle l'<strong style="color:var(--text)">oxydant</strong>
+              de la réaction, car elle « oxyde » l'autre espèce en lui prenant
+              ses électrons.</p>
+            <div class="eqn">Cu²⁺ + 2 e⁻ → Cu</div>
+          </div>
+        </div>
+        <p class="mem">Astuce pour ne plus se tromper&nbsp;: <strong>perte</strong>
+          d'électrons = <strong>oxydation</strong>, <strong>gain</strong>
+          d'électrons = <strong>réduction</strong>. L'oxydant n'est jamais
+          celui qui s'oxyde — il fait s'oxyder l'autre.</p>
+      </div>
+    </section>
+    <section id="regles">
+      <div class="wrap">
+        <div class="section-head"> <span class="kicker">Nombre d'oxydation</span>
+          <h2 class="section-title">Comment le calculer, en pratique</h2>
+          <p class="section-sub">Le nombre d'oxydation (n.o.) mesure la charge
+            qu'aurait un atome si tous ses électrons de liaison étaient
+            attribués à l'élément le plus électronégatif. Cinq règles suffisent
+            pour la plupart des cas.</p>
+        </div>
+        <div class="rules">
+          <div class="rule">
+            <p><strong>Corps simple.</strong> Un élément seul (Fe, O₂, Cu, N₂) a
+              toujours un n.o. de 0.</p>
+          </div>
+          <div class="rule">
+            <p><strong>Ion monoatomique.</strong> Le n.o. est égal à la charge
+              de l'ion. Ex&nbsp;: Fe²⁺ → n.o.(Fe) = +II.</p>
+          </div>
+          <div class="rule">
+            <p><strong>Oxygène.</strong> Presque toujours −II, sauf dans les
+              peroxydes (−I) ou avec le fluor.</p>
+          </div>
+          <div class="rule">
+            <p><strong>Hydrogène.</strong> Presque toujours +I, sauf dans les
+              hydrures métalliques (−I).</p>
+          </div>
+          <div class="rule">
+            <p><strong>Molécule neutre.</strong> La somme des n.o. de tous les
+              atomes vaut 0.</p>
+          </div>
+          <div class="rule">
+            <p><strong>Ion polyatomique.</strong> La somme des n.o. est égale à
+              la charge globale de l'ion.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="exemples">
+      <div class="wrap">
+        <div class="section-head"> <span class="kicker">Autour de nous</span>
+          <h2 class="section-title">L'oxydoréduction, partout</h2>
+          <p class="section-sub">Ces réactions ne restent pas dans les manuels :
+            elles font rouiller une grille, tourner une pile et brûler une
+            bougie.</p>
+        </div>
+        <div class="ex-grid">
+          <div class="ex-card">
+            <div class="ico">🔩</div>
+            <h4>Rouille du fer</h4>
+            <p>Le fer cède des électrons au dioxygène de l'air en présence
+              d'eau, formant de l'oxyde de fer hydraté.</p>
+            <div class="mini-eq">4 Fe + 3 O₂ → 2 Fe₂O₃</div>
+          </div>
+          <div class="ex-card">
+            <div class="ico">🔋</div>
+            <h4>Pile électrique</h4>
+            <p>Une pile force les électrons à circuler dans un fil plutôt que
+              directement entre les espèces : c'est ce courant qu'on utilise.</p>
+            <div class="mini-eq">Zn + Cu²⁺ → Zn²⁺ + Cu</div>
+          </div>
+          <div class="ex-card">
+            <div class="ico">🔥</div>
+            <h4>Combustion</h4>
+            <p>Le carbone du combustible cède des électrons au dioxygène ;
+              l'énergie libérée devient chaleur et lumière.</p>
+            <div class="mini-eq">C + O₂ → CO₂</div>
+          </div>
+          <div class="ex-card">
+            <div class="ico">🌱</div>
+            <h4>Photosynthèse</h4>
+            <p>La plante réduit le CO₂ en glucose grâce à l'énergie lumineuse,
+              tout en oxydant l'eau pour libérer du dioxygène.</p>
+            <div class="mini-eq">6 CO₂ + 6 H₂O → C₆H₁₂O₆ + 6 O₂</div>
+          </div>
+          <div class="ex-card">
+            <div class="ico">🫁</div>
+            <h4>Respiration cellulaire</h4>
+            <p>Nos cellules font l'inverse de la photosynthèse&nbsp;: le glucose
+              est oxydé pour produire l'énergie du métabolisme.</p>
+            <div class="mini-eq">C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O</div>
+          </div>
+          <div class="ex-card">
+            <div class="ico">🧴</div>
+            <h4>Eau de Javel</h4>
+            <p>L'ion hypochlorite est un oxydant puissant, capable de décolorer
+              les taches et de désinfecter en oxydant les matières organiques.</p>
+            <div class="mini-eq">ClO⁻ + 2 e⁻ + H₂O → Cl⁻ + 2 OH⁻</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="quiz">
+      <div class="wrap">
+        <div class="section-head"> <span class="kicker">Vérifier</span>
+          <h2 class="section-title">Quatre questions pour tester vos réflexes</h2>
+        </div>
+        <div class="quiz">
+          <div class="quiz-inner">
+            <div class="q-progress" id="qProgress"></div>
+            <div id="quizBody"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <div class="wrap"> <span>Ressource pédagogique — oxydoréduction.</span> <span>Pensée
+          pour la classe, le lycée et la prépa.</span> </div>
+    </footer>
+    <script>
+(function(){
+  // ---------- REACTION LAB ----------
+  const REACTIONS = {
+    daniell: {
+      leftLabel:"Zn", leftLabelAfter:"Zn²⁺", leftSub:"réducteur",
+      rightLabel:"Cu²⁺", rightLabelAfter:"Cu", rightSub:"oxydant",
+      halfOx:"Zn → Zn²⁺ + 2 e⁻", halfRed:"Cu²⁺ + 2 e⁻ → Cu",
+      status:"2 électrons attendent de changer de camp."
+    },
+    rouille: {
+      leftLabel:"Fe", leftLabelAfter:"Fe³⁺", leftSub:"réducteur",
+      rightLabel:"O₂", rightLabelAfter:"O²⁻", rightSub:"oxydant",
+      halfOx:"Fe → Fe³⁺ + 3 e⁻", halfRed:"O₂ + 4 e⁻ → 2 O²⁻",
+      status:"Le fer cède ses électrons au dioxygène de l'air."
+    },
+    combustion: {
+      leftLabel:"C", leftLabelAfter:"C⁴⁺", leftSub:"réducteur",
+      rightLabel:"O₂", rightLabelAfter:"O²⁻", rightSub:"oxydant",
+      halfOx:"C → C⁴⁺ + 4 e⁻", halfRed:"O₂ + 4 e⁻ → 2 O²⁻",
+      status:"Le carbone cède ses électrons au dioxygène : la combustion libère de l'énergie."
+    }
+  };
+
+  let current = "daniell";
+  let playing = false;
+
+  const labelLeft = document.getElementById('labelLeft');
+  const labelRight = document.getElementById('labelRight');
+  const sublabelLeft = document.getElementById('sublabelLeft');
+  const sublabelRight = document.getElementById('sublabelRight');
+  const halfOx = document.getElementById('halfOx');
+  const halfRed = document.getElementById('halfRed');
+  const statusLine = document.getElementById('statusLine');
+  const playBtn = document.getElementById('playBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const atomLeft = document.getElementById('atomLeft');
+  const atomRight = document.getElementById('atomRight');
+  const animTop = document.getElementById('animTop');
+  const animBot = document.getElementById('animBot');
+  const eTop = document.getElementById('eTop');
+  const eBot = document.getElementById('eBot');
+
+  function setReactionState(key, transferred){
+    const r = REACTIONS[key];
+    labelLeft.textContent = transferred ? r.leftLabelAfter : r.leftLabel;
+    labelRight.textContent = transferred ? r.rightLabelAfter : r.rightLabel;
+    sublabelLeft.textContent = r.leftSub;
+    sublabelRight.textContent = r.rightSub;
+    halfOx.textContent = r.halfOx;
+    halfRed.textContent = r.halfRed;
+    atomLeft.style.opacity = 1;
+    atomRight.style.opacity = 1;
+    atomLeft.querySelector('circle').style.fill = transferred ? '' : '';
+    labelLeft.style.fill = transferred ? 'var(--ox-glow)' : 'var(--text)';
+    labelRight.style.fill = transferred ? 'var(--red-glow)' : 'var(--text)';
+    statusLine.innerHTML = transferred
+      ? 'Transfert terminé — <strong>' + r.leftLabel + '</strong> a cédé ses électrons à <strong>' + r.rightLabel + '</strong>.'
+      : r.status.replace(/(\d+ électrons?)/,'<strong>$1</strong>');
+  }
+
+  function resetElectrons(){
+    [eTop, eBot].forEach(function(e){ e.style.opacity = 1; });
+    try{ animTop.endElement && animTop.endElement(); animBot.endElement && animBot.endElement(); }catch(e){}
+    // force electrons back to start by resetting the animation element
+    [animTop, animBot].forEach(function(a){
+      const clone = a.cloneNode(true);
+      a.parentNode.replaceChild(clone, a);
+    });
+  }
+
+  function refreshAnimRefs(){
+    return {
+      top: document.getElementById('animTop'),
+      bot: document.getElementById('animBot')
+    };
+  }
+
+  function switchReaction(key){
+    current = key;
+    playing = false;
+    document.querySelectorAll('.lab-tab').forEach(function(t){
+      t.setAttribute('aria-selected', t.dataset.reaction === key ? 'true' : 'false');
+    });
+    resetElectrons();
+    setReactionState(key, false);
+    playBtn.disabled = false;
+    playBtn.textContent = "Lancer le transfert d'électrons";
+  }
+
+  document.querySelectorAll('.lab-tab').forEach(function(tab){
+    tab.addEventListener('click', function(){ switchReaction(tab.dataset.reaction); });
+  });
+
+  playBtn.addEventListener('click', function(){
+    if(playing) return;
+    playing = true;
+    playBtn.disabled = true;
+    statusLine.innerHTML = 'Transfert en cours <span class="mono">···</span>';
+    const anims = refreshAnimRefs();
+    try{
+      anims.top.beginElement();
+      anims.bot.beginElement();
+    }catch(e){
+      // fallback if SMIL beginElement not supported
+    }
+    setTimeout(function(){
+      setReactionState(current, true);
+      playBtn.textContent = "Rejouer";
+      playBtn.disabled = false;
+      playing = false;
+    }, 1700);
+  });
+
+  resetBtn.addEventListener('click', function(){ switchReaction(current); });
+
+  // initial state
+  switchReaction('daniell');
+
+  // ---------- QUIZ ----------
+  const QUESTIONS = [
+    {
+      q:"Dans la réaction Zn + Cu²⁺ → Zn²⁺ + Cu, quel est l'oxydant ?",
+      options:["Zn","Cu²⁺","Zn²⁺","Cu"],
+      correct:1,
+      explain:"L'oxydant est l'espèce qui capte des électrons — donc qui est réduite. Ici, c'est Cu²⁺, réduit en Cu."
+    },
+    {
+      q:"La formation de la rouille (Fe₂O₃) correspond à…",
+      options:["une réduction du fer","une oxydation du fer","une combustion sans oxygène","une hydrolyse simple"],
+      correct:1,
+      explain:"Le fer métallique perd des électrons au profit du dioxygène : c'est une oxydation du fer."
+    },
+    {
+      q:"Une réduction correspond à…",
+      options:["une perte d'électrons","un gain d'électrons","une perte de protons","un gain de neutrons"],
+      correct:1,
+      explain:"Réduction = gain d'électrons. Le nombre d'oxydation de l'espèce diminue."
+    },
+    {
+      q:"Le nombre d'oxydation d'un élément à l'état de corps simple (Fe, O₂, Cu…) vaut toujours…",
+      options:["+1","−1","0","une valeur variable"],
+      correct:2,
+      explain:"Un atome dans un corps simple n'a échangé aucun électron avec un autre élément : son n.o. est 0 par définition."
+    }
+  ];
+
+  let qIndex = 0, score = 0, answered = false;
+  const qProgress = document.getElementById('qProgress');
+  const quizBody = document.getElementById('quizBody');
+
+  function renderProgress(){
+    qProgress.innerHTML = '';
+    QUESTIONS.forEach(function(_, i){
+      const s = document.createElement('span');
+      if(i < qIndex) s.classList.add('done');
+      else if(i === qIndex) s.classList.add('current');
+      qProgress.appendChild(s);
+    });
+  }
+
+  function renderQuestion(){
+    answered = false;
+    renderProgress();
+    const item = QUESTIONS[qIndex];
+    quizBody.innerHTML =
+      '<div class="q-text">' + item.q + '</div>' +
+      '<div class="q-options">' +
+        item.options.map(function(opt, i){
+          return '<button class="q-opt" data-i="'+i+'">'+opt+'</button>';
+        }).join('') +
+      '</div>' +
+      '<div class="q-feedback" id="qFeedback"></div>' +
+      '<div class="q-footer">' +
+        '<span class="q-score">Score&nbsp;: '+score+' / '+QUESTIONS.length+'</span>' +
+        '<button class="btn primary" id="qNext" style="display:none;">'+(qIndex === QUESTIONS.length-1 ? 'Voir le résultat' : 'Question suivante')+'</button>' +
+      '</div>';
+
+    quizBody.querySelectorAll('.q-opt').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(answered) return;
+        answered = true;
+        const i = parseInt(btn.dataset.i, 10);
+        quizBody.querySelectorAll('.q-opt').forEach(function(b, bi){
+          b.disabled = true;
+          if(bi === item.correct) b.classList.add('correct');
+          else if(bi === i) b.classList.add('wrong');
+        });
+        if(i === item.correct) score++;
+        document.getElementById('qFeedback').textContent = item.explain;
+        document.getElementById('qScore') && (document.getElementById('qScore').textContent = score);
+        quizBody.querySelector('.q-score').textContent = 'Score : ' + score + ' / ' + QUESTIONS.length;
+        document.getElementById('qNext').style.display = 'inline-block';
+      });
+    });
+
+    const nextBtn = document.getElementById('qNext');
+    if(nextBtn){
+      nextBtn.addEventListener('click', function(){
+        qIndex++;
+        if(qIndex < QUESTIONS.length) renderQuestion();
+        else renderResult();
+      });
+    }
+  }
+
+  function renderResult(){
+    qIndex = QUESTIONS.length;
+    renderProgress();
+    let verdict;
+    if(score === QUESTIONS.length) verdict = "Score parfait — les demi-équations n'ont plus de secret.";
+    else if(score >= QUESTIONS.length/2) verdict = "Bonne base — revoyez les points manqués.";
+    else verdict = "Retournez faire un tour du côté des définitions.";
+    quizBody.innerHTML =
+      '<div class="q-result">' +
+        '<div class="big">'+score+' / '+QUESTIONS.length+'</div>' +
+        '<p style="color:var(--muted); margin-top:8px;">'+verdict+'</p>' +
+        '<button class="btn primary" id="qRestart" style="margin-top:16px;">Recommencer</button>' +
+      '</div>';
+    document.getElementById('qRestart').addEventListener('click', function(){
+      qIndex = 0; score = 0; renderQuestion();
+    });
+  }
+
+  renderQuestion();
+})();
+</script>
+  </body>
+</html>
