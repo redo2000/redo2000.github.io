@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de masse molaire</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap"
+      rel="stylesheet">
+    <style>
+  :root{
+    --ink: #10262A;
+    --ink-2: #16332F;
+    --paper: #EDEAE0;
+    --paper-dim: #C9C6BA;
+    --amber: #D9A441;
+    --cyan: #6EC7B9;
+    --error: #C1543C;
+    --grid-line: rgba(237,234,224,0.05);
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(0deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 28px),
+      repeating-linear-gradient(90deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 28px),
+      var(--ink);
+    color: var(--paper);
+    font-family: 'IBM Plex Mono', monospace;
+    min-height: 100vh;
+    padding: 48px 20px 80px;
+  }
+
+  .page{
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .eyebrow{
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 10px;
+  }
+
+  h1{
+    font-family: 'Fraunces', serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: clamp(34px, 6vw, 54px);
+    line-height: 1.05;
+    margin: 0 0 6px;
+    color: var(--paper);
+  }
+
+  .sub{
+    color: var(--paper-dim);
+    font-size: 14px;
+    max-width: 46ch;
+    line-height: 1.6;
+    margin-bottom: 40px;
+  }
+
+  .entry-block{
+    border: 1px solid var(--paper-dim);
+    background: var(--ink-2);
+    padding: 22px;
+    position: relative;
+  }
+
+  .entry-block::before{
+    content: "ÉCHANTILLON";
+    position: absolute;
+    top: -10px;
+    left: 18px;
+    background: var(--ink);
+    padding: 0 8px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--amber);
+  }
+
+  .formula-row{
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  #formula{
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--paper-dim);
+    color: var(--paper);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 24px;
+    padding: 8px 4px;
+    outline: none;
+    letter-spacing: 0.02em;
+  }
+
+  #formula:focus{
+    border-bottom-color: var(--amber);
+  }
+
+  #formula::placeholder{
+    color: var(--paper-dim);
+    opacity: 0.6;
+  }
+
+  .examples{
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--paper-dim);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .chip{
+    border: 1px solid var(--paper-dim);
+    color: var(--paper-dim);
+    background: none;
+    padding: 4px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .chip:hover{
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+
+  .error-msg{
+    margin-top: 16px;
+    color: var(--error);
+    font-size: 13px;
+    display: none;
+  }
+  .error-msg.show{ display:block; }
+
+  .result-zone{
+    margin-top: 44px;
+    display: none;
+  }
+  .result-zone.show{ display:block; }
+
+  .readout{
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    border-bottom: 1px solid var(--paper-dim);
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .readout .value{
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(40px, 8vw, 68px);
+    color: var(--amber);
+    line-height: 1;
+  }
+
+  .readout .unit{
+    font-size: 16px;
+    color: var(--paper-dim);
+  }
+
+  .readout .formula-echo{
+    margin-left: auto;
+    font-size: 14px;
+    color: var(--cyan);
+    align-self: flex-end;
+  }
+
+  .breakdown-label{
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 14px;
+  }
+
+  .tiles{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+  }
+
+  .tile{
+    border: 1px solid var(--paper-dim);
+    padding: 10px 12px;
+    position: relative;
+    background: var(--ink-2);
+  }
+
+  .tile .symbol{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--paper);
+  }
+
+  .tile .count{
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 12px;
+    color: var(--amber);
+  }
+
+  .tile .mass{
+    font-size: 11px;
+    color: var(--paper-dim);
+    margin-top: 6px;
+  }
+
+  .tile .subtotal{
+    font-size: 12px;
+    color: var(--cyan);
+    margin-top: 2px;
+  }
+
+  footer{
+    margin-top: 60px;
+    font-size: 11px;
+    color: var(--paper-dim);
+    line-height: 1.7;
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .entry-block, .tile{ transition: border-color 0.15s; }
+  }
+</style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="eyebrow">Cahier de laboratoire ·
+        Chimie&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="https://redo2000.github.io/" style="color: #33ffff;">- redo2000
+          -</a></div>
+      <h1>Masse molaire</h1>
+      <p class="sub">Entrez une formule chimique — parenthèses, crochets et
+        hydrates (point ou « · ») sont pris en charge. Le calcul se fait à
+        partir des masses atomiques standard.</p>
+      <div class="entry-block">
+        <div class="formula-row"> <input id="formula" placeholder="ex. Ca3(PO4)2"
+            autocomplete="off" spellcheck="false" type="text"> </div>
+        <div class="examples"> <span>Essayer :</span> <button class="chip" data-formula="H2O">H2O</button>
+          <button class="chip" data-formula="C6H12O6">C6H12O6</button> <button
+            class="chip" data-formula="Ca3(PO4)2">Ca3(PO4)2</button> <button class="chip"
+            data-formula="CuSO4·5H2O">CuSO4·5H2O</button> <button class="chip"
+            data-formula="Al2(SO4)3">Al2(SO4)3</button> </div>
+        <div class="error-msg" id="errorMsg"></div>
+      </div>
+      <div class="result-zone" id="resultZone">
+        <div class="readout">
+          <div class="value" id="totalMass">0.00</div>
+          <div class="unit">g/mol</div>
+          <div class="formula-echo" id="formulaEcho"></div>
+        </div>
+        <div class="breakdown-label">Décomposition par élément</div>
+        <div class="tiles" id="tiles"></div>
+      </div>
+      <footer> Masses atomiques standard (IUPAC, valeurs moyennes arrondies).
+        Les nombres après un point ou « · » sont traités comme des hydrates (ex.
+        5H2O). </footer>
+    </div>
+    <script>
+const ATOMIC_MASS = {
+  H:1.008, He:4.0026, Li:6.94, Be:9.0122, B:10.81, C:12.011, N:14.007, O:15.999,
+  F:18.998, Ne:20.180, Na:22.990, Mg:24.305, Al:26.982, Si:28.085, P:30.974, S:32.06,
+  Cl:35.45, Ar:39.948, K:39.098, Ca:40.078, Sc:44.956, Ti:47.867, V:50.942, Cr:51.996,
+  Mn:54.938, Fe:55.845, Co:58.933, Ni:58.693, Cu:63.546, Zn:65.38, Ga:69.723, Ge:72.630,
+  As:74.922, Se:78.971, Br:79.904, Kr:83.798, Rb:85.468, Sr:87.62, Y:88.906, Zr:91.224,
+  Nb:92.906, Mo:95.95, Tc:98, Ru:101.07, Rh:102.91, Pd:106.42, Ag:107.87, Cd:112.41,
+  In:114.82, Sn:118.71, Sb:121.76, Te:127.60, I:126.90, Xe:131.29, Cs:132.91, Ba:137.33,
+  La:138.91, Ce:140.12, Pr:140.91, Nd:144.24, Pm:145, Sm:150.36, Eu:151.96, Gd:157.25,
+  Tb:158.93, Dy:162.50, Ho:164.93, Er:167.26, Tm:168.93, Yb:173.05, Lu:174.97, Hf:178.49,
+  Ta:180.95, W:183.84, Re:186.21, Os:190.23, Ir:192.22, Pt:195.08, Au:196.97, Hg:200.59,
+  Tl:204.38, Pb:207.2, Bi:208.98, Po:209, At:210, Rn:222, Fr:223, Ra:226, Ac:227,
+  Th:232.04, Pa:231.04, U:238.03, Np:237, Pu:244, Am:243, Cm:247, Bk:247, Cf:251,
+  Es:252, Fm:257, Md:258, No:259, Lr:262, Rf:267, Db:270, Sg:271, Bh:270, Hs:277,
+  Mt:278, Ds:281, Rg:282, Cn:285, Nh:286, Fl:289, Mc:290, Lv:293, Ts:294, Og:294
+};
+
+function splitTopLevel(str, seps){
+  let depth = 0, parts = [], current = '';
+  for (const ch of str){
+    if (ch === '(' || ch === '[') depth++;
+    if (ch === ')' || ch === ']') depth--;
+    if (depth === 0 && seps.includes(ch)){
+      parts.push(current);
+      current = '';
+    } else {
+      current += ch;
+    }
+  }
+  parts.push(current);
+  return parts;
+}
+
+function parseSegment(formula){
+  let i = 0;
+
+  function parseNumber(){
+    const m = /^\d+(\.\d+)?/.exec(formula.slice(i));
+    if (m){ i += m[0].length; return parseFloat(m[0]); }
+    return 1;
+  }
+
+  function parseElementSymbol(){
+    const m = /^[A-Z][a-z]?/.exec(formula.slice(i));
+    if (!m) throw new Error(`Symbole d'élément attendu à la position ${i}`);
+    i += m[0].length;
+    return m[0];
+  }
+
+  function parseGroup(){
+    let counts = {};
+    while (i < formula.length && formula[i] !== ')' && formula[i] !== ']'){
+      const ch = formula[i];
+      if (ch === '(' || ch === '['){
+        const closeChar = ch === '(' ? ')' : ']';
+        i++;
+        const sub = parseGroup();
+        if (formula[i] !== closeChar) throw new Error('Parenthèses ou crochets non équilibrés');
+        i++;
+        const mult = parseNumber();
+        for (const el in sub) counts[el] = (counts[el] || 0) + sub[el] * mult;
+      } else if (/[A-Z]/.test(ch)){
+        const el = parseElementSymbol();
+        if (!(el in ATOMIC_MASS)) throw new Error(`Élément inconnu : "${el}"`);
+        const mult = parseNumber();
+        counts[el] = (counts[el] || 0) + mult;
+      } else if (/\s/.test(ch)){
+        i++;
+      } else {
+        throw new Error(`Caractère invalide : "${ch}"`);
+      }
+    }
+    return counts;
+  }
+
+  const result = parseGroup();
+  if (i !== formula.length) throw new Error('Formule mal formée');
+  return result;
+}
+
+function parseFormula(rawFormula){
+  const cleaned = rawFormula.replace(/·/g, '.').trim();
+  if (!cleaned) throw new Error('Entrez une formule');
+
+  const segments = splitTopLevel(cleaned, '.');
+  let totalCounts = {};
+
+  segments.forEach((seg, idx) => {
+    let s = seg.trim();
+    let mult = 1;
+    if (idx > 0){
+      const m = /^\d+(\.\d+)?/.exec(s);
+      if (m){ mult = parseFloat(m[0]); s = s.slice(m[0].length); }
+    }
+    if (!s) return;
+    const counts = parseSegment(s);
+    for (const el in counts){
+      totalCounts[el] = (totalCounts[el] || 0) + counts[el] * mult;
+    }
+  });
+
+  if (Object.keys(totalCounts).length === 0) throw new Error('Formule vide ou invalide');
+  return totalCounts;
+}
+
+const formulaInput = document.getElementById('formula');
+const errorMsg = document.getElementById('errorMsg');
+const resultZone = document.getElementById('resultZone');
+const totalMassEl = document.getElementById('totalMass');
+const tilesEl = document.getElementById('tiles');
+const formulaEcho = document.getElementById('formulaEcho');
+
+function render(){
+  const raw = formulaInput.value;
+  if (!raw.trim()){
+    errorMsg.classList.remove('show');
+    resultZone.classList.remove('show');
+    return;
+  }
+  try {
+    const counts = parseFormula(raw);
+    let total = 0;
+    const rows = Object.entries(counts).map(([el, n]) => {
+      const mass = ATOMIC_MASS[el] * n;
+      total += mass;
+      return { el, n, mass };
+    }).sort((a, b) => b.mass - a.mass);
+
+    totalMassEl.textContent = total.toFixed(3);
+    formulaEcho.textContent = raw.trim();
+    tilesEl.innerHTML = rows.map(r => `
+      <div class="tile">
+        <span class="count">×${parseFloat(r.n.toFixed(4))}</span>
+        <div class="symbol">${r.el}</div>
+        <div class="mass">${ATOMIC_MASS[r.el]} g/mol</div>
+        <div class="subtotal">${r.mass.toFixed(3)} g/mol</div>
+      </div>
+    `).join('');
+
+    errorMsg.classList.remove('show');
+    resultZone.classList.add('show');
+  } catch (e){
+    errorMsg.textContent = e.message;
+    errorMsg.classList.add('show');
+    resultZone.classList.remove('show');
+  }
+}
+
+formulaInput.addEventListener('input', render);
+
+document.querySelectorAll('.chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    formulaInput.value = btn.dataset.formula;
+    render();
+    formulaInput.focus();
+  });
+});
+
+formulaInput.value = 'H2O';
+render();
+</script>
+  </body>
+</html>
