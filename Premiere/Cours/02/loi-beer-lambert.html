@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La loi de Beer-Lambert — Absorption de la lumière</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap"
+      rel="stylesheet">
+    <style>
+  :root{
+    --bg:#0A0E1A;
+    --surface:#121828;
+    --surface-2:#1B2338;
+    --line:#232C44;
+    --text:#EDF0F7;
+    --text-muted:#8A93AC;
+    --violet:#8B5CF6;
+    --violet-soft:#8B5CF64d;
+    --amber:#F2A93B;
+    --cyan:#4DD8E8;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+  }
+  h1,h2,h3,.display{
+    font-family:'Space Grotesk',sans-serif;
+    letter-spacing:-0.01em;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* background texture: faint grid, like optical bench graph paper */
+  .bg-grid{
+    position:fixed; inset:0; z-index:-1;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:48px 48px;
+    opacity:0.25;
+    mask-image: radial-gradient(circle at 50% 0%, black, transparent 75%);
+  }
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+
+  header.hero{
+    padding:72px 0 40px;
+    text-align:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--amber);
+    border:1px solid #F2A93B4d;
+    background:#F2A93B14;
+    padding:6px 14px; border-radius:100px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:''; width:6px; height:6px; border-radius:50%;
+    background:var(--amber); box-shadow:0 0 8px var(--amber);
+  }
+  h1.title{
+    font-size:clamp(2.2rem, 5vw, 3.6rem);
+    font-weight:700; margin:0 0 18px;
+    background:linear-gradient(180deg, #fff, #B9C0D6);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .subtitle{
+    max-width:640px; margin:0 auto; color:var(--text-muted);
+    font-size:1.08rem;
+  }
+
+  section{padding:56px 0;}
+  .section-head{margin-bottom:32px;}
+  .kicker{
+    font-family:'JetBrains Mono',monospace; font-size:12px;
+    color:var(--cyan); letter-spacing:0.12em; text-transform:uppercase;
+    margin:0 0 8px;
+  }
+  h2.section-title{font-size:clamp(1.5rem,3vw,2rem); margin:0 0 10px; font-weight:600;}
+  .section-desc{color:var(--text-muted); max-width:620px;}
+
+  /* ===== Interactive demo ===== */
+  .lab{
+    background:linear-gradient(180deg, var(--surface), var(--surface-2));
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:32px;
+    display:grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap:36px;
+  }
+  @media (max-width:820px){ .lab{grid-template-columns:1fr;} }
+
+  .beam-stage{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:18px;
+  }
+  .beam-svg{width:100%; height:auto;}
+  .readouts{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; width:100%;
+  }
+  .readout{
+    background:var(--bg); border:1px solid var(--line); border-radius:12px;
+    padding:12px 10px; text-align:center;
+  }
+  .readout .label{font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.08em;}
+  .readout .value{font-family:'JetBrains Mono',monospace; font-size:1.25rem; font-weight:700; margin-top:4px;}
+  .readout.a .value{color:var(--violet);}
+  .readout.t .value{color:var(--cyan);}
+  .readout.pct .value{color:var(--amber);}
+
+  .controls{display:flex; flex-direction:column; gap:24px;}
+  .control{display:flex; flex-direction:column; gap:8px;}
+  .control .row{display:flex; justify-content:space-between; align-items:baseline;}
+  .control label{font-size:.92rem; font-weight:500;}
+  .control .val{font-family:'JetBrains Mono',monospace; font-size:.92rem; color:var(--amber);}
+  input[type=range]{
+    -webkit-appearance:none; appearance:none;
+    width:100%; height:4px; border-radius:2px;
+    background:var(--line); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none;
+    width:18px; height:18px; border-radius:50%;
+    background:var(--violet); border:3px solid #0A0E1A;
+    box-shadow:0 0 0 2px var(--violet-soft);
+    cursor:pointer;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:18px; height:18px; border-radius:50%;
+    background:var(--violet); border:3px solid #0A0E1A;
+    box-shadow:0 0 0 2px var(--violet-soft); cursor:pointer;
+  }
+  input[type=range]:focus-visible{outline:2px solid var(--cyan); outline-offset:4px;}
+  .hint{font-size:12.5px; color:var(--text-muted);}
+
+  /* ===== formula card ===== */
+  .formula-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:20px;
+  }
+  @media (max-width:720px){.formula-grid{grid-template-columns:1fr;}}
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:16px;
+    padding:26px;
+  }
+  .formula-big{
+    font-family:'JetBrains Mono',monospace;
+    font-size:2.1rem; font-weight:700;
+    color:var(--text); margin:6px 0 18px;
+    display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+  }
+  .formula-big .eps{color:var(--violet);}
+  .formula-big .l{color:var(--amber);}
+  .formula-big .c{color:var(--cyan);}
+  dl.terms{margin:0; display:grid; gap:10px;}
+  dl.terms div{display:flex; gap:10px; align-items:baseline;}
+  dl.terms dt{
+    font-family:'JetBrains Mono',monospace; font-weight:700; width:26px; flex:none;
+  }
+  dl.terms dd{margin:0; color:var(--text-muted); font-size:.95rem;}
+
+  /* ===== graph ===== */
+  .graph-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:16px;
+    padding:28px;
+  }
+  .graph-svg{width:100%; height:auto;}
+
+  /* ===== assumptions / applications ===== */
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  @media (max-width:820px){.grid-3{grid-template-columns:1fr;}}
+  .tile{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px;
+    padding:22px;
+  }
+  .tile .num{
+    font-family:'JetBrains Mono',monospace; color:var(--amber); font-size:.8rem;
+    margin-bottom:10px; letter-spacing:.08em;
+  }
+  .tile h3{font-size:1.02rem; margin:0 0 8px;}
+  .tile p{margin:0; color:var(--text-muted); font-size:.92rem;}
+
+  footer{
+    padding:40px 0 60px; text-align:center; color:var(--text-muted); font-size:.85rem;
+    border-top:1px solid var(--line); margin-top:24px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    * { animation-duration:0.001ms !important; animation-iteration-count:1 !important; }
+  }
+</style>
+  </head>
+  <body>
+    <div class="bg-grid"></div>
+    <header class="hero">
+      <div class="wrap"> <span class="eyebrow">Spectrophotométrie</span>
+        <h1 class="title"><b style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: -webkit-center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(0, 0, 0); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><i><a
+                href="https://redo2000.github.io/"><font size="5" color="#92D050">https://redo2000.github.io/</font></a></i></b></h1>
+        <h1 class="title">La loi de Beer‑Lambert</h1>
+        <p class="subtitle">Comment une solution colorée absorbe la lumière — et
+          comment on s'en sert pour mesurer une concentration, sans jamais
+          toucher l'échantillon.</p>
+      </div>
+    </header>
+    <main class="wrap">
+      <!-- ================= INTERACTIVE DEMO ================= -->
+      <section id="demo">
+        <div class="section-head">
+          <p class="kicker">01 · Expérience</p>
+          <h2 class="section-title">Faites varier la cuve</h2>
+          <p class="section-desc">Un faisceau de lumière monochromatique
+            d'intensité I₀ traverse une cuve de largeur l contenant une solution
+            de concentration c. Réglez les trois paramètres et observez
+            l'intensité transmise I.</p>
+        </div>
+        <div class="lab">
+          <div class="beam-stage">
+            <svg class="beam-svg" viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg">
+              <!-- incoming beam label -->
+              <text x="18" y="30" fill="#8A93AC" font-family="JetBrains Mono, monospace"
+                font-size="13">I₀</text>
+              <text x="470" y="30" fill="#8A93AC" font-family="JetBrains Mono, monospace"
+                font-size="13">I</text>
+              <!-- baseline beam line -->
+              <line x1="20" y1="110" x2="500" y2="110" stroke="#232C44" stroke-width="1"></line>
+              <!-- cuvette -->
+              <rect id="cuvetteGlass" x="210" y="40" width="100" height="140" fill="none"
+                stroke="#3A4568" stroke-width="2" rx="4"></rect>
+              <rect id="cuvetteFill" x="213" y="43" width="94" height="134" rx="2"
+                fill="#8B5CF6" opacity="0.35"></rect>
+              <!-- incoming beam (constant intensity) -->
+              <line x1="20" y1="110" x2="210" y2="110" stroke="#F2A93B" stroke-width="4"
+                stroke-linecap="round"></line>
+              <!-- decay curve inside cuvette, drawn dynamically -->
+              <path id="decayPath" d="" fill="none" stroke="#F2A93B" stroke-width="4"
+                stroke-linecap="round"></path>
+              <!-- outgoing beam (attenuated, opacity set by JS) -->
+              <line id="outBeam" x1="310" y1="110" x2="500" y2="110" stroke="#F2A93B"
+                stroke-width="4" stroke-linecap="round"></line>
+              <!-- moving photon dots -->
+              <g id="photons"></g>
+              <text x="230" y="200" fill="#5C6784" font-family="JetBrains Mono, monospace"
+                font-size="11">chemin optique l</text> </svg>
+            <div class="readouts">
+              <div class="readout a">
+                <div class="label">Absorbance A</div>
+                <div class="value mono" id="valA">0.00</div>
+              </div>
+              <div class="readout t">
+                <div class="label">Transmittance T</div>
+                <div class="value mono" id="valT">1.00</div>
+              </div>
+              <div class="readout pct">
+                <div class="label">%T</div>
+                <div class="value mono" id="valPct">100%</div>
+              </div>
+            </div>
+          </div>
+          <div class="controls">
+            <div class="control">
+              <div class="row"> <label for="eps">Coefficient d'absorption
+                  molaire (ε)</label> <span class="val mono" id="epsVal">12000</span>
+              </div>
+              <input id="eps" min="500" max="50000" step="100" value="12000" type="range">
+              <span class="hint">en L·mol⁻¹·cm⁻¹ — dépend de la molécule et de
+                la longueur d'onde choisie</span> </div>
+            <div class="control">
+              <div class="row"> <label for="len">Longueur du trajet optique (l)</label>
+                <span class="val mono" id="lenVal">1.0 cm</span> </div>
+              <input id="len" min="0.1" max="5" step="0.1" value="1" type="range">
+              <span class="hint">largeur de la cuve traversée par la lumière</span>
+            </div>
+            <div class="control">
+              <div class="row"> <label for="conc">Concentration (c)</label> <span
+                  class="val mono" id="concVal">0.20 mmol/L</span> </div>
+              <input id="conc" min="0" max="1" step="0.01" value="0.2" type="range">
+              <span class="hint">quantité de soluté dans la solution</span> </div>
+          </div>
+        </div>
+      </section>
+      <!-- ================= FORMULA ================= -->
+      <section id="formule">
+        <div class="section-head">
+          <p class="kicker">02 · Formule</p>
+          <h2 class="section-title">L'équation, terme par terme</h2>
+          <p class="section-desc">La loi relie l'absorbance mesurée par le
+            spectrophotomètre aux propriétés physiques de la solution.</p>
+        </div>
+        <div class="formula-grid">
+          <div class="card">
+            <div class="formula-big">A = <span class="eps">ε</span> · <span class="l">l</span>
+              · <span class="c">c</span></div>
+            <dl class="terms">
+              <div><dt style="color:var(--text)">A</dt>
+                <dd>Absorbance : quantité de lumière absorbée par l'échantillon
+                  (sans unité).</dd>
+              </div>
+              <div><dt class="eps">ε</dt>
+                <dd>Coefficient d'absorption molaire : capacité d'une molécule à
+                  absorber la lumière à une longueur d'onde donnée.</dd>
+              </div>
+              <div><dt class="l">l</dt>
+                <dd>Longueur du trajet optique : épaisseur de solution traversée
+                  par la lumière (souvent 1 cm).</dd>
+              </div>
+              <div><dt class="c">c</dt>
+                <dd>Concentration molaire du soluté dans la solution.</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="card">
+            <div class="formula-big" style="font-size:1.7rem;">T = I / I₀ = 10<sup>−A</sup></div>
+            <dl class="terms">
+              <div><dt style="color:var(--cyan)">T</dt>
+                <dd>Transmittance : fraction de lumière qui traverse la solution
+                  sans être absorbée.</dd>
+              </div>
+              <div><dt style="color:var(--cyan)">I₀</dt>
+                <dd>Intensité de la lumière incidente, avant la cuve.</dd>
+              </div>
+              <div><dt style="color:var(--cyan)">I</dt>
+                <dd>Intensité de la lumière transmise, après la cuve.</dd>
+              </div>
+            </dl>
+            <p class="hint" style="margin-top:14px;">Absorbance et transmittance
+              décrivent le même phénomène : l'une est logarithmique (linéaire
+              avec c), l'autre proportionnelle à l'intensité restante.</p>
+          </div>
+        </div>
+      </section>
+      <!-- ================= GRAPH ================= -->
+      <section id="graphe">
+        <div class="section-head">
+          <p class="kicker">03 · Linéarité</p>
+          <h2 class="section-title">L'absorbance varie linéairement avec c</h2>
+          <p class="section-desc">À ε et l fixés, tracer A en fonction de c
+            donne une droite passant par l'origine — c'est ce qui permet, en
+            pratique, de déterminer une concentration inconnue à partir d'une
+            simple mesure d'absorbance.</p>
+        </div>
+        <div class="graph-card">
+          <svg class="graph-svg" viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+            <!-- axes -->
+            <line x1="60" y1="270" x2="660" y2="270" stroke="#3A4568" stroke-width="1.5"></line>
+            <line x1="60" y1="270" x2="60" y2="30" stroke="#3A4568" stroke-width="1.5"></line>
+            <text x="360" y="305" fill="#8A93AC" font-family="JetBrains Mono, monospace"
+              font-size="13" text-anchor="middle">concentration c (mmol/L)</text>
+            <text x="26" y="150" fill="#8A93AC" font-family="JetBrains Mono, monospace"
+              font-size="13" text-anchor="middle" transform="rotate(-90 26 150)">absorbance
+              A</text>
+            <g id="graphTicks"></g>
+            <line id="dashV" x1="0" y1="0" x2="0" y2="0" stroke="#4DD8E8" stroke-width="1"
+              stroke-dasharray="4 4" opacity="0"></line>
+            <line id="dashH" x1="0" y1="0" x2="0" y2="0" stroke="#4DD8E8" stroke-width="1"
+              stroke-dasharray="4 4" opacity="0"></line>
+            <path id="lineAC" d="" fill="none" stroke="#8B5CF6" stroke-width="3"></path>
+            <circle id="pointAC" cx="0" cy="0" r="7" fill="#F2A93B" stroke="#0A0E1A"
+              stroke-width="2"></circle> </svg> </div>
+      </section>
+      <!-- ================= LIMITS ================= -->
+      <section id="limites">
+        <div class="section-head">
+          <p class="kicker">04 · Limites</p>
+          <h2 class="section-title">Quand la loi cesse de s'appliquer</h2>
+          <p class="section-desc">La relation A = ε·l·c n'est rigoureusement
+            linéaire que sous certaines conditions.</p>
+        </div>
+        <div class="grid-3">
+          <div class="tile">
+            <div class="num">LIMITE 01</div>
+            <h3>Lumière monochromatique</h3>
+            <p>ε dépend de la longueur d'onde. Une lumière polychromatique fait
+              dévier la relation de la linéarité.</p>
+          </div>
+          <div class="tile">
+            <div class="num">LIMITE 02</div>
+            <h3>Solutions diluées</h3>
+            <p>Au‑delà d'environ A = 1–2, les interactions entre molécules et
+              les effets d'écran font courber la droite.</p>
+          </div>
+          <div class="tile">
+            <div class="num">LIMITE 03</div>
+            <h3>Milieu homogène</h3>
+            <p>La solution ne doit ni diffuser ni disperser la lumière : pas de
+              particules en suspension, pas de trouble.</p>
+          </div>
+        </div>
+      </section>
+      <!-- ================= APPLICATIONS ================= -->
+      <section id="applications">
+        <div class="section-head">
+          <p class="kicker">05 · Usages</p>
+          <h2 class="section-title">À quoi ça sert concrètement</h2>
+        </div>
+        <div class="grid-3">
+          <div class="tile">
+            <div class="num">USAGE 01</div>
+            <h3>Dosage en chimie</h3>
+            <p>Déterminer la concentration d'un composé inconnu à partir d'une
+              courbe d'étalonnage A = f(c).</p>
+          </div>
+          <div class="tile">
+            <div class="num">USAGE 02</div>
+            <h3>Biologie &amp; santé</h3>
+            <p>Mesurer l'ADN, les protéines, ou la concentration en hémoglobine
+              à l'aide d'un spectrophotomètre.</p>
+          </div>
+          <div class="tile">
+            <div class="num">USAGE 03</div>
+            <h3>Contrôle qualité</h3>
+            <p>Vérifier la pureté et la concentration de produits en
+              agroalimentaire, pharmacie ou environnement.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer> Application interactive — loi de Beer‑Lambert
+    </footer>
+    <script>
+(function(){
+  const eps = document.getElementById('eps');
+  const len = document.getElementById('len');
+  const conc = document.getElementById('conc');
+
+  const epsVal = document.getElementById('epsVal');
+  const lenVal = document.getElementById('lenVal');
+  const concVal = document.getElementById('concVal');
+
+  const valA = document.getElementById('valA');
+  const valT = document.getElementById('valT');
+  const valPct = document.getElementById('valPct');
+
+  const cuvetteFill = document.getElementById('cuvetteFill');
+  const decayPath = document.getElementById('decayPath');
+  const outBeam = document.getElementById('outBeam');
+  const photonsG = document.getElementById('photons');
+
+  const lineAC = document.getElementById('lineAC');
+  const pointAC = document.getElementById('pointAC');
+  const dashV = document.getElementById('dashV');
+  const dashH = document.getElementById('dashH');
+  const graphTicks = document.getElementById('graphTicks');
+
+  const CONC_MAX = 1; // mmol/L, matches slider max
+
+  // graph geometry
+  const gx0 = 60, gx1 = 660, gy0 = 270, gy1 = 30;
+
+  function drawTicks(aMax){
+    graphTicks.innerHTML = '';
+    // x ticks: 0, 0.25, 0.5, 0.75, 1 (mmol/L)
+    for(let i=0;i<=4;i++){
+      const cVal = (CONC_MAX*i/4);
+      const x = gx0 + (gx1-gx0)*(i/4);
+      graphTicks.innerHTML += `<line x1="${x}" y1="${gy0}" x2="${x}" y2="${gy0+5}" stroke="#3A4568"/>`;
+      graphTicks.innerHTML += `<text x="${x}" y="${gy0+20}" fill="#5C6784" font-family="JetBrains Mono, monospace" font-size="11" text-anchor="middle">${cVal.toFixed(2)}</text>`;
+    }
+    // y ticks: 0..aMax in 4 steps
+    for(let i=0;i<=4;i++){
+      const aVal = aMax*i/4;
+      const y = gy0 - (gy0-gy1)*(i/4);
+      graphTicks.innerHTML += `<line x1="${gx0-5}" y1="${y}" x2="${gx0}" y2="${y}" stroke="#3A4568"/>`;
+      graphTicks.innerHTML += `<text x="${gx0-10}" y="${y+4}" fill="#5C6784" font-family="JetBrains Mono, monospace" font-size="11" text-anchor="end">${aVal.toFixed(2)}</text>`;
+    }
+  }
+
+  function update(){
+    const epsilon = parseFloat(eps.value);       // L/mol/cm
+    const l = parseFloat(len.value);              // cm
+    const cMM = parseFloat(conc.value);           // mmol/L (slider)
+    const cMol = cMM / 1000;                      // mol/L
+
+    epsVal.textContent = epsilon.toLocaleString('fr-FR');
+    lenVal.textContent = l.toFixed(1) + ' cm';
+    concVal.textContent = cMM.toFixed(2) + ' mmol/L';
+
+    const A = epsilon * l * cMol;
+    const T = Math.pow(10, -A);
+    const pct = T*100;
+
+    valA.textContent = A.toFixed(3);
+    valT.textContent = T.toFixed(3);
+    valPct.textContent = (pct>=1 ? pct.toFixed(1) : pct.toFixed(3)) + '%';
+
+    // cuvette color intensity: darker/opaquer with higher A (cap visually at A=2)
+    const visualOpacity = Math.min(0.85, 0.15 + (Math.min(A,2)/2)*0.7);
+    cuvetteFill.setAttribute('opacity', visualOpacity.toFixed(2));
+
+    // decay curve inside cuvette: from x=210 (I0, y=110) to x=310 (I, y depends on T)
+    const xIn = 210, xOut = 310, yBase = 110;
+    const maxDrop = 55; // px the beam can visually rise (attenuate) by at T->0
+    const yOut = yBase - (1-T)*maxDrop;
+    let d = `M ${xIn} ${yBase}`;
+    const steps = 24;
+    for(let i=1;i<=steps;i++){
+      const t = i/steps;
+      const x = xIn + (xOut-xIn)*t;
+      // exponential-like interpolation of intensity along path
+      const frac = Math.pow(T, t); // relative intensity at fraction t of path
+      const y = yBase - (1-frac)*maxDrop;
+      d += ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
+    }
+    decayPath.setAttribute('d', d);
+
+    outBeam.setAttribute('y1', yOut.toFixed(1));
+    outBeam.setAttribute('y2', yOut.toFixed(1));
+    outBeam.setAttribute('opacity', Math.max(0.15, T).toFixed(2));
+
+    // photons: place a few dots along outgoing beam, opacity = T
+    photonsG.innerHTML = '';
+    const n = 4;
+    for(let i=0;i<n;i++){
+      const px = 330 + i*38;
+      photonsG.innerHTML += `<circle cx="${px}" cy="${yOut.toFixed(1)}" r="3.5" fill="#F2A93B" opacity="${Math.max(0.1,T).toFixed(2)}"/>`;
+    }
+
+    // ---- graph: A vs c line (using current eps & l, c from 0 to CONC_MAX mmol/L) ----
+    const aAtMax = epsilon * l * (CONC_MAX/1000);
+    const aMax = Math.max(aAtMax, A, 0.2) * 1.15; // headroom
+    drawTicks(aMax);
+
+    function xPix(cmm){ return gx0 + (gx1-gx0)*(cmm/CONC_MAX); }
+    function yPix(aval){ return gy0 - (gy0-gy1)*(aval/aMax); }
+
+    const x0 = xPix(0), y0 = yPix(0);
+    const x1 = xPix(CONC_MAX), y1 = yPix(aAtMax);
+    lineAC.setAttribute('d', `M ${x0} ${y0} L ${x1} ${y1}`);
+
+    const px = xPix(cMM), py = yPix(A);
+    pointAC.setAttribute('cx', px);
+    pointAC.setAttribute('cy', py);
+
+    dashV.setAttribute('x1', px); dashV.setAttribute('x2', px);
+    dashV.setAttribute('y1', gy0); dashV.setAttribute('y2', py);
+    dashV.setAttribute('opacity', 1);
+
+    dashH.setAttribute('x1', gx0); dashH.setAttribute('x2', px);
+    dashH.setAttribute('y1', py); dashH.setAttribute('y2', py);
+    dashH.setAttribute('opacity', 1);
+  }
+
+  [eps, len, conc].forEach(el => el.addEventListener('input', update));
+  update();
+})();
+</script>
+  </body>
+</html>
