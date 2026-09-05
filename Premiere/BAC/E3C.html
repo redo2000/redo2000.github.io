@@ -5,7 +5,8 @@
     <title>E3C Physique-Chimie | Première</title>
     <link rel="icon" type="image/png" sizes="16x16" href="RedoFavIcon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&amp;display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&amp;display=swap"
+
       rel="stylesheet">
     <style>
   :root {
@@ -226,15 +227,23 @@
     backdrop-filter: blur(6px);
     margin-bottom: 25px;
     padding: 5px;
+    overflow-x: auto;
   }
 
   .annales-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
   }
+  .annales-table col.c-num,
+  .annales-table th:nth-child(1), .annales-table td:nth-child(1) { width: 8%; }
+  .annales-table th:nth-child(2), .annales-table td:nth-child(2) { width: 40%; }
+  .annales-table th:nth-child(3), .annales-table td:nth-child(3) { width: 15%; }
+  .annales-table th:nth-child(4), .annales-table td:nth-child(4) { width: 25%; }
+  .annales-table th:nth-child(5), .annales-table td:nth-child(5) { width: 12%; }
 
   .annales-table thead th {
-    padding: 14px 12px;
+    padding: 14px 10px;
     font-family: 'Orbitron', monospace;
     font-size: 0.62rem;
     font-weight: 700;
@@ -258,15 +267,43 @@
     padding: 12px 10px;
     text-align: center;
     font-size: 0.82rem;
+    word-wrap: break-word;
   }
 
-  .year-cell {
+  .num-cell {
     font-family: 'Orbitron', monospace;
     font-weight: 700;
     font-size: 0.85rem;
     letter-spacing: 0.08em;
     color: #fff;
   }
+
+  .title-cell { text-align: left; }
+  .title-cell a {
+    color: var(--cyan);
+    text-decoration: none;
+    line-height: 1.35;
+    transition: color 0.25s;
+  }
+  .title-cell a:hover { color: #fff; text-decoration: underline; }
+
+  .theme-cell {
+    color: rgba(255,255,255,0.65);
+    font-size: 0.78rem;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .tag-phys { background: rgba(0,229,255,0.12); color: var(--cyan); }
+  .tag-chem { background: rgba(255,213,79,0.12); color: var(--gold); }
+  .tag-mix  { background: rgba(179,136,255,0.12); color: var(--violet); }
 
   .doc-link {
     display: inline-block;
@@ -426,53 +463,63 @@
   
   .section-title span { font-size: .6rem; letter-spacing: .15em; white-space: normal; text-align: center; }
 
-  /* Force le tableau à se comporter comme des blocs de cartes */
-  .annales-table, .annales-table thead, .annales-table tbody, .annales-table th, .annales-table td, .annales-table tr { 
-    display: block; 
-  }
-  
-  /* Cache les entêtes du tableau PC */
+  /* Le tableau devient une pile de fiches sur mobile */
+  .annales-wrap { overflow-x: visible; padding: 0; background: none; border: none; backdrop-filter: none; }
+  .annales-table, .annales-table tbody { display: block; width: 100%; }
   .annales-table thead { display: none; }
-  
+
   .annales-table tbody tr {
-    border-bottom: 2px solid var(--border);
-    padding: 15px 10px;
-    background: rgba(0, 229, 255, 0.02);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--card);
+    padding: 12px 14px;
     margin-bottom: 10px;
     border-radius: 6px;
   }
-  
+  .annales-table tbody tr:hover { background: rgba(0,229,255,0.06); }
+
   .annales-table td {
+    padding: 0;
     text-align: left;
-    padding: 6px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.85rem;
+    width: auto;
   }
 
-  /* Met en valeur la région/série en haut de chaque bloc */
-  .annales-table td.year-cell {
-    font-size: 0.95rem;
-    border-bottom: 1px dashed rgba(0,229,255,0.15);
-    padding-bottom: 10px;
-    margin-bottom: 8px;
-    color: var(--cyan);
-    display: block;
-    text-align: center;
+  /* Ligne 1 : numéro à gauche, bouton corrigé à droite */
+  .num-cell {
+    order: 1;
+    font-size: 0.78rem;
+    opacity: 0.8;
+  }
+  .num-cell::before { content: "N° "; font-weight: 400; opacity: 0.6; }
+  .corr-cell {
+    order: 2;
+    margin-left: auto;
   }
 
-  /* Génère dynamiquement les labels en face des boutons sur mobile */
-  .annales-table td:not(.year-cell):nth-of-type(2)::before { content: "Jour 1 - Sujet :"; font-family: 'Orbitron', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.5); }
-  .annales-table td:not(.year-cell):nth-of-type(3)::before { content: "Jour 1 - Corrigé :"; font-family: 'Orbitron', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.5); }
-  .annales-table td:not(.year-cell):nth-of-type(4)::before { content: "Jour 2 - Sujet :"; font-family: 'Orbitron', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.5); }
-  .annales-table td:not(.year-cell):nth-of-type(5)::before { content: "Jour 2 - Corrigé :"; font-family: 'Orbitron', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.5); }
-  /* Pour le cas spécifique de 2025 avec sa colonne Suppl. */
-  .annales-table td:not(.year-cell):nth-of-type(6)::before { content: "Supplément :"; font-family: 'Orbitron', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.5); }
+  /* Ligne 2 : titre pleine largeur */
+  .title-cell {
+    order: 3;
+    flex: 0 0 100%;
+    margin: 8px 0 10px;
+  }
+  .title-cell a { font-size: 0.95rem; }
+
+  /* Ligne 3 : matière + thème */
+  .matiere-cell {
+    order: 4;
+  }
+  .theme-cell {
+    order: 5;
+    margin-left: 10px;
+    font-size: 0.75rem;
+  }
 
   .doc-link {
     padding: 6px 16px;
-    min-width: 110px;
+    min-width: 90px;
     text-align: center;
   }
 
@@ -503,1657 +550,693 @@
           
         <p><a class="terminale-tag" href="../../Premiere.html">Physique-Chimie-Premiere</a></p>
         <p>&nbsp;</p>
-        <table align="center" border="1" width="1192">
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="4">N&deg;</font></b></p>
-                </td>
-                <td width="523">
-                    <p align="center"><b><font size="4">Titre</font></b></p>
-                </td>
-                <td width="130">
-                    <p align="center"><b><font size="4">Mati&egrave;re</font></b></p>
-                </td>
-                <td width="362">
-                    <p align="center"><b><font size="4">Th&egrave;me</font></b></p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><font size="4">Corrig&eacute;</font></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">01</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="01-Phys-Aspects énergétiques des phénomènes électriques.pdf"><font color="aqua">Aspects &eacute;nerg&eacute;tiques des ph&eacute;nom&egrave;nes &eacute;lectriques</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie:&nbsp;&Eacute;lec. &nbsp;Python</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="01-Phy-Aspects-energetiques-des-phenomenes-electriques-correction.pdf"><font size="5" color="lime">C-01</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">02</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="02-Phys-Aspects énergétiques des phénomènes mécaniques - Le ski de vitesse.pdf"><font color="aqua">Aspects &eacute;nerg&eacute;tiques des ph&eacute;nom&egrave;nes m&eacute;caniques : Le ski de vitesse</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Python-&Eacute;nergie:&nbsp;M&eacute;ca.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="02-Phys-correction.pdf"><font size="5" color="lime">C-02</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">03</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="03-Phys-Ballon-sonde.pdf"><font color="aqua">Ballon-sonde</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Onde:&nbsp;Lumi&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="03-Phys-Ballon-sonde-correction.pdf"><font size="5" color="lime">C-03</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">04</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="04-Phys-Chim-Bouquet final.pdf"><font color="aqua">Bouquet final</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie:&nbsp;M&eacute;ca.Onde:&nbsp;Lumi&egrave;re - Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="04-Phys-Chim-Bouquet-final-correction.pdf"><font size="5" color="lime">C-04</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">05</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="05-Phys-Casque de réalités virtuelles.pdf"><font color="aqua">Casque de r&eacute;alit&eacute;s virtuelles</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Onde:&nbsp;Lumi&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="05-Phys-Casque-de-realites-virtuelles-Correction.pdf"><font size="5" color="lime">C-05</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">06</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="06-Phys-Chim-Centrale électrique de l_Ouest Guyanais.pdf"><font color="aqua">Centrale &eacute;lectrique de l’Ouest Guyanais (CEOG)</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Transformat. &Eacute;nergie:&nbsp;&Eacute;lec.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="06-Phys-Chim-Centrale-electrique-de-lOuest-Guyanais-CEOG-correction.pdf"><font size="5" color="lime">C-06</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">07</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="07-Phys-Chim-Choix d_un moyen de transport.pdf"><font color="aqua">Choix d’un moyen de transport</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Synth/Comb.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="07-Phys-Chim-Choix-dun-moyen-de-transport-correction.pdf"><font size="5" color="lime">C-07</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">08</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="08-Phys-Cloche de plongée.pdf"><font color="aqua">Cloche de plong&eacute;e</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Mouv:&nbsp;Fluide - Python</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="08-Phys-Cloche-de-plongee-correction.pdf"><font size="5" color="lime">C-08</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">09</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="09-Phys-Chim-Comparaison de deux appareils à fondue.pdf"><font color="aqua">Comparaison de deux appareils &agrave; fondue</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re - &Eacute;nergie:&nbsp;&Eacute;lec.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="09-Phys-Chim-Comparaison-de-deux-appareils-a-fondue-correction.pdf"><font size="5" color="lime">C-09</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">10</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="10-Phys-Étude d’une centrale hydroélectrique.pdf"><font color="aqua">&Eacute;tude d’une centrale hydro&eacute;lectrique</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Mouv:&nbsp;Fluide - &Eacute;nergie</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="10-Phys-correction.pdf"><font size="5" color="lime">C-10</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">11</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="11-Phys-Étude d’une montagne russe.pdf"><font color="aqua">&Eacute;tude d’une montagne russe</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie:&nbsp;M&eacute;ca. Mouv:&nbsp;Syst&egrave;me - Python</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="11-Phys-Etude-dune-montagne-russe-correction.pdf"><font size="5" color="lime">C-11</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">12</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="12-Phys-Étude d’une structure en béton __ de la pose à l_analyse.pdf"><font color="aqua">&Eacute;tude d’une structure en b&eacute;ton : de la pose &agrave; l’analyse</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Onde - Mouv - Fluide</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="12-Phys-Etude-dune-structure-en-beton-correction.pdf"><font size="5" color="lime">C-12</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">13</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="13-Phys-Chim-Exposition au soleil et protection.pdf"><font color="aqua">Exposition au soleil et protection</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Onde:&nbsp;Lumi&egrave;re - Mat:&nbsp;Transformat.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="13-Phys-Chim-Exposition-au-soleil-et-protection-correction.pdf"><font size="5" color="lime">C-13</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">14</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="14-Phys-Frottements fluides.pdf"><font color="aqua">Frottements fluides</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Python - Mouv - Fluide</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="14-Phys-Frottements-fluides-Correction.pdf"><font size="5" color="lime">C-14</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">15</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="15-Phys-L_expédition GOMBESSA 5 __ planète Méditerranée.pdf"><font color="aqua">L’exp&eacute;dition GOMBESSA 5 : plan&egrave;te M&eacute;diterran&eacute;e</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Mouv:&nbsp;Fluide - &Eacute;nergie - Onde:&nbsp;M&eacute;ca.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="15-Phys-Lexpedition-GOMBESSA-5-correction.pdf"><font size="5" color="lime">C-15</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">16</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="16-Phys-L_exploit d_Alan Eustace.pdf"><font color="aqua">L’exploit d’Alan Eustace</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie:&nbsp;M&eacute;ca. &nbsp;Python</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="16-Phys-L_exploit d_Alan Eustace.pdf"><font size="5" color="lime">C-16</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">17</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="17-Phys-L_otoscope.pdf"><font color="aqua">L’otoscope</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Onde:&nbsp;Lumi&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="17-Phys-Lotoscope-correction.pdf"><font size="5" color="lime">C-17</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">18</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="18-Phys-Chim-La fosse de plongée Nemo 33.pdf"><font color="aqua">La fosse de plong&eacute;e Nemo 33</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mouv:&nbsp;Fluide - Mat:&nbsp;Transformat.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="18-Phys-Chim-La-fosse-de-plongee-Nemo-33-correction.pdf"><font size="5" color="lime">C-18</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">19</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="19-Phys-La Joconde rajeunit.pdf"><font color="aqua">La Joconde rajeunit…</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Onde:&nbsp;Lumi&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="19-Phys-La-Joconde-rajeunit-Correction.pdf"><font size="5" color="lime">C-19</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">20</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="20-Phys-La photographie.pdf"><font color="aqua">La photographie</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Onde:&nbsp;Lumi&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="20-Phys-La-photographie-correction.pdf"><font size="5" color="lime">C-20</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">21</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="21-Phys-La physique au service du diagnostic médical.pdf"><font color="aqua">La physique au service du diagnostic m&eacute;dical</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie - Onde:&nbsp;Lumi&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="21-Phys-La-physique-au-service-du-diagnostic-medical-Correction.pdf"><font size="5" color="lime">C-21</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">22</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="22-Phys-La plongée sous-marine en fosse.pdf"><font color="aqua">La plong&eacute;e sous-marine en fosse</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Mouv:&nbsp;Fluide</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="22-Phys-La-plongee-sous-marine-en-fosse-correction.pdf"><font size="5" color="lime">C-22</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">23</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="23-Phys-La presbytie.pdf"><font color="aqua">La presbytie</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Onde:&nbsp;Lumi&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="23-Phys-La-presbytie-Correction.pdf"><font size="5" color="lime">C-23</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">24</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="24-Phys-Le jet d_eau de Genève.pdf"><font color="aqua">Le jet d’eau de Gen&egrave;ve</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Python-&Eacute;nergie:&nbsp;M&eacute;ca.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="24-Phys-Le-jet-deau-de-Geneve-correction.pdf"><font size="5" color="lime">C-24</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">25</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="25-Phys-Le littoral sous surveillance.pdf"><font color="aqua">Le littoral sous surveillance</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie:&nbsp;M&eacute;ca. Onde:&nbsp;Lumi&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="25-Phys-Le-littoral-sous-surveillance-correction.pdf"><font size="5" color="lime">C-25</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">26</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="26-Phys-Le mythique waterslide revient le 21 avril à la Clusaz.pdf"><font color="aqua">Le mythique waterslide revient le 21 avril &agrave; la Clusaz !</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Onde:&nbsp;Lumi&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="26-Phys-Le-mythique-waterslide-revient-le-21-avril-a-la-Clusaz-Correction.pdf"><font size="5" color="lime">C-26</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">27</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="27-Phys-Le projet SEAREV __Système Électrique Autonome de Récupération de l_Énergie des Vagues.pdf"><font color="aqua">Le projet SEAREV : Syst&egrave;me &Eacute;lectrique Autonome de R&eacute;cup&eacute;ration de l’&Eacute;nergie des Vagues</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="27-Phys-Le-projet-SEAREV-Systeme-Electrique-Autonome-de-Recuperation-de-lEnergie-des-Vagues-Correction.pdf"><font size="5" color="lime">C-27</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">28</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="28-Phys-Le saut pendulaire.pdf"><font color="aqua">Le saut pendulaire</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Python-&Eacute;nergie:&nbsp;M&eacute;ca.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="28-Phys-Le-saut-pendulaire-Correction.pdf"><font size="5" color="lime">C-28</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">29</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="29-Phys-Le superamas Laniakea.pdf"><font color="aqua">Le superamas Laniakea</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Onde:&nbsp;Lumi&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="29-Phys-Le-superamas-Laniakea-correction.pdf"><font size="5" color="lime">C-29</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">30</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="30-Phys-Le Train à grande vitesse_construire un record.pdf"><font color="aqua">Le Train &agrave; grande vitesse, construire un record</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie:&nbsp;&Eacute;lec. &nbsp;Onde:&nbsp;M&eacute;ca.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="30-Phys-Le-Train-a-grande-vitesse-construire-un-record-correction.pdf"><font size="5" color="lime">C-30</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">31</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="31-Phys-Les-ondes-mecaniques.pdf"><font color="aqua">Les ondes m&eacute;caniques</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Onde:&nbsp;M&eacute;ca.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="31-Phys-Les-ondes-mecaniques-correction.pdf"><font size="5" color="lime">C-31</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">32</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="32-Phys-Les-orages.pdf"><font color="aqua">Les orages</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Mouv:&nbsp;Champ - &Eacute;nergie:&nbsp;&Eacute;lec.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="32-Phys-Les-orages-Correction.pdf"><font size="5" color="lime">C-32</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">33</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="33-Phys-Levitation-acoustique.pdf"><font color="aqua">L&eacute;vitation acoustique</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Mouv:&nbsp;Fluide - Mouv:&nbsp;Syst&egrave;me</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="33-Phys-Levitation-acoustique-Correction.pdf"><font size="5" color="lime">C-33</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">34</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="34-Phys-Mouvement-dune-balancoire-bouee.pdf"><font color="aqua">Mouvement d’une balan&ccedil;oire bou&eacute;e</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Python-&Eacute;nergie:&nbsp;M&eacute;ca.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="34-Phys-Mouvement-dune-balancoire-bouee-Correction.pdf"><font size="5" color="lime">C-34</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">35</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="35-Phys-Performances-dun-cycliste.pdf"><font color="aqua">Performances d’un cycliste</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie:&nbsp;M&eacute;ca. &nbsp;Python</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="35-Phys-Performances-dun-cycliste-correction.pdf"><font size="5" color="lime">C-35</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">36</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="36-Phys-Photographie-a-laide-dune-lentille-boule.pdf"><font color="aqua">Photographie &agrave; l’aide d’une lentille boule</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Onde:&nbsp;Lumi&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="36-Phys-Photographie-a-laide-dune-lentille-boule-correction.pdf"><font size="5" color="lime">C-36</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">37</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="37-Phy-Chim-Photographie-argentique-noir-et-blanc.pdf"><font color="aqua">Photographie argentique noir et blanc</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Onde:&nbsp;Lumi&egrave;re - Mat:&nbsp;Transformat.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="37-Phy-Chim-Photographie-argentique-noir-et-blanc-correction.pdf"><font size="5" color="lime">C-37</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">38</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="38-Phy-Photopile et developpement durable.pdf"><font color="aqua">Photopile et d&eacute;veloppement durable</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie:&nbsp;&Eacute;lec.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="38-Phy-Photopile-correction.pdf"><font size="5" color="lime">C-38</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">39</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="39-Phys-Prendre-de-la-hauteur-avec-un-smartphone.pdf"><font color="aqua">Prendre de la hauteur avec un smartphone</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Mouvement</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="39-Phys-Prendre-de-la-hauteur-avec-un-smartphone-Correction.pdf"><font size="5" color="lime">C-39</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">40</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="40-Phys-Chim-Ressources-denergie-renouvelables.pdf"><font color="aqua">Ressources d’&eacute;nergie renouvelables</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Synth/Comb. &Eacute;nergie:&nbsp;M&eacute;ca.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="40-Phys-Chim-Ressources-denergie-renouvelables-correction.pdf"><font size="5" color="lime">C-40</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">41</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="41-Phys-Seisme comment localiser son epicentre.pdf"><font color="aqua">S&eacute;isme : comment localiser son &eacute;picentre ?</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Onde:&nbsp;M&eacute;ca. Python</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="40-Phys-Chim-Ressources-denergie-renouvelables-correction.pdf"><font size="5" color="lime">C-41</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">42</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="42-Phys-Smartphone-et-photographie.pdf"><font color="aqua">Smartphone et photographie</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Onde:&nbsp;Lumi&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="42-Phys-Smartphone-et-photographie-correction.pdf"><font size="5" color="lime">C-42</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">43</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="43-Phys-Solar-Impulse-2-lavion-solaire.pdf"><font color="aqua">Solar Impulse 2, l’avion solaire</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie:&nbsp;&Eacute;lec.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="43-Phys-Solar-Impulse-2-lavion-solaire-Correction.pdf"><font size="5" color="lime">C-43</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">44</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="44-Phys-Un-ballon-pour-les-competitions-internationales-de-football.pdf"><font color="aqua">Un ballon pour les comp&eacute;titions internationales de football</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>Mouv:&nbsp;Fluide - Python</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="44-Phys-Un-ballon-pour-les-competitions-internationales-de-football-Correction.pdf"><font size="5" color="lime">C-44</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">45</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="45-Phys-Un-drone-pour-ausculter-la-couverture-vegetale-avec-calculatrice.pdf"><font color="aqua">Un drone pour ausculter la couverture v&eacute;g&eacute;tale</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie:&nbsp;M&eacute;ca. Onde:&nbsp;Lumi&egrave;re - Python</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="45-Phys-Un-drone-pour-ausculter-la-couverture-vegetale-avec-calculatrice-correction.pdf"><font size="5" color="lime">C-45</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">46</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="46-Phys-Un-modele-pour-la-balle-de-tennis-pendant-le-service.pdf"><font color="aqua">Un mod&egrave;le pour la balle de tennis pendant le service</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie:&nbsp;M&eacute;ca.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="46-Phys-Un-modele-pour-la-balle-de-tennis-pendant-le-service-correction.pdf"><font size="5" color="lime">C-46</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">47</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="47-Phys-Une-eolienne-a-la-maison.pdf"><font color="aqua">Une &eacute;olienne &agrave; la maison</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie:&nbsp;&Eacute;lec. &nbsp;Python</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="47-Phys-Une-eolienne-a-la-maison-correction.pdf"><font size="5" color="lime">C-47</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">48</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="48-Phys-Une-onde-un-peu-particuliere-londe-cobra.pdf"><font color="aqua">Une onde un peu particuli&egrave;re, &laquo; l’onde cobra &raquo;</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie:&nbsp;M&eacute;ca. &nbsp;Onde:&nbsp;M&eacute;ca.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="48-Phys-Une-onde-un-peu-particuliere-londe-cobra-correction.pdf"><font size="5" color="lime">C-48</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">49</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="49-Phys-Chim-Velo-a-assistance-electrique.pdf"><font color="aqua">V&eacute;lo &agrave; assistance &eacute;lectrique</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re - &Eacute;nergie:&nbsp;M&eacute;ca.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="49-Phys-Chim-Velo-a-assistance-electrique-correction.pdf"><font size="5" color="lime">C-49</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">50</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="50-Chim-Acide-oxalique-et-rouille-ne-font-pas-bon-menage.pdf"><font color="aqua">Acide oxalique et rouille ne font pas bon m&eacute;nage</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="50-Chim-Acide-oxalique-et-rouille-ne-font-pas-bon-menage-Correction.pdf"><font size="5" color="lime">C-50</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">51</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="51-Chim-Allantoine.pdf"><font color="aqua">Allanto&iuml;ne</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="51-Chim-Allantoine-correction.pdf"><font size="5" color="lime">C-51</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">52</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="52-Chim-Analyse-dun-vin-blanc-sec-bio.pdf"><font color="aqua">Analyse d’un vin blanc sec bio</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="52-Chim-Analyse-dun-vin-blanc-sec-bio-Correction.pdf"><font size="5" color="lime">C-52</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">53</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="53-Phys-Chim-Chauffage-et-eau-chaude-de-la-maison.pdf"><font color="aqua">Chauffage et eau chaude de la maison</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Synth/Comb.&Eacute;nergie:&nbsp;&Eacute;lec.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="53-Phys-Chim-Chauffage-et-eau-chaude-de-la-maison-correction.pdf"><font size="5" color="lime">C-53</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">54</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="54-Chim-Choix-dun-moyen-de-transport.pdf"><font color="aqua">Choix d’un moyen de transport</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Synth/Comb.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="54-Chim-Choix-dun-moyen-de-transport-correction.pdf"><font size="5" color="lime">C-54</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">55</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="55-Phys-Chim-Comment-lutter-contre-les-marees-noires.pdf"><font color="aqua">Comment lutter contre les &laquo; mar&eacute;es noires &raquo;</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="55-Phys-Chim-Comment-lutter-contre-les-marees-noires-Correction.pdf"><font size="5" color="lime">C-55</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">56</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="56-Chim-Comparaison-de-deux-appareils-a-fondue.pdf"><font color="aqua">Comparaison de deux appareils &agrave; fondue</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re-&Eacute;nergie:&nbsp;&Eacute;lec.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="56-Chim-Comparaison-de-deux-appareils-a-fondue-correction.pdf"><font size="5" color="lime">C-56</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">57</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="57-Chim-Des-esters-qui-flattent-nos-cellules-olfactives.pdf"><font color="aqua">Des esters qui flattent nos cellules olfactives</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="57-Chim-Des-esters-qui-flattent-nos-cellules-olfactives-correction.pdf"><font size="5" color="lime">C-57</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">58</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="58-Chim-Determination-du-degre-alcoolique-dun-vin-depines.pdf"><font color="aqua">D&eacute;termination du degr&eacute; alcoolique d’un vin d'&eacute;pines</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="58-Chim-Determination-du-degre-alcoolique-dun-vin-depines-correction.pdf"><font size="5" color="lime">C-58</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">59</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="59-Chim-Dihydrogene-et-ballons-dirigeables.pdf"><font color="aqua">Dihydrog&egrave;ne et ballons dirigeables</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="59-Chim-Dihydrogene-et-ballons-dirigeables-correction.pdf"><font size="5" color="lime">C-59</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">60</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="60-Phys-Chim-Dosage-spectrophotometrique-dun-additif-alimentaire-le-bleu-patente-V.pdf"><font color="aqua">Dosage spectrophotom&eacute;trique d’un additif alimentaire : le bleu patent&eacute; V</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Transformat.Onde:&nbsp;Lumi&egrave;re.Python</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="60-Phys-Chim-Dosage-spectrophotometrique-dun-additif-alimentaire-le-bleu-patente-V-correction.pdf"><font size="5" color="lime">C-60</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">61</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="61-Chim-Engager-la-transition-vers-une-mobilite-plus-propre.pdf"><font color="aqua">Engager la transition vers une mobilit&eacute; plus propre</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Synth/Comb.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="61-Chim-Engager-la-transition-vers-une-mobilite-plus-propre-correction.pdf"><font size="5" color="lime">C-61</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">62</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="62-Chim-Entretien-de-leau-dune-piscine.pdf"><font color="aqua">Entretien de l’eau d’une piscine</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Transformat.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="62-Chim-Entretien-de-leau-dune-piscine-correction.pdf"><font size="5" color="lime">C-62</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">63</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="63-Chim-Etude-de-differents-carburants.pdf"><font color="aqua">&Eacute;tude de diff&eacute;rents carburants</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="63-Chim-Etude-de-differents-carburants-Correction.pdf"><font size="5" color="lime">C-63</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">64</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="64-Chim-Fabrication-dune-solution-hydro-alcoolique-en-pharmacie.pdf"><font color="aqua">Fabrication d’une solution hydro-alcoolique en pharmacie</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="64-Chim-Fabrication-dune-solution-hydro-alcoolique-en-pharmacie-Correction.pdf"><font size="5" color="lime">C-64</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">65</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="65-Chim-Gel-anti-douleurs-compose-de-salicylate-de-methyle.pdf"><font color="aqua">Gel anti douleurs compos&eacute; de salicylate de m&eacute;thyle</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="65-Chim-Gel-anti-douleurs-compose-de-salicylate-de-methyle-Correction.pdf"><font size="5" color="lime">C-65</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">66</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="66-Chim-Gout-et-couleur-du-sirop-de-menthe.pdf"><font color="aqua">Go&ucirc;t et couleur du sirop de menthe</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="66-Chim-Gout-et-couleur-du-sirop-de-menthe-correction.pdf"><font size="5" color="lime">C-66</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">67</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="67-Chim-Hypochlorites-et-eaux-de-Javel.pdf"><font color="aqua">Hypochlorites et eaux de Javel</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Transformat.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="67-Chim-Hypochlorites-et-eaux-de-Javel-correction.pdf"><font size="5" color="lime">C-67</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">68</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="68-Chim-Lacide-thioglycolique-dans-les-produits-cosmetiques.pdf"><font color="aqua">L’acide thioglycolique dans les produits cosm&eacute;tiques</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="68-Chim-Lacide-thioglycolique-dans-les-produits-cosmetiques-Correction.pdf"><font size="5" color="lime">C-68</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">69</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="69-Chim-Loxydation-du-vin.pdf"><font color="aqua">L’oxydation du vin</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="69-Chim-Loxydation-du-vin-Correction.pdf"><font size="5" color="lime">C-69</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">70</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="70-Chim-La-Betadine.pdf"><font color="aqua">La Betadine&reg;</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Transformat.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="70-Chim-La-Betadine-correction.pdf"><font size="5" color="lime">C-70</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">71</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="71-Chim-La-detection-du-tabagisme-passif.pdf"><font color="aqua">La d&eacute;tection du tabagisme passif</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Transformat.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="71-Chim-La-detection-du-tabagisme-passif-correction.pdf"><font size="5" color="lime">C-71</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">72</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="72-Phys-Chim-La-fluorescence-au-service-du-diagnostic-medical.pdf"><font color="aqua">La fluorescence au service du diagnostic m&eacute;dical</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Transformat.Onde:&nbsp;Lumi&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="72-Phys-Chim-La-fluorescence-au-service-du-diagnostic-medical-correction.pdf"><font size="5" color="lime">C-72</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">73</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="73-Chim-La-pollution-par-le-dioxyde-de-soufre.pdf"><font color="aqua">La pollution par le dioxyde de soufre</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Transformat.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="73-Chim-La-pollution-par-le-dioxyde-de-soufre-correction.pdf"><font size="5" color="lime">C-73</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">74</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="74-Chim-La-vanilline.pdf"><font color="aqua">La vanilline</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="74-Chim-La-vanilline-Correction.pdf"><font size="5" color="lime">C-74</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">75</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="75-Chim-Le bleuDeMethyleneEnMedecineEtEnBiologie.pdf"><font color="aqua">Le bleu de m&eacute;thyl&egrave;ne en m&eacute;decine et en biologie</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Transformat.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="75-Chim-Le bleuDeMethyleneEnMedecineEtEnBiologie-correction.pdf"><font size="5" color="lime">C-75</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">76</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="76-Chim-Le-geraniol-pour-lutter-contre-linvasion-des-frelons-asiatiques.pdf"><font color="aqua">Le g&eacute;raniol pour lutter contre l’invasion des frelons asiatiques</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="76-Chim-Le-geraniol-pour-lutter-contre-linvasion-des-frelons-asiatiques-Correction.pdf"><font size="5" color="lime">C-76</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">77</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="77-Chim-Le-vert-malachite.pdf"><font color="aqua">Le vert malachite</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="77-Chim-Le-vert-malachite-correction.pdf"><font size="5" color="lime">C-77</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">78</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="78-Chim-Les-comprimes-de-permanganate-de-potassium-sont-ils-perimes.pdf"><font color="aqua">Les comprim&eacute;s de permanganate de potassium sont-ils p&eacute;rim&eacute;s ?</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re-Python</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="78-Chim-Les-comprimes-de-permanganate-de-potassium-sont-ils-perimes-Correction.pdf"><font size="5" color="lime">C-78</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">79</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="79-Phys-Chim-Les-hydrogels-Haraguchi.pdf"><font color="aqua">Les hydrogels Haraguchi</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Structure-Mouv:&nbsp;Champ</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="79-Phys-Chim-Les-hydrogels-Haraguchi-correction.pdf"><font size="5" color="lime">C-79</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">80</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="80-Phys-Chim-Protection-solaire.pdf"><font color="aqua">Protection solaire</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Synth/Comb.Onde:&nbsp;Lumi&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="80-Phys-Chim-Protection-solaire-correction.pdf"><font size="5" color="lime">C-80</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">81</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="81-Phys-Chim-Qui-peut-griller-une-tranche-de-pain-en-pedalant.pdf"><font color="aqua">Qui peut griller une tranche de pain en p&eacute;dalant ?</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Synth/Comb.&Eacute;nergie:&nbsp;&Eacute;lec.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="81-Phys-Chim-Qui-peut-griller-une-tranche-de-pain-en-pedalant-correction.pdf"><font size="5" color="lime">C-81</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">82</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="82-Chim-Realisation-dune-vegetation-metallique.pdf"><font color="aqua">R&eacute;alisation d’une v&eacute;g&eacute;tation m&eacute;tallique</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Transformat.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="82-Chim-Realisation-dune-vegetation-metallique-correction.pdf"><font size="5" color="lime">C-82</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">83</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="83-Chim-Recyclage-dune-solution-de-bouillie-bordelaise.pdf"><font color="aqua">Recyclage d’une solution de bouillie bordelaise</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Transformat.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="83-Chim-Recyclage-dune-solution-de-bouillie-bordelaise-correction.pdf"><font size="5" color="lime">C-83</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">84</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="84-Chim-Recycler-un-medicament.pdf"><font color="aqua">Recycler un m&eacute;dicament</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="84-Chim-Recycler-un-medicament-correction.pdf"><font size="5" color="lime">C-84</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">85</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="85-Phys-Chim-Ressources-denergie-renouvelables.pdf"><font color="aqua">Ressources d’&eacute;nergie renouvelables</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Physique-Chimie</p>
-                </td>
-                <td width="362">
-                    <p>&Eacute;nergie:&nbsp;M&eacute;ca.Mat:&nbsp;Synth/Comb.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="85-Phys-Chim-Ressources-denergie-renouvelables-correction.pdf"><font size="5" color="lime">C-85</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">86</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="86-Chim-Synthese-dun-compose-chimique-photochrome.pdf"><font color="aqua">Synth&egrave;se d’un compos&eacute; chimique photochrome</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="86-Chim-Synthese-dun-compose-chimique-photochrome-Correction.pdf"><font size="5" color="lime">C-86</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">87</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="87-Chim-Synthese-dun-ester-et-convoyage-de-medicaments.pdf"><font color="aqua">Synth&egrave;se d’un ester et convoyage de m&eacute;dicaments</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="87-Chim-Synthese-dun-ester-et-convoyage-de-medicaments-correction.pdf"><font size="5" color="lime">C-87</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">88</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="88-Chim-Synthese-de-la-menthone-a-partir-du-menthol-sans-calculatrice.pdf"><font color="aqua">Synth&egrave;se de la menthone &agrave; partir du menthol</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="88-Chim-Synthese-de-la-menthone-a-partir-du-menthol-sans-calculatrice-correction.pdf"><font size="5" color="lime">C-88</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">89</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="89-Chim-Synthese-du-camphre-au-service-du-sportif.pdf"><font color="aqua">Synth&egrave;se du camphre au service du sportif</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Synth/Comb.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="89-Chim-Synthese-du-camphre-au-service-du-sportif-correction.pdf"><font size="5" color="lime">C-89</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">90</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="90-Chim-Synthese-et-proprietes-lavantes-dun-savon.pdf"><font color="aqua">Synth&egrave;se et propri&eacute;t&eacute;s lavantes d’un savon</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="90-Chim-Synthese-et-proprietes-lavantes-dun-savon-correction.pdf"><font size="5" color="lime">C-90</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">91</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="91-Chim-Synthon-dun-antihypertenseur.pdf"><font color="aqua">Synthon d’un antihypertenseur</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="91-Chim-Synthon-dun-antihypertenseur-correction.pdf"><font size="5" color="lime">C-91</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">92</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="92-Chim-Teneur-en-fer-dun-produit-phytosanitaire.pdf"><font color="aqua">Teneur en fer d’un produit phytosanitaire</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mat:&nbsp;Transformat.</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="92-Chim-Teneur-en-fer-dun-produit-phytosanitaire-correction.pdf"><font size="5" color="lime">C-92</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">93</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="93-Chim-Un-antiseptique-leau-oxygenee.pdf"><font color="aqua">Un antiseptique : l’eau oxyg&eacute;n&eacute;e</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="93-Chim-Un-antiseptique-leau-oxygenee-correction.pdf"><font size="5" color="lime">C-93</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">94</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="94-Chim-Une-odeur-de-soufre-dans-lair.pdf"><font color="aqua">Une odeur de soufre dans l’air</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="94-Chim-Une-odeur-de-soufre-dans-lair-correction.pdf"><font size="5" color="lime">C-94</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">95</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="95-Chim-Utilisation-du-peroxyde-dhydrogene-dans-un-bain-de-bouche.pdf"><font color="aqua">Utilisation du peroxyde d’hydrog&egrave;ne dans un bain de bouche</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="95-Chim-Utilisation-du-peroxyde-dhydrogene-dans-un-bain-de-bouche-Correction.pdf"><font size="5" color="lime">C-95</font></a></b></p>
-                </td>
-            </tr>
-            <tr>
-                <td width="53">
-                    <p align="center"><b><font size="5">96</font></b></p>
-                </td>
-                <td width="523">
-                    <p><a href="96-Chim-Valorisation-de-la-biomasse.pdf"><font color="aqua">Valorisation de la biomasse</font></a></p>
-                </td>
-                <td width="130">
-                    <p>Chimie</p>
-                </td>
-                <td width="362">
-                    <p>Mati&egrave;re-Python</p>
-                </td>
-                <td width="90">
-                    <p align="center"><b><a href="96-Chim-Valorisation-de-la-biomasse-correction.pdf"><font size="5" color="lime">C-96</font></a></b></p>
-                </td>
-            </tr>
-        </table>
+                <div class="annales-wrap">
+          <table class="annales-table">
+            <thead>
+              <tr>
+                <th class="col-cyan">N&deg;</th>
+                <th>Titre</th>
+                <th>Mati&egrave;re</th>
+                <th>Th&egrave;me</th>
+                <th class="col-gold">Corrig&eacute;</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="num-cell">01</td>
+              <td class="title-cell"><a href="01-Phys-Aspects énergétiques des phénomènes électriques.pdf">Aspects énergétiques des phénomènes électriques</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Énergie: Élec.  Python</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="01-Phy-Aspects-energetiques-des-phenomenes-electriques-correction.pdf">C-01</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">02</td>
+              <td class="title-cell"><a href="02-Phys-Aspects énergétiques des phénomènes mécaniques - Le ski de vitesse.pdf">Aspects énergétiques des phénomènes mécaniques : Le ski de vitesse</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Python-Énergie: Méca.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="02-Phys-correction.pdf">C-02</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">03</td>
+              <td class="title-cell"><a href="03-Phys-Ballon-sonde.pdf">Ballon-sonde</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Onde: Lumière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="03-Phys-Ballon-sonde-correction.pdf">C-03</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">04</td>
+              <td class="title-cell"><a href="04-Phys-Chim-Bouquet final.pdf">Bouquet final</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Énergie: Méca.Onde: Lumière - Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="04-Phys-Chim-Bouquet-final-correction.pdf">C-04</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">05</td>
+              <td class="title-cell"><a href="05-Phys-Casque de réalités virtuelles.pdf">Casque de réalités virtuelles</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Onde: Lumière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="05-Phys-Casque-de-realites-virtuelles-Correction.pdf">C-05</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">06</td>
+              <td class="title-cell"><a href="06-Phys-Chim-Centrale électrique de l_Ouest Guyanais.pdf">Centrale électrique de l’Ouest Guyanais (CEOG)</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Mat: Transformat. Énergie: Élec.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="06-Phys-Chim-Centrale-electrique-de-lOuest-Guyanais-CEOG-correction.pdf">C-06</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">07</td>
+              <td class="title-cell"><a href="07-Phys-Chim-Choix d_un moyen de transport.pdf">Choix d’un moyen de transport</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Mat: Synth/Comb.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="07-Phys-Chim-Choix-dun-moyen-de-transport-correction.pdf">C-07</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">08</td>
+              <td class="title-cell"><a href="08-Phys-Cloche de plongée.pdf">Cloche de plongée</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Mouv: Fluide - Python</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="08-Phys-Cloche-de-plongee-correction.pdf">C-08</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">09</td>
+              <td class="title-cell"><a href="09-Phys-Chim-Comparaison de deux appareils à fondue.pdf">Comparaison de deux appareils à fondue</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Matière - Énergie: Élec.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="09-Phys-Chim-Comparaison-de-deux-appareils-a-fondue-correction.pdf">C-09</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">10</td>
+              <td class="title-cell"><a href="10-Phys-Étude d’une centrale hydroélectrique.pdf">Étude d’une centrale hydroélectrique</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Mouv: Fluide - Énergie</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="10-Phys-correction.pdf">C-10</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">11</td>
+              <td class="title-cell"><a href="11-Phys-Étude d’une montagne russe.pdf">Étude d’une montagne russe</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Énergie: Méca. Mouv: Système - Python</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="11-Phys-Etude-dune-montagne-russe-correction.pdf">C-11</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">12</td>
+              <td class="title-cell"><a href="12-Phys-Étude d’une structure en béton __ de la pose à l_analyse.pdf">Étude d’une structure en béton : de la pose à l’analyse</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Onde - Mouv - Fluide</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="12-Phys-Etude-dune-structure-en-beton-correction.pdf">C-12</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">13</td>
+              <td class="title-cell"><a href="13-Phys-Chim-Exposition au soleil et protection.pdf">Exposition au soleil et protection</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Onde: Lumière - Mat: Transformat.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="13-Phys-Chim-Exposition-au-soleil-et-protection-correction.pdf">C-13</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">14</td>
+              <td class="title-cell"><a href="14-Phys-Frottements fluides.pdf">Frottements fluides</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Python - Mouv - Fluide</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="14-Phys-Frottements-fluides-Correction.pdf">C-14</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">15</td>
+              <td class="title-cell"><a href="15-Phys-L_expédition GOMBESSA 5 __ planète Méditerranée.pdf">L’expédition GOMBESSA 5 : planète Méditerranée</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Mouv: Fluide - Énergie - Onde: Méca.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="15-Phys-Lexpedition-GOMBESSA-5-correction.pdf">C-15</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">16</td>
+              <td class="title-cell"><a href="16-Phys-L_exploit d_Alan Eustace.pdf">L’exploit d’Alan Eustace</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Énergie: Méca.  Python</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="16-Phys-L_exploit d_Alan Eustace.pdf">C-16</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">17</td>
+              <td class="title-cell"><a href="17-Phys-L_otoscope.pdf">L’otoscope</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Onde: Lumière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="17-Phys-Lotoscope-correction.pdf">C-17</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">18</td>
+              <td class="title-cell"><a href="18-Phys-Chim-La fosse de plongée Nemo 33.pdf">La fosse de plongée Nemo 33</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Mouv: Fluide - Mat: Transformat.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="18-Phys-Chim-La-fosse-de-plongee-Nemo-33-correction.pdf">C-18</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">19</td>
+              <td class="title-cell"><a href="19-Phys-La Joconde rajeunit.pdf">La Joconde rajeunit…</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Onde: Lumière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="19-Phys-La-Joconde-rajeunit-Correction.pdf">C-19</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">20</td>
+              <td class="title-cell"><a href="20-Phys-La photographie.pdf">La photographie</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Onde: Lumière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="20-Phys-La-photographie-correction.pdf">C-20</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">21</td>
+              <td class="title-cell"><a href="21-Phys-La physique au service du diagnostic médical.pdf">La physique au service du diagnostic médical</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Énergie - Onde: Lumière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="21-Phys-La-physique-au-service-du-diagnostic-medical-Correction.pdf">C-21</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">22</td>
+              <td class="title-cell"><a href="22-Phys-La plongée sous-marine en fosse.pdf">La plongée sous-marine en fosse</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Mouv: Fluide</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="22-Phys-La-plongee-sous-marine-en-fosse-correction.pdf">C-22</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">23</td>
+              <td class="title-cell"><a href="23-Phys-La presbytie.pdf">La presbytie</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Onde: Lumière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="23-Phys-La-presbytie-Correction.pdf">C-23</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">24</td>
+              <td class="title-cell"><a href="24-Phys-Le jet d_eau de Genève.pdf">Le jet d’eau de Genève</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Python-Énergie: Méca.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="24-Phys-Le-jet-deau-de-Geneve-correction.pdf">C-24</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">25</td>
+              <td class="title-cell"><a href="25-Phys-Le littoral sous surveillance.pdf">Le littoral sous surveillance</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Énergie: Méca. Onde: Lumière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="25-Phys-Le-littoral-sous-surveillance-correction.pdf">C-25</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">26</td>
+              <td class="title-cell"><a href="26-Phys-Le mythique waterslide revient le 21 avril à la Clusaz.pdf">Le mythique waterslide revient le 21 avril à la Clusaz !</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Onde: Lumière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="26-Phys-Le-mythique-waterslide-revient-le-21-avril-a-la-Clusaz-Correction.pdf">C-26</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">27</td>
+              <td class="title-cell"><a href="27-Phys-Le projet SEAREV __Système Électrique Autonome de Récupération de l_Énergie des Vagues.pdf">Le projet SEAREV : Système Électrique Autonome de Récupération de l’Énergie des Vagues</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Énergie</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="27-Phys-Le-projet-SEAREV-Systeme-Electrique-Autonome-de-Recuperation-de-lEnergie-des-Vagues-Correction.pdf">C-27</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">28</td>
+              <td class="title-cell"><a href="28-Phys-Le saut pendulaire.pdf">Le saut pendulaire</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Python-Énergie: Méca.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="28-Phys-Le-saut-pendulaire-Correction.pdf">C-28</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">29</td>
+              <td class="title-cell"><a href="29-Phys-Le superamas Laniakea.pdf">Le superamas Laniakea</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Onde: Lumière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="29-Phys-Le-superamas-Laniakea-correction.pdf">C-29</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">30</td>
+              <td class="title-cell"><a href="30-Phys-Le Train à grande vitesse_construire un record.pdf">Le Train à grande vitesse, construire un record</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Énergie: Élec.  Onde: Méca.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="30-Phys-Le-Train-a-grande-vitesse-construire-un-record-correction.pdf">C-30</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">31</td>
+              <td class="title-cell"><a href="31-Phys-Les-ondes-mecaniques.pdf">Les ondes mécaniques</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Onde: Méca.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="31-Phys-Les-ondes-mecaniques-correction.pdf">C-31</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">32</td>
+              <td class="title-cell"><a href="32-Phys-Les-orages.pdf">Les orages</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Mouv: Champ - Énergie: Élec.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="32-Phys-Les-orages-Correction.pdf">C-32</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">33</td>
+              <td class="title-cell"><a href="33-Phys-Levitation-acoustique.pdf">Lévitation acoustique</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Mouv: Fluide - Mouv: Système</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="33-Phys-Levitation-acoustique-Correction.pdf">C-33</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">34</td>
+              <td class="title-cell"><a href="34-Phys-Mouvement-dune-balancoire-bouee.pdf">Mouvement d’une balançoire bouée</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Python-Énergie: Méca.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="34-Phys-Mouvement-dune-balancoire-bouee-Correction.pdf">C-34</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">35</td>
+              <td class="title-cell"><a href="35-Phys-Performances-dun-cycliste.pdf">Performances d’un cycliste</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Énergie: Méca.  Python</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="35-Phys-Performances-dun-cycliste-correction.pdf">C-35</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">36</td>
+              <td class="title-cell"><a href="36-Phys-Photographie-a-laide-dune-lentille-boule.pdf">Photographie à l’aide d’une lentille boule</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Onde: Lumière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="36-Phys-Photographie-a-laide-dune-lentille-boule-correction.pdf">C-36</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">37</td>
+              <td class="title-cell"><a href="37-Phy-Chim-Photographie-argentique-noir-et-blanc.pdf">Photographie argentique noir et blanc</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Onde: Lumière - Mat: Transformat.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="37-Phy-Chim-Photographie-argentique-noir-et-blanc-correction.pdf">C-37</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">38</td>
+              <td class="title-cell"><a href="38-Phy-Photopile et developpement durable.pdf">Photopile et développement durable</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Énergie: Élec.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="38-Phy-Photopile-correction.pdf">C-38</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">39</td>
+              <td class="title-cell"><a href="39-Phys-Prendre-de-la-hauteur-avec-un-smartphone.pdf">Prendre de la hauteur avec un smartphone</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Mouvement</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="39-Phys-Prendre-de-la-hauteur-avec-un-smartphone-Correction.pdf">C-39</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">40</td>
+              <td class="title-cell"><a href="40-Phys-Chim-Ressources-denergie-renouvelables.pdf">Ressources d’énergie renouvelables</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Mat: Synth/Comb. Énergie: Méca.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="40-Phys-Chim-Ressources-denergie-renouvelables-correction.pdf">C-40</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">41</td>
+              <td class="title-cell"><a href="41-Phys-Seisme comment localiser son epicentre.pdf">Séisme : comment localiser son épicentre ?</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Onde: Méca. Python</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="40-Phys-Chim-Ressources-denergie-renouvelables-correction.pdf">C-41</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">42</td>
+              <td class="title-cell"><a href="42-Phys-Smartphone-et-photographie.pdf">Smartphone et photographie</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Onde: Lumière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="42-Phys-Smartphone-et-photographie-correction.pdf">C-42</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">43</td>
+              <td class="title-cell"><a href="43-Phys-Solar-Impulse-2-lavion-solaire.pdf">Solar Impulse 2, l’avion solaire</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Énergie: Élec.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="43-Phys-Solar-Impulse-2-lavion-solaire-Correction.pdf">C-43</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">44</td>
+              <td class="title-cell"><a href="44-Phys-Un-ballon-pour-les-competitions-internationales-de-football.pdf">Un ballon pour les compétitions internationales de football</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Mouv: Fluide - Python</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="44-Phys-Un-ballon-pour-les-competitions-internationales-de-football-Correction.pdf">C-44</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">45</td>
+              <td class="title-cell"><a href="45-Phys-Un-drone-pour-ausculter-la-couverture-vegetale-avec-calculatrice.pdf">Un drone pour ausculter la couverture végétale</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Énergie: Méca. Onde: Lumière - Python</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="45-Phys-Un-drone-pour-ausculter-la-couverture-vegetale-avec-calculatrice-correction.pdf">C-45</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">46</td>
+              <td class="title-cell"><a href="46-Phys-Un-modele-pour-la-balle-de-tennis-pendant-le-service.pdf">Un modèle pour la balle de tennis pendant le service</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Énergie: Méca.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="46-Phys-Un-modele-pour-la-balle-de-tennis-pendant-le-service-correction.pdf">C-46</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">47</td>
+              <td class="title-cell"><a href="47-Phys-Une-eolienne-a-la-maison.pdf">Une éolienne à la maison</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Énergie: Élec.  Python</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="47-Phys-Une-eolienne-a-la-maison-correction.pdf">C-47</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">48</td>
+              <td class="title-cell"><a href="48-Phys-Une-onde-un-peu-particuliere-londe-cobra.pdf">Une onde un peu particulière, « l’onde cobra »</a></td>
+              <td class="matiere-cell"><span class="tag tag-phys">Physique</span></td>
+              <td class="theme-cell">Énergie: Méca.  Onde: Méca.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="48-Phys-Une-onde-un-peu-particuliere-londe-cobra-correction.pdf">C-48</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">49</td>
+              <td class="title-cell"><a href="49-Phys-Chim-Velo-a-assistance-electrique.pdf">Vélo à assistance électrique</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Matière - Énergie: Méca.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="49-Phys-Chim-Velo-a-assistance-electrique-correction.pdf">C-49</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">50</td>
+              <td class="title-cell"><a href="50-Chim-Acide-oxalique-et-rouille-ne-font-pas-bon-menage.pdf">Acide oxalique et rouille ne font pas bon ménage</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="50-Chim-Acide-oxalique-et-rouille-ne-font-pas-bon-menage-Correction.pdf">C-50</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">51</td>
+              <td class="title-cell"><a href="51-Chim-Allantoine.pdf">Allantoïne</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="51-Chim-Allantoine-correction.pdf">C-51</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">52</td>
+              <td class="title-cell"><a href="52-Chim-Analyse-dun-vin-blanc-sec-bio.pdf">Analyse d’un vin blanc sec bio</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="52-Chim-Analyse-dun-vin-blanc-sec-bio-Correction.pdf">C-52</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">53</td>
+              <td class="title-cell"><a href="53-Phys-Chim-Chauffage-et-eau-chaude-de-la-maison.pdf">Chauffage et eau chaude de la maison</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Mat: Synth/Comb.Énergie: Élec.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="53-Phys-Chim-Chauffage-et-eau-chaude-de-la-maison-correction.pdf">C-53</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">54</td>
+              <td class="title-cell"><a href="54-Chim-Choix-dun-moyen-de-transport.pdf">Choix d’un moyen de transport</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Mat: Synth/Comb.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="54-Chim-Choix-dun-moyen-de-transport-correction.pdf">C-54</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">55</td>
+              <td class="title-cell"><a href="55-Phys-Chim-Comment-lutter-contre-les-marees-noires.pdf">Comment lutter contre les « marées noires »</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="55-Phys-Chim-Comment-lutter-contre-les-marees-noires-Correction.pdf">C-55</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">56</td>
+              <td class="title-cell"><a href="56-Chim-Comparaison-de-deux-appareils-a-fondue.pdf">Comparaison de deux appareils à fondue</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Matière-Énergie: Élec.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="56-Chim-Comparaison-de-deux-appareils-a-fondue-correction.pdf">C-56</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">57</td>
+              <td class="title-cell"><a href="57-Chim-Des-esters-qui-flattent-nos-cellules-olfactives.pdf">Des esters qui flattent nos cellules olfactives</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="57-Chim-Des-esters-qui-flattent-nos-cellules-olfactives-correction.pdf">C-57</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">58</td>
+              <td class="title-cell"><a href="58-Chim-Determination-du-degre-alcoolique-dun-vin-depines.pdf">Détermination du degré alcoolique d’un vin d&#x27;épines</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="58-Chim-Determination-du-degre-alcoolique-dun-vin-depines-correction.pdf">C-58</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">59</td>
+              <td class="title-cell"><a href="59-Chim-Dihydrogene-et-ballons-dirigeables.pdf">Dihydrogène et ballons dirigeables</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="59-Chim-Dihydrogene-et-ballons-dirigeables-correction.pdf">C-59</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">60</td>
+              <td class="title-cell"><a href="60-Phys-Chim-Dosage-spectrophotometrique-dun-additif-alimentaire-le-bleu-patente-V.pdf">Dosage spectrophotométrique d’un additif alimentaire : le bleu patenté V</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Mat: Transformat.Onde: Lumière.Python</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="60-Phys-Chim-Dosage-spectrophotometrique-dun-additif-alimentaire-le-bleu-patente-V-correction.pdf">C-60</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">61</td>
+              <td class="title-cell"><a href="61-Chim-Engager-la-transition-vers-une-mobilite-plus-propre.pdf">Engager la transition vers une mobilité plus propre</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Mat: Synth/Comb.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="61-Chim-Engager-la-transition-vers-une-mobilite-plus-propre-correction.pdf">C-61</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">62</td>
+              <td class="title-cell"><a href="62-Chim-Entretien-de-leau-dune-piscine.pdf">Entretien de l’eau d’une piscine</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Mat: Transformat.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="62-Chim-Entretien-de-leau-dune-piscine-correction.pdf">C-62</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">63</td>
+              <td class="title-cell"><a href="63-Chim-Etude-de-differents-carburants.pdf">Étude de différents carburants</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="63-Chim-Etude-de-differents-carburants-Correction.pdf">C-63</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">64</td>
+              <td class="title-cell"><a href="64-Chim-Fabrication-dune-solution-hydro-alcoolique-en-pharmacie.pdf">Fabrication d’une solution hydro-alcoolique en pharmacie</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="64-Chim-Fabrication-dune-solution-hydro-alcoolique-en-pharmacie-Correction.pdf">C-64</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">65</td>
+              <td class="title-cell"><a href="65-Chim-Gel-anti-douleurs-compose-de-salicylate-de-methyle.pdf">Gel anti douleurs composé de salicylate de méthyle</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="65-Chim-Gel-anti-douleurs-compose-de-salicylate-de-methyle-Correction.pdf">C-65</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">66</td>
+              <td class="title-cell"><a href="66-Chim-Gout-et-couleur-du-sirop-de-menthe.pdf">Goût et couleur du sirop de menthe</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="66-Chim-Gout-et-couleur-du-sirop-de-menthe-correction.pdf">C-66</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">67</td>
+              <td class="title-cell"><a href="67-Chim-Hypochlorites-et-eaux-de-Javel.pdf">Hypochlorites et eaux de Javel</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Mat: Transformat.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="67-Chim-Hypochlorites-et-eaux-de-Javel-correction.pdf">C-67</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">68</td>
+              <td class="title-cell"><a href="68-Chim-Lacide-thioglycolique-dans-les-produits-cosmetiques.pdf">L’acide thioglycolique dans les produits cosmétiques</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="68-Chim-Lacide-thioglycolique-dans-les-produits-cosmetiques-Correction.pdf">C-68</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">69</td>
+              <td class="title-cell"><a href="69-Chim-Loxydation-du-vin.pdf">L’oxydation du vin</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="69-Chim-Loxydation-du-vin-Correction.pdf">C-69</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">70</td>
+              <td class="title-cell"><a href="70-Chim-La-Betadine.pdf">La Betadine®</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Mat: Transformat.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="70-Chim-La-Betadine-correction.pdf">C-70</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">71</td>
+              <td class="title-cell"><a href="71-Chim-La-detection-du-tabagisme-passif.pdf">La détection du tabagisme passif</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Mat: Transformat.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="71-Chim-La-detection-du-tabagisme-passif-correction.pdf">C-71</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">72</td>
+              <td class="title-cell"><a href="72-Phys-Chim-La-fluorescence-au-service-du-diagnostic-medical.pdf">La fluorescence au service du diagnostic médical</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Mat: Transformat.Onde: Lumière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="72-Phys-Chim-La-fluorescence-au-service-du-diagnostic-medical-correction.pdf">C-72</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">73</td>
+              <td class="title-cell"><a href="73-Chim-La-pollution-par-le-dioxyde-de-soufre.pdf">La pollution par le dioxyde de soufre</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Mat: Transformat.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="73-Chim-La-pollution-par-le-dioxyde-de-soufre-correction.pdf">C-73</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">74</td>
+              <td class="title-cell"><a href="74-Chim-La-vanilline.pdf">La vanilline</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="74-Chim-La-vanilline-Correction.pdf">C-74</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">75</td>
+              <td class="title-cell"><a href="75-Chim-Le bleuDeMethyleneEnMedecineEtEnBiologie.pdf">Le bleu de méthylène en médecine et en biologie</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Mat: Transformat.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="75-Chim-Le bleuDeMethyleneEnMedecineEtEnBiologie-correction.pdf">C-75</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">76</td>
+              <td class="title-cell"><a href="76-Chim-Le-geraniol-pour-lutter-contre-linvasion-des-frelons-asiatiques.pdf">Le géraniol pour lutter contre l’invasion des frelons asiatiques</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="76-Chim-Le-geraniol-pour-lutter-contre-linvasion-des-frelons-asiatiques-Correction.pdf">C-76</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">77</td>
+              <td class="title-cell"><a href="77-Chim-Le-vert-malachite.pdf">Le vert malachite</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="77-Chim-Le-vert-malachite-correction.pdf">C-77</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">78</td>
+              <td class="title-cell"><a href="78-Chim-Les-comprimes-de-permanganate-de-potassium-sont-ils-perimes.pdf">Les comprimés de permanganate de potassium sont-ils périmés ?</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière-Python</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="78-Chim-Les-comprimes-de-permanganate-de-potassium-sont-ils-perimes-Correction.pdf">C-78</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">79</td>
+              <td class="title-cell"><a href="79-Phys-Chim-Les-hydrogels-Haraguchi.pdf">Les hydrogels Haraguchi</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Mat: Structure-Mouv: Champ</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="79-Phys-Chim-Les-hydrogels-Haraguchi-correction.pdf">C-79</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">80</td>
+              <td class="title-cell"><a href="80-Phys-Chim-Protection-solaire.pdf">Protection solaire</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Mat: Synth/Comb.Onde: Lumière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="80-Phys-Chim-Protection-solaire-correction.pdf">C-80</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">81</td>
+              <td class="title-cell"><a href="81-Phys-Chim-Qui-peut-griller-une-tranche-de-pain-en-pedalant.pdf">Qui peut griller une tranche de pain en pédalant ?</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Mat: Synth/Comb.Énergie: Élec.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="81-Phys-Chim-Qui-peut-griller-une-tranche-de-pain-en-pedalant-correction.pdf">C-81</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">82</td>
+              <td class="title-cell"><a href="82-Chim-Realisation-dune-vegetation-metallique.pdf">Réalisation d’une végétation métallique</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Mat: Transformat.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="82-Chim-Realisation-dune-vegetation-metallique-correction.pdf">C-82</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">83</td>
+              <td class="title-cell"><a href="83-Chim-Recyclage-dune-solution-de-bouillie-bordelaise.pdf">Recyclage d’une solution de bouillie bordelaise</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Mat: Transformat.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="83-Chim-Recyclage-dune-solution-de-bouillie-bordelaise-correction.pdf">C-83</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">84</td>
+              <td class="title-cell"><a href="84-Chim-Recycler-un-medicament.pdf">Recycler un médicament</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="84-Chim-Recycler-un-medicament-correction.pdf">C-84</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">85</td>
+              <td class="title-cell"><a href="85-Phys-Chim-Ressources-denergie-renouvelables.pdf">Ressources d’énergie renouvelables</a></td>
+              <td class="matiere-cell"><span class="tag tag-mix">Physique-Chimie</span></td>
+              <td class="theme-cell">Énergie: Méca.Mat: Synth/Comb.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="85-Phys-Chim-Ressources-denergie-renouvelables-correction.pdf">C-85</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">86</td>
+              <td class="title-cell"><a href="86-Chim-Synthese-dun-compose-chimique-photochrome.pdf">Synthèse d’un composé chimique photochrome</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="86-Chim-Synthese-dun-compose-chimique-photochrome-Correction.pdf">C-86</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">87</td>
+              <td class="title-cell"><a href="87-Chim-Synthese-dun-ester-et-convoyage-de-medicaments.pdf">Synthèse d’un ester et convoyage de médicaments</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="87-Chim-Synthese-dun-ester-et-convoyage-de-medicaments-correction.pdf">C-87</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">88</td>
+              <td class="title-cell"><a href="88-Chim-Synthese-de-la-menthone-a-partir-du-menthol-sans-calculatrice.pdf">Synthèse de la menthone à partir du menthol</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="88-Chim-Synthese-de-la-menthone-a-partir-du-menthol-sans-calculatrice-correction.pdf">C-88</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">89</td>
+              <td class="title-cell"><a href="89-Chim-Synthese-du-camphre-au-service-du-sportif.pdf">Synthèse du camphre au service du sportif</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Mat: Synth/Comb.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="89-Chim-Synthese-du-camphre-au-service-du-sportif-correction.pdf">C-89</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">90</td>
+              <td class="title-cell"><a href="90-Chim-Synthese-et-proprietes-lavantes-dun-savon.pdf">Synthèse et propriétés lavantes d’un savon</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="90-Chim-Synthese-et-proprietes-lavantes-dun-savon-correction.pdf">C-90</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">91</td>
+              <td class="title-cell"><a href="91-Chim-Synthon-dun-antihypertenseur.pdf">Synthon d’un antihypertenseur</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="91-Chim-Synthon-dun-antihypertenseur-correction.pdf">C-91</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">92</td>
+              <td class="title-cell"><a href="92-Chim-Teneur-en-fer-dun-produit-phytosanitaire.pdf">Teneur en fer d’un produit phytosanitaire</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Mat: Transformat.</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="92-Chim-Teneur-en-fer-dun-produit-phytosanitaire-correction.pdf">C-92</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">93</td>
+              <td class="title-cell"><a href="93-Chim-Un-antiseptique-leau-oxygenee.pdf">Un antiseptique : l’eau oxygénée</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="93-Chim-Un-antiseptique-leau-oxygenee-correction.pdf">C-93</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">94</td>
+              <td class="title-cell"><a href="94-Chim-Une-odeur-de-soufre-dans-lair.pdf">Une odeur de soufre dans l’air</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="94-Chim-Une-odeur-de-soufre-dans-lair-correction.pdf">C-94</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">95</td>
+              <td class="title-cell"><a href="95-Chim-Utilisation-du-peroxyde-dhydrogene-dans-un-bain-de-bouche.pdf">Utilisation du peroxyde d’hydrogène dans un bain de bouche</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="95-Chim-Utilisation-du-peroxyde-dhydrogene-dans-un-bain-de-bouche-Correction.pdf">C-95</a></td>
+            </tr>
+            <tr>
+              <td class="num-cell">96</td>
+              <td class="title-cell"><a href="96-Chim-Valorisation-de-la-biomasse.pdf">Valorisation de la biomasse</a></td>
+              <td class="matiere-cell"><span class="tag tag-chem">Chimie</span></td>
+              <td class="theme-cell">Matière-Python</td>
+              <td class="corr-cell"><a class="doc-link corrige" href="96-Chim-Valorisation-de-la-biomasse-correction.pdf">C-96</a></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
         
     </div>
     <p>Source : <a href="https://ccbac.fr/"><font color="#FFFFCC">https://ccbac.fr/</font></a><font color="#FFFFCC"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><a href="https://www.education.gouv.fr/reussir-au-lycee/la-banque-nationale-de-sujets-470525"><font color="#FFFFCC">https://www.education.gouv.fr/reussir-au-lycee/la-banque-nationale-de-sujets-470525</font></a></p>
