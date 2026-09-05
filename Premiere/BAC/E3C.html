@@ -235,12 +235,14 @@
     border-collapse: collapse;
     table-layout: fixed;
   }
-  .annales-table col.c-num,
-  .annales-table th:nth-child(1), .annales-table td:nth-child(1) { width: 8%; }
-  .annales-table th:nth-child(2), .annales-table td:nth-child(2) { width: 40%; }
-  .annales-table th:nth-child(3), .annales-table td:nth-child(3) { width: 15%; }
-  .annales-table th:nth-child(4), .annales-table td:nth-child(4) { width: 25%; }
-  .annales-table th:nth-child(5), .annales-table td:nth-child(5) { width: 12%; }
+  @media (min-width: 751px) {
+    .annales-table col.c-num,
+    .annales-table th:nth-child(1), .annales-table td:nth-child(1) { width: 8%; }
+    .annales-table th:nth-child(2), .annales-table td:nth-child(2) { width: 40%; }
+    .annales-table th:nth-child(3), .annales-table td:nth-child(3) { width: 15%; }
+    .annales-table th:nth-child(4), .annales-table td:nth-child(4) { width: 25%; }
+    .annales-table th:nth-child(5), .annales-table td:nth-child(5) { width: 12%; }
+  }
 
   .annales-table thead th {
     padding: 14px 10px;
@@ -510,11 +512,15 @@
   /* Ligne 3 : matière + thème */
   .matiere-cell {
     order: 4;
+    flex: 0 0 auto;
   }
   .theme-cell {
     order: 5;
     margin-left: 10px;
     font-size: 0.75rem;
+    flex: 1 1 160px;
+    min-width: 0;
+    word-break: break-word;
   }
 
   .doc-link {
