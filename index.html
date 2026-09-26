@@ -128,44 +128,6 @@
   }
   .contact-bar a:hover { color: var(--gold-light); }
 
-  /* ── PARTNER LOGOS (alternance) ── */
-  .partner-logos {
-    position: relative;
-    width: 160px;
-    height: 60px;
-    margin: 1.4rem auto 0;
-  }
-  .partner-logo-slide {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    animation: logoFade 8s infinite;
-  }
-  .partner-logo-slide img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    background: var(--gold-pale);
-    border-radius: 8px;
-    padding: 0.4rem 0.8rem;
-  }
-  .partner-logo-slide:nth-child(1) {
-    animation-delay: 0s;
-  }
-  .partner-logo-slide:nth-child(2) {
-    animation-delay: 4s;
-  }
-  @keyframes logoFade {
-    0%   { opacity: 0; }
-    5%   { opacity: 1; }
-    45%  { opacity: 1; }
-    50%  { opacity: 0; }
-    100% { opacity: 0; }
-  }
-
   /* ── DIVIDER ── */
   .divider {
     display: flex;
@@ -478,10 +440,6 @@
         <div class="contact-bar"> <span>📧 <a href="mailto:redo009@gmail.com">redo009@gmail.com</a></span>
           <span>📞 +213 779 077 224</span> <span>🌐 <a href="https://redo2000.github.io/">redo2000.github.io</a></span>
         </div>
-        <div class="partner-logos">
-          <div class="partner-logo-slide"><img src="EspaceGalileoSchool.png" alt="Espace Galileo"></div>
-          <div class="partner-logo-slide"><img src="KatanaSchool.png" alt="Katana School"></div>
-        </div>
       </header>
       <!-- SECTION FRANÇAISE -->
       <div class="section-block" style="overflow:hidden;">
@@ -519,7 +477,7 @@
           car rares sont ceux qui ne se trompent pas. </p>
       </div>
       <!-- FOOTER -->
-      <footer> TR Production · Mis à&nbsp;jour <span id="footer-date"></span>
+      <footer> TR Production · Mis �&nbsp; jour <span id="footer-date"></span>
       </footer>
       <script>
     const mois = ["Janvier","Février","Mars","Avril","Mai","Juin",
