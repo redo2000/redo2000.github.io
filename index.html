@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physique-Chimie | Mr. TCHIKOU Redhouane</title>
+<link rel="icon" type="image/png" sizes="16x16" href="RedoFavIcon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f3f6f8;
+    --grid: #cfdce6;
+    --ink: #12263a;
+    --muted: #4a5f73;
+    --accent: #e8590c;
+    --lab: #0b7285;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { min-height: 100%; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif;
+    color: var(--ink);
+    background-color: var(--paper);
+    /* papier millimétré */
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+      linear-gradient(rgba(207,220,230,.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(207,220,230,.5) 1px, transparent 1px);
+    background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+  }
+  main {
+    display: flex;
+    align-items: center;
+    gap: 56px;
+    max-width: 840px;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    padding: 56px;
+    box-shadow: 10px 10px 0 var(--ink);
+  }
+
+  /* La tuile d'élément : le point fort de la page */
+  .tile {
+    position: relative;
+    flex: none;
+    width: 220px;
+    height: 220px;
+    border: 3px solid var(--ink);
+    background: #fff;
+    display: grid;
+    place-items: center;
+  }
+  .tile .symbol {
+    font-size: 6.5rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .tile .symbol i { font-style: normal; color: var(--accent); }
+  .tile .name {
+    position: absolute;
+    bottom: 12px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .tile .kind {
+    position: absolute;
+    top: 10px; left: 14px;
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--lab);
+  }
+  .orbit {
+    position: absolute;
+    inset: -34px;
+    border: 1.5px dashed var(--lab);
+    border-radius: 50%;
+    animation: spin 14s linear infinite;
+    pointer-events: none;
+  }
+  .orbit::after {
+    content: "";
+    position: absolute;
+    top: -7px; left: 50%;
+    width: 14px; height: 14px;
+    margin-left: -7px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .text h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .text h2 {
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    margin-bottom: 28px;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+    font-size: .95rem;
+  }
+  .status::before {
+    content: "";
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: blink 1.6s ease-in-out infinite;
+  }
+  @keyframes blink { 50% { opacity: .25; } }
+
+  .contact > span { display: block; color: var(--muted); margin-bottom: 14px; }
+  .row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+  .row .label { font-weight: 600; font-size: 1.02rem; }
+  .row .label a { color: var(--ink); text-decoration: none; }
+  .row .label a:hover { color: var(--accent); }
+  .ico {
+    display: inline-grid;
+    place-items: center;
+    width: 42px; height: 42px;
+    border: 2px solid var(--ink);
+    background: #fff;
+    color: var(--ink);
+    transition: transform .15s, background .15s, color .15s;
+  }
+  .ico svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .ico:hover { transform: translate(-2px,-2px); box-shadow: 3px 3px 0 var(--ink); }
+  .ico.tel:hover, .ico.mail:hover { background: var(--accent); color: #fff; }
+  .ico.wa { color: #1da851; }
+  .ico.wa:hover { background: #25d366; color: #fff; }
+  a:focus-visible, .ico:focus-visible { outline: 3px solid var(--lab); outline-offset: 3px; }
+
+  @media (max-width: 720px) {
+    main { flex-direction: column; text-align: center; gap: 64px; padding: 64px 24px 40px; box-shadow: 6px 6px 0 var(--ink); }
+    .text h1 { font-size: 1.9rem; }
+  }
+  @media (max-width: 720px) { .row { justify-content: center; } }
+  @media (prefers-reduced-motion: reduce) {
+    .orbit, .status::before { animation: none; }
+  }
+</style>
+</head>
+<body>
+  <main>
+    <div class="tile" aria-hidden="true">
+      <div class="orbit"></div>
+      <span class="kind">Matière</span>
+      <div class="symbol">P<i>c</i></div>
+      <span class="name">Physique-Chimie</span>
+    </div>
+
+    <div class="text">
+      <h1>Professeur Tchikou Redhouane</h1>
+      <h2>Physique-Chimie</h2>
+      <div class="status">Site en construction</div>
+      <div class="contact">
+        <span>Merci pour votre visite. Pour me joindre :</span>
+        <div class="row">
+          <a class="ico tel" href="tel:+213779077224" aria-label="Appeler"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+          <a class="ico wa" href="https://wa.me/213779077224" target="_blank" rel="noopener" aria-label="Écrire sur WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><g transform="translate(7.2 7.2) scale(.4)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke-width="3.5"/></g></svg></a>
+          <span class="label"><a href="tel:+213779077224">+213 779 077 224</a></span>
+        </div>
+        <div class="row">
+          <a class="ico mail" href="mailto:redo009@gmail.com" aria-label="Envoyer un e-mail"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></a>
+          <span class="label"><a href="mailto:redo009@gmail.com">redo009@gmail.com</a></span>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
