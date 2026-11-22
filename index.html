@@ -13,7 +13,7 @@
   --ink: #e9edff;
   --ink-soft: #a3acd6;
   --margin: #ff7a6b;
-  --hl: #ffe45c;
+  --hl: #e6b94d;
   --wa: #25d366;
   --dark: #0a0f2c;
   --u: 32px;
@@ -69,16 +69,20 @@ h1 {
 .role { font-size: 1.1rem; color: var(--ink-soft); }
 .contacts {
   list-style: none;
-  margin-top: 32px;
-  display: flex; flex-wrap: wrap; column-gap: 28px;
+  margin: 32px 0 0 -10px;
+  display: flex; flex-wrap: wrap; column-gap: 12px;
 }
 .contacts a {
+  display: inline-block;
+  padding: 0 10px;
+  line-height: 32px;
+  border-radius: 6px;
   text-decoration: none;
   font-weight: 500;
-  background: linear-gradient(var(--hl), var(--hl)) no-repeat 0 90% / 0 .9em;
-  transition: background-size .25s;
+  background: linear-gradient(var(--hl), var(--hl)) no-repeat 0 50% / 0 100%;
+  transition: background-size .25s, color .25s;
 }
-.contacts a:hover { background-size: 100% .9em; color: var(--dark); }
+.contacts a:hover { background-size: 100% 100%; color: var(--dark); }
 .wa {
   display: inline-flex; align-items: center; gap: 8px;
   color: var(--wa);
@@ -92,6 +96,7 @@ h1 {
   transition: background .2s, color .2s;
 }
 .wa svg { width: 18px; height: 18px; }
+.contacts a.wa { padding: 0 14px; line-height: 30px; }
 .contacts a.wa:hover { background: var(--wa); color: var(--dark); }
 
 /* ── Section ── */
