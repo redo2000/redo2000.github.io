@@ -166,6 +166,14 @@ blockquote {
   border-bottom: 1px solid rgba(233,237,255,.3);
 }
 footer { margin-top: 64px; text-align: center; color: var(--ink-soft); font-size: .85rem; }
+.visits {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 8px; padding: 0 14px; line-height: 28px;
+  border: 1px solid rgba(233,237,255,.3);
+  border-radius: 999px;
+}
+.visits svg { width: 16px; height: 16px; }
+.visits b { color: var(--hl); font-weight: 600; font-variant-numeric: tabular-nums; }
 
 @media (max-width: 560px) {
   .page { padding: 40px 16px 24px; }
@@ -232,12 +240,36 @@ footer { margin-top: 64px; text-align: center; color: var(--ink-soft); font-size
 
   <blockquote>Si vous voyez une erreur, corrigez-la… car rares sont ceux qui ne se trompent pas.</blockquote>
 
-  <footer>TR Production · Mis à jour <span id="footer-date"></span></footer>
+  <footer>
+    <p class="visits" id="visits" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+      <span>Visiteurs : <b id="visit-count">…</b></span>
+    </p>
+    <p>TR Production · Mis à jour <span id="footer-date"></span></p>
+  </footer>
 </main>
 <script>
   const mois = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
   const now = new Date();
   document.getElementById("footer-date").textContent = mois[now.getMonth()] + " " + now.getFullYear();
+</script>
+<script>
+/* Compteur de visites (service gratuit counterapi.dev, sans inscription).
+   Un navigateur n'est compté qu'une seule fois : les rechargements ne gonflent pas le chiffre. */
+(function () {
+  const base = 'https://api.counterapi.dev/v1/redo2000-github-io/visites';
+  let deja = false;
+  try { deja = localStorage.getItem('visite-comptee') === '1'; } catch (e) {}
+  fetch(deja ? base : base + '/up')
+    .then(r => r.json())
+    .then(d => {
+      if (typeof d.count !== 'number') return;
+      document.getElementById('visit-count').textContent = d.count.toLocaleString('fr-FR');
+      document.getElementById('visits').hidden = false;
+      try { localStorage.setItem('visite-comptee', '1'); } catch (e) {}
+    })
+    .catch(() => {}); /* en cas d'échec, le compteur reste simplement masqué */
+})();
 </script>
 <script>
 (function () {
