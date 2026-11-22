@@ -9,25 +9,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --paper: #fbfcff;
-  --grid: rgba(110,130,215,.42);
-  --grid-fine: rgba(110,130,215,.16);
-  --ink: #1b2a78;
-  --ink-soft: #4a5594;
-  --margin: #d2403a;
-  --hl: #fff06a;
-  --wa: #128c4a;
-  --u: 32px; /* hauteur d'une ligne de cahier */
+  --paper: #060a1e;
+  --ink: #e9edff;
+  --ink-soft: #a3acd6;
+  --margin: #ff7a6b;
+  --hl: #ffe45c;
+  --wa: #25d366;
+  --dark: #0a0f2c;
+  --u: 32px;
+  --sky1: #17225e; --sky2: #2b1558;
 }
+:root[data-sky="violet"] { --paper: #0f0623; --sky1: #3a1670; --sky2: #5a1f6e; --dark: #150a2e; }
+:root[data-sky="noir"]   { --paper: #010103; --sky1: #0b0d1c; --sky2: #12091c; --dark: #05050c; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  background-color: var(--paper);
-  background-image:
-    linear-gradient(to right, var(--grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-fine) 1px, transparent 1px);
-  background-size: var(--u) var(--u), var(--u) var(--u), 100% 8px;
+  background:
+    radial-gradient(ellipse at 15% 8%, var(--sky1) 0%, transparent 55%),
+    radial-gradient(ellipse at 88% 92%, var(--sky2) 0%, transparent 50%),
+    var(--paper);
+  background-attachment: fixed;
+  transition: background-color .6s;
   color: var(--ink);
   font-family: 'Instrument Sans', system-ui, sans-serif;
   font-size: 1rem;
@@ -38,18 +40,21 @@ body {
   position: relative;
   max-width: 820px;
   margin: 0 auto;
-  padding: 64px 24px 32px 96px;
+  z-index: 1;
+  padding: 64px 24px 32px;
 }
-/* marge rouge du cahier */
-.page::before {
-  content: '';
-  position: absolute;
-  top: 0; bottom: 0; left: 64px;
-  width: 5px;
-  border-left: 1px solid var(--margin);
-  border-right: 1px solid var(--margin);
-  opacity: .75;
+.sky { position: fixed; top: 16px; right: 16px; z-index: 2; display: flex; gap: 10px; }
+.sky button {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.45);
+  cursor: pointer; transition: transform .2s, border-color .2s;
 }
+.sky button:hover { transform: scale(1.15); }
+.sky button[aria-pressed="true"] { border-color: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,.25); }
+.sky [data-set="bleu"]   { background: radial-gradient(circle at 30% 30%, #3b4fb8, #0a1238); }
+.sky [data-set="violet"] { background: radial-gradient(circle at 30% 30%, #8a3fd1, #1c0838); }
+.sky [data-set="noir"]   { background: radial-gradient(circle at 30% 30%, #2a2c3a, #000); }
+#stars { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 a { color: inherit; }
 :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
 
@@ -73,7 +78,7 @@ h1 {
   background: linear-gradient(var(--hl), var(--hl)) no-repeat 0 90% / 0 .9em;
   transition: background-size .25s;
 }
-.contacts a:hover { background-size: 100% .9em; }
+.contacts a:hover { background-size: 100% .9em; color: var(--dark); }
 .wa {
   display: inline-flex; align-items: center; gap: 8px;
   color: var(--wa);
@@ -87,7 +92,7 @@ h1 {
   transition: background .2s, color .2s;
 }
 .wa svg { width: 18px; height: 18px; }
-.wa:hover { background: var(--wa); color: #fff; }
+.contacts a.wa:hover { background: var(--wa); color: var(--dark); }
 
 /* ── Section ── */
 section { margin-top: 64px; }
@@ -106,15 +111,15 @@ h2 {
 .social a {
   display: inline-flex; align-items: center; gap: 8px;
   line-height: 30px; padding: 0 14px;
-  border: 1.5px solid var(--ink);
+  border: 1.5px solid transparent;
   border-radius: 6px;
   text-decoration: none; font-weight: 500;
   background: var(--paper);
   transition: background .2s, color .2s;
 }
-.social a { color: #fff; border-color: transparent; }
+.social a { color: #fff; }
 .social a.yt { background: #e62117; }
-.social a.tt { background: #000; }
+.social a.tt { background: #000; border-color: rgba(255,255,255,.35); }
 .social a:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.25); }
 .social a.yt:hover { background: #c4180f; }
 .social a.tt:hover { background: #222; }
@@ -126,7 +131,7 @@ h3 { font-size: 1rem; font-weight: 600; margin-top: 64px; }
   display: flex; align-items: center; gap: 24px;
   min-height: 64px;
   text-decoration: none;
-  border-bottom: 1px solid var(--ink);
+  border-bottom: 1px solid rgba(233,237,255,.3);
   position: relative;
   background: linear-gradient(var(--hl), var(--hl)) no-repeat 0 50% / 0 100%;
   transition: background-size .3s;
@@ -140,21 +145,25 @@ h3 { font-size: 1rem; font-weight: 600; margin-top: 64px; }
   padding-left: 8px;
 }
 .levels .name { font-size: 1.05rem; color: var(--ink-soft); }
-.levels a:hover .name { color: var(--ink); }
+.levels a:hover .name, .levels a:hover .lvl { color: var(--dark); }
 
 /* ── Citation ── */
 blockquote {
-  margin-top: 96px;
+  margin: 96px auto 0;
   font-family: 'Young Serif', serif;
   font-size: 1.2rem;
-  max-width: 28ch;
-  transform: rotate(-1deg);
+  line-height: 1.7;
+  max-width: 34ch;
+  text-align: center;
+  text-wrap: balance;
+  padding: 8px 0;
+  border-top: 1px solid rgba(233,237,255,.3);
+  border-bottom: 1px solid rgba(233,237,255,.3);
 }
-footer { margin-top: 96px; color: var(--ink-soft); font-size: .85rem; }
+footer { margin-top: 64px; text-align: center; color: var(--ink-soft); font-size: .85rem; }
 
 @media (max-width: 560px) {
-  .page { padding: 40px 16px 24px 44px; }
-  .page::before { left: 28px; }
+  .page { padding: 40px 16px 24px; }
   .levels .lvl { min-width: 84px; font-size: 1.6rem; }
   .contacts { flex-direction: column; }
 }
@@ -164,6 +173,12 @@ footer { margin-top: 96px; color: var(--ink-soft); font-size: .85rem; }
 </style>
 </head>
 <body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="sky" role="group" aria-label="Couleur du ciel">
+  <button type="button" data-set="bleu" title="Bleu nuit" aria-label="Ciel bleu nuit" aria-pressed="true"></button>
+  <button type="button" data-set="violet" title="Violet" aria-label="Ciel violet" aria-pressed="false"></button>
+  <button type="button" data-set="noir" title="Noir profond" aria-label="Ciel noir profond" aria-pressed="false"></button>
+</div>
 <main class="page">
 
   <header>
@@ -218,6 +233,69 @@ footer { margin-top: 96px; color: var(--ink-soft); font-size: .85rem; }
   const mois = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
   const now = new Date();
   document.getElementById("footer-date").textContent = mois[now.getMonth()] + " " + now.getFullYear();
+</script>
+<script>
+(function () {
+  const c = document.getElementById('stars'), ctx = c.getContext('2d');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w, h, stars = [], meteors = [], next = 2500;
+  function init() {
+    const d = Math.min(window.devicePixelRatio || 1, 2);
+    w = innerWidth; h = innerHeight;
+    c.width = w * d; c.height = h * d; ctx.setTransform(d, 0, 0, d, 0, 0);
+    const n = Math.round(w * h / 4500);
+    stars = Array.from({ length: n }, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      r: Math.random() < .08 ? 1.6 + Math.random() : .4 + Math.random() * .9,
+      p: Math.random() * 6.28, v: .6 + Math.random() * 2.2,
+      t: Math.random() < .15 ? 'g' : (Math.random() < .5 ? 'w' : 'b')
+    }));
+    draw(0);
+  }
+  function draw(t) {
+    ctx.clearRect(0, 0, w, h);
+    for (const s of stars) {
+      const a = still ? .8 : .25 + .75 * (.5 + .5 * Math.sin(s.p + t * .001 * s.v));
+      ctx.globalAlpha = a;
+      ctx.fillStyle = s.t === 'g' ? '#ffe9a8' : s.t === 'b' ? '#bcd0ff' : '#ffffff';
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+      if (s.r > 1.5) {
+        ctx.globalAlpha = a * .5; ctx.fillRect(s.x - s.r * 3.5, s.y - .4, s.r * 7, .8);
+        ctx.fillRect(s.x - .4, s.y - s.r * 3.5, .8, s.r * 7);
+      }
+    }
+    if (!still) {
+      if (t > next) {
+        const a = .35 + Math.random() * .35, sp = 7 + Math.random() * 5;
+        meteors.push({ x: Math.random() * w * .9, y: Math.random() * h * .45,
+          vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, len: 90 + Math.random() * 90 });
+        next = t + 3500 + Math.random() * 5500;
+      }
+      meteors = meteors.filter(m => m.life > 0 && m.x < w + 200 && m.y < h + 200);
+      for (const m of meteors) {
+        m.x += m.vx; m.y += m.vy; m.life -= .012;
+        const k = Math.hypot(m.vx, m.vy), tx = m.x - m.vx / k * m.len, ty = m.y - m.vy / k * m.len;
+        const g = ctx.createLinearGradient(tx, ty, m.x, m.y);
+        g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(255,255,255,1)');
+        ctx.globalAlpha = Math.max(m.life, 0);
+        ctx.strokeStyle = g; ctx.lineWidth = 1.8; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(m.x, m.y); ctx.stroke();
+        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(m.x, m.y, 1.8, 0, 6.283); ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    }
+  }
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(init, 150); });
+  const btns = document.querySelectorAll('.sky button'), root = document.documentElement;
+  function setSky(n, save) {
+    if (n === 'bleu') root.removeAttribute('data-sky'); else root.setAttribute('data-sky', n);
+    btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.set === n)));
+    if (save) { try { localStorage.setItem('sky', n); } catch (e) {} }
+  }
+  btns.forEach(b => b.addEventListener('click', () => setSky(b.dataset.set, true)));
+  try { const v = localStorage.getItem('sky'); if (v) setSky(v, false); } catch (e) {}
+  init(); if (!still) requestAnimationFrame(draw);
+})();
 </script>
 </body>
 </html>
