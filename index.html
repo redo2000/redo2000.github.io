@@ -248,7 +248,7 @@ footer { margin-top: 64px; text-align: center; color: var(--ink-soft); font-size
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Visiteurs : <b id="visit-count">…</b></span>
     </p>
-    <p>TR Production · Mis �&nbsp; jour <span id="footer-date"></span></p>
+    <p>TR Production · Mis à jour <span id="footer-date"></span></p>
   </footer>
 </main>
 <script>
@@ -257,22 +257,28 @@ footer { margin-top: 64px; text-align: center; color: var(--ink-soft); font-size
   document.getElementById("footer-date").textContent = mois[now.getMonth()] + " " + now.getFullYear();
 </script>
 <script>
-/* Compteur de visites (service gratuit counterapi.dev, sans inscription).
-   Un navigateur n'est compté qu'une seule fois : les rechargements ne gonflent pas le chiffre. */
+/* Compteur de visites : CounterAPI v2.
+   WORKSPACE et NAME doivent correspondre à ce qui est affiché dans app.counterapi.dev
+   (menu Workspaces pour le workspace, menu Counters pour le nom du compteur). */
 (function () {
-  const base = 'https://api.counterapi.dev/v1/redo2000-github-io/redhouane-tchikous-team-6328';
+  const WORKSPACE = 'redhouane-tchikous-team-6328';
+  const NAME = 'visites';
+  const API_KEY = ''; /* à remplir seulement si la console affiche une erreur 401 */
   let deja = false;
   try { deja = localStorage.getItem('visite-comptee') === '1'; } catch (e) {}
-  fetch(deja ? base : base + '/up')
+  const url = 'https://api.counterapi.dev/v2/' + WORKSPACE + '/' + NAME + (deja ? '' : '/up');
+  const opts = API_KEY ? { headers: { Authorization: 'Bearer ' + API_KEY } } : {};
+  fetch(url, opts)
     .then(r => r.json())
     .then(d => {
-      const n = Number(d.count ?? d.value ?? (d.data && d.data.up_count));
+      const x = (d && d.data) || d || {};
+      const n = Number(x.count ?? x.value ?? (x.up_count - (x.down_count || 0)));
       if (!Number.isFinite(n)) { console.warn('Compteur : réponse inattendue', d); return; }
       document.getElementById('visit-count').textContent = n.toLocaleString('fr-FR');
       document.getElementById('visits').hidden = false;
       try { localStorage.setItem('visite-comptee', '1'); } catch (e) {}
     })
-    .catch(e => console.warn('Compteur indisponible :', e)); /* en cas d'échec, le compteur reste masqué */
+    .catch(e => console.warn('Compteur indisponible :', e));
 })();
 </script>
 <script>
