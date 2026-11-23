@@ -172,6 +172,7 @@ footer { margin-top: 64px; text-align: center; color: var(--ink-soft); font-size
   border: 1px solid rgba(233,237,255,.3);
   border-radius: 999px;
 }
+.visits[hidden] { display: none; }
 .visits svg { width: 16px; height: 16px; }
 .visits b { color: var(--hl); font-weight: 600; font-variant-numeric: tabular-nums; }
 
@@ -263,12 +264,13 @@ footer { margin-top: 64px; text-align: center; color: var(--ink-soft); font-size
   fetch(deja ? base : base + '/up')
     .then(r => r.json())
     .then(d => {
-      if (typeof d.count !== 'number') return;
-      document.getElementById('visit-count').textContent = d.count.toLocaleString('fr-FR');
+      const n = Number(d.count ?? d.value ?? (d.data && d.data.up_count));
+      if (!Number.isFinite(n)) { console.warn('Compteur : réponse inattendue', d); return; }
+      document.getElementById('visit-count').textContent = n.toLocaleString('fr-FR');
       document.getElementById('visits').hidden = false;
       try { localStorage.setItem('visite-comptee', '1'); } catch (e) {}
     })
-    .catch(() => {}); /* en cas d'échec, le compteur reste simplement masqué */
+    .catch(e => console.warn('Compteur indisponible :', e)); /* en cas d'échec, le compteur reste masqué */
 })();
 </script>
 <script>
